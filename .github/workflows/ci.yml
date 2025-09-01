@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build-and-analyze:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: maven
+
+      - name: Build & test (with coverage)
+        run: mvn -B -U verify
+
+      - name: SonarCloud (Maven)
+        run: mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -D"sonar.login=${{ secrets.SONAR_TOKEN }}"
