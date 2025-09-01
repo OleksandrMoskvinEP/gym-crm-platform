@@ -1,10 +1,10 @@
-name: CI - Build, Test and SonarCloud
+name: CI
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ main, master ]
   pull_request:
-    branches: [ develop ]
+    branches: [ main, master ]
 
 jobs:
   build-and-analyze:
@@ -28,8 +28,5 @@ jobs:
       - name: Build & test (with coverage)
         run: mvn -B -U verify
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: SonarCloud (Maven)
+        run: mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -D"sonar.login=${{ secrets.SONAR_TOKEN }}"
