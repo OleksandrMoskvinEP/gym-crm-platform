@@ -4,7 +4,7 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
-import com.gym.crm.app.GymCrmApplication;
+import com.gym.crm.app.GymCrmCoreApplication;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,7 +28,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 
 @ActiveProfiles("test")
-@SpringBootTest(classes = GymCrmApplication.class)
+@SpringBootTest(classes = GymCrmCoreApplication.class)
 class TransactionLoggingFilterTest {
     private ListAppender<ILoggingEvent> logAppender;
     private TransactionLoggingFilter filter;

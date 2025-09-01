@@ -11,10 +11,10 @@ import java.util.List;
 @Profile("!test")
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {
-    @Value("${app.cors.allowed-origins}")
+    @Value("${app.cors.allowed-origins:}")
     private List<String> allowedOrigins;
 
-    @Value("${app.cors.allowed-methods}")
+    @Value("${app.cors.allowed-methods:}")
     private List<String> allowedMethods;
 
     @Override

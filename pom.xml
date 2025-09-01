@@ -40,6 +40,6 @@
     </build>
 
     <modules>
-        <module>gym-crm-main-services</module>
+        <module>gym-crm-core</module>
     </modules>
 </project>

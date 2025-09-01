@@ -10,7 +10,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>gym-crm-main-services</artifactId>
+    <artifactId>gym-crm-core</artifactId>
     <name>gym-crm-main-services</name>
     <packaging>jar</packaging>
 
