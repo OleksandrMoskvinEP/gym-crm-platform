@@ -41,5 +41,6 @@
 
     <modules>
         <module>gym-crm-core</module>
+        <module>trainers-workload-service</module>
     </modules>
 </project>
