@@ -38,4 +38,14 @@ public class TrainerEntity {
 
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = LAZY)
     List<YearEntity> years;
+
+    public void addYear(YearEntity y) {
+        years.add(y);
+        y.setTrainer(this);
+    }
+
+    public void removeYear(YearEntity y) {
+        years.remove(y);
+        y.setTrainer(null);
+    }
 }

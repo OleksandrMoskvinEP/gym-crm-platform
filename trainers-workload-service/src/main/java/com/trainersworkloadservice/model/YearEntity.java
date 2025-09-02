@@ -49,4 +49,14 @@ public class YearEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trainer_id", nullable = false)
     private TrainerEntity trainer;
+
+    public void addMonth(MonthEntity m) {
+        months.add(m);
+        m.setYear(this);
+    }
+
+    public void removeMonth(MonthEntity m) {
+        months.remove(m);
+        m.setYear(null);
+    }
 }
