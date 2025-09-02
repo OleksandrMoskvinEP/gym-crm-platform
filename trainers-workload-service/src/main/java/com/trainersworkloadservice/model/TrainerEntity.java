@@ -14,8 +14,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+
+import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Table(name = "trainers")
@@ -32,8 +33,9 @@ public class TrainerEntity {
 
     private String firstName;
     private String lastName;
+    private String username;
     private Boolean isActive;
 
-    @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<MonthlyWorkloadEntity> monthlyWorkloads = new HashSet<>();
+    @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = LAZY)
+    List<YearEntity> years;
 }
