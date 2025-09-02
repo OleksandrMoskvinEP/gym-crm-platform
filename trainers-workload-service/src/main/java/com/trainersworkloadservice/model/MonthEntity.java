@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
-@Table(name = "months", uniqueConstraints = @UniqueConstraint(columnNames = {"year_id", "month"}))
+@Table(name = "months", uniqueConstraints = @UniqueConstraint(columnNames = {"year_id", "monthOfYear"}))
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @Data
@@ -38,7 +38,7 @@ public class MonthEntity {
     @Min(1)
     @Max(12)
     @Column(nullable = false)
-    private Short month;
+    private Short monthOfYear;
 
     @NotNull
     @Column(nullable = false)

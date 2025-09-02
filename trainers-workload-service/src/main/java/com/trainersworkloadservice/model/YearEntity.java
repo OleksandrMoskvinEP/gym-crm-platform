@@ -21,7 +21,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -31,8 +32,8 @@ import static jakarta.persistence.FetchType.LAZY;
 @NoArgsConstructor
 @Data
 @AllArgsConstructor
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(exclude = {"trainer", "months"})
+@ToString(exclude = {"trainer", "months"})
 public class YearEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,8 +44,8 @@ public class YearEntity {
     private Short workYear;
 
     @OneToMany(mappedBy = "year", cascade = CascadeType.ALL, orphanRemoval = true, fetch = LAZY)
-    @OrderBy("month ASC")
-    List<MonthEntity> months;
+    @OrderBy("monthOfYear ASC")
+    private Set<MonthEntity> months = new LinkedHashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trainer_id", nullable = false)

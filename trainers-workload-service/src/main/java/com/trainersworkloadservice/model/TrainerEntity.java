@@ -9,12 +9,13 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -22,10 +23,10 @@ import static jakarta.persistence.FetchType.LAZY;
 @Table(name = "trainers")
 @Builder(toBuilder = true)
 @NoArgsConstructor
-@Data
 @AllArgsConstructor
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(exclude = {"years"})
+@ToString(exclude = {"years"})
+@Getter
 public class TrainerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +38,7 @@ public class TrainerEntity {
     private Boolean isActive;
 
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = LAZY)
-    List<YearEntity> years;
+    private Set<YearEntity> years = new LinkedHashSet<>();
 
     public void addYear(YearEntity y) {
         years.add(y);
