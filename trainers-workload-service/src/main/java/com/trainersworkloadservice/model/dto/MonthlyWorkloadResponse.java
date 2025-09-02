@@ -1,4 +1,4 @@
-package com.gymcommon.workload;
+package com.trainersworkloadservice.model.dto;
 
 public record MonthlyWorkloadResponse(
         String username,
