@@ -49,7 +49,7 @@ public class WorkloadServiceImpl implements WorkloadService {
         );
 
         if (workHours != null) {
-            return new MonthlyWorkloadResponse(request.username(), request.month(), request.year(), workHours, workHours * 60);
+            return new MonthlyWorkloadResponse(request.username(), request.year(), request.month(), workHours, workHours * 60);
         }
 
         return null;
