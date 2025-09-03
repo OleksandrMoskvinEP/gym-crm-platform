@@ -1,9 +1,9 @@
 package com.trainersworkloadservice.service.impl;
 
-import com.gymcommon.workload.ActionType;
-import com.gymcommon.workload.MonthlyWorkloadRequest;
-import com.gymcommon.workload.MonthlyWorkloadResponse;
-import com.gymcommon.workload.WorkloadEventRequest;
+import com.trainersworkloadservice.model.dto.ActionType;
+import com.trainersworkloadservice.model.dto.MonthlyWorkloadRequest;
+import com.trainersworkloadservice.model.dto.MonthlyWorkloadResponse;
+import com.trainersworkloadservice.model.dto.WorkloadEventRequest;
 import com.trainersworkloadservice.service.util.WorkloadCalculateHelper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,10 +25,10 @@ class WorkloadServiceImplTest {
     private WorkloadServiceImpl service;
 
     @Test
-    void calculateAndStoreWorkload_routesAddToHelper() {
+    void shouldCalculateAndStoreWorkload_routeAddToHelper() {
         WorkloadEventRequest request = new WorkloadEventRequest(
                 "first_last", "first", "last", true,
-                LocalDate.of(2025, 7, 15), 2,
+                LocalDate.of(2025, 7, 15), 2L,
                 ActionType.ADD
         );
 
@@ -38,10 +38,10 @@ class WorkloadServiceImplTest {
     }
 
     @Test
-    void calculateAndStoreWorkload_routesDeleteToHelper() {
+    void shouldCalculateAndStoreWorkload_routeDeleteToHelper() {
         WorkloadEventRequest request = new WorkloadEventRequest(
                 "first_last", "first", "last", true,
-                LocalDate.of(2025, 7, 15), 5,
+                LocalDate.of(2025, 7, 15), 5L,
                 ActionType.DELETE
         );
 
@@ -50,9 +50,8 @@ class WorkloadServiceImplTest {
         verify(helper).deleteOrDecrementWorkload("first_last", (short) 2025, (short) 7, 5L);
     }
 
-
     @Test
-    void getMonthlyWorkload_mapsHelperValueToResponse() {
+    void shouldRetrieveAndGetMonthlyWorkload_MapHelperValueToResponse() {
         MonthlyWorkloadRequest request = new MonthlyWorkloadRequest("username", (short) 7, (short) 2025);
 
         when(helper.getMonthlyWorkload("username", (short) 2025, (short) 7)).thenReturn(5L);

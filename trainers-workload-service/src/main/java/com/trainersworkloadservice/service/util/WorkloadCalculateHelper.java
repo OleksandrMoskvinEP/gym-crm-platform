@@ -20,7 +20,7 @@ public class WorkloadCalculateHelper {
                                        short monthOfYear,
                                        long hoursDelta) {
         if (hoursDelta == 0) return;
-        if (hoursDelta < 0) throw new IllegalArgumentException("hoursDelta must be > 0");
+        if (hoursDelta < 0) throw new IllegalArgumentException("training duration must be > 0");
 
         TrainerEntity trainer = getOrCreateTrainer(username, firstName, lastName, active);
         YearEntity year = getOrCreateYear(trainer, workYear);
@@ -43,6 +43,7 @@ public class WorkloadCalculateHelper {
         MonthEntity month = getMonthOrThrow(year, monthOfYear);
 
         long newHours = month.getHours() - hoursToRemove;
+
         if (newHours > 0) {
             month.setHours(newHours);
         } else {

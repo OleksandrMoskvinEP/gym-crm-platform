@@ -97,7 +97,6 @@ class WorkloadCalculateHelperTest {
         assertThat(existingTrainer.getYears()).isNotEmpty();
     }
 
-
     @Test
     void shouldReturnHours_whenPresent() {
         YearEntity year = YearEntity.builder().workYear((short) 2025).build();

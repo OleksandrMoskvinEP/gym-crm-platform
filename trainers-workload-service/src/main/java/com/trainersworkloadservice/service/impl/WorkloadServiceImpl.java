@@ -1,14 +1,14 @@
 package com.trainersworkloadservice.service.impl;
 
-import com.gymcommon.workload.ActionType;
-import com.gymcommon.workload.MonthlyWorkloadRequest;
-import com.gymcommon.workload.MonthlyWorkloadResponse;
-import com.gymcommon.workload.WorkloadEventRequest;
+import com.trainersworkloadservice.model.dto.ActionType;
+import com.trainersworkloadservice.model.dto.MonthlyWorkloadRequest;
+import com.trainersworkloadservice.model.dto.MonthlyWorkloadResponse;
+import com.trainersworkloadservice.model.dto.WorkloadEventRequest;
 import com.trainersworkloadservice.service.WorkloadService;
 import com.trainersworkloadservice.service.util.WorkloadCalculateHelper;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -51,7 +51,6 @@ public class WorkloadServiceImpl implements WorkloadService {
         if (workHours != null) {
             return new MonthlyWorkloadResponse(request.username(), request.year(), request.month(), workHours, workHours * 60);
         }
-
         return null;
     }
 }
