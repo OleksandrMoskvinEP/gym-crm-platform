@@ -1,6 +1,7 @@
 package com.trainersworkloadservice.service.impl;
 
 import com.trainersworkloadservice.model.dto.ActionType;
+import com.trainersworkloadservice.model.dto.DecreaseWorkloadParams;
 import com.trainersworkloadservice.model.dto.IncreaseWorkloadParams;
 import com.trainersworkloadservice.model.dto.MonthlyWorkloadRequest;
 import com.trainersworkloadservice.model.dto.MonthlyWorkloadResponse;
@@ -32,9 +33,9 @@ public class WorkloadServiceImpl implements WorkloadService {
                     year, month, delta)
             );
         } else if (req.actionType() == ActionType.DELETE) {
-            workloadChangePersistor.decreaseWorkload(
-                    req.username(),
-                    year, month, delta
+            workloadChangePersistor.decreaseWorkload(new DecreaseWorkloadParams(
+                            req.username(), year, month, delta
+                    )
             );
         } else {
             throw new IllegalArgumentException("Unknown actionType: " + req.actionType());

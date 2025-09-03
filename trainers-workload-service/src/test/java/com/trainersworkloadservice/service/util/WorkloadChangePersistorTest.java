@@ -3,6 +3,7 @@ package com.trainersworkloadservice.service.util;
 import com.trainersworkloadservice.model.MonthEntity;
 import com.trainersworkloadservice.model.TrainerEntity;
 import com.trainersworkloadservice.model.YearEntity;
+import com.trainersworkloadservice.model.dto.DecreaseWorkloadParams;
 import com.trainersworkloadservice.model.dto.IncreaseWorkloadParams;
 import com.trainersworkloadservice.repository.TrainerRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +24,9 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class WorkloadChangePersistorTest {
+    public static final YearEntity YEAR_ENTITY = YearEntity.builder().workYear(2025).build();
+    public static final MonthEntity MONTH_ENTITY = MonthEntity.builder().monthOfYear(7).hours(5L).build();
+
     private TrainerEntity existingTrainer;
 
     @Mock
@@ -60,18 +64,15 @@ class WorkloadChangePersistorTest {
 
     @Test
     void shouldIncrementHours_whenMonthExists() {
-        YearEntity year = YearEntity.builder().workYear(2025).build();
-        MonthEntity month = MonthEntity.builder().monthOfYear(7).hours(5L).build();
-        year.addMonth(month);
-
-        existingTrainer.addYear(year);
+        YEAR_ENTITY.addMonth(MONTH_ENTITY);
+        existingTrainer.addYear(YEAR_ENTITY);
 
         when(trainerRepository.findWithWorkloadByUsername("first_last")).thenReturn(Optional.of(existingTrainer));
 
         helper.increaseWorkload(getIncreaseParams());
 
         verify(trainerRepository).save(existingTrainer);
-        assertThat(month.getHours()).isEqualTo(7L);
+        assertThat(MONTH_ENTITY.getHours()).isEqualTo(7L);
     }
 
     @Test
@@ -84,32 +85,26 @@ class WorkloadChangePersistorTest {
 
     @Test
     void shouldDoNothing_whenHoursZero() {
-        YearEntity year = YearEntity.builder().workYear(2025).build();
-        MonthEntity month = MonthEntity.builder().monthOfYear(7).hours(3L).build();
-        year.addMonth(month);
-        existingTrainer.addYear(year);
+        YEAR_ENTITY.addMonth(MONTH_ENTITY);
+        existingTrainer.addYear(YEAR_ENTITY);
 
-        when(trainerRepository.findWithWorkloadByUsername("username")).thenReturn(Optional.of(existingTrainer));
+        helper.decreaseWorkload(getDecreaseParamsWithZeroHours());
 
-        helper.decreaseWorkload("username", 2025, 7, 3L);
-
-        verify(trainerRepository).save(existingTrainer);
-        assertThat(year.getMonths()).isNotEmpty();
+        verifyNoInteractions(trainerRepository);
+        assertThat(YEAR_ENTITY.getMonths()).isNotEmpty();
         assertThat(existingTrainer.getYears()).isNotEmpty();
     }
 
     @Test
     void shouldReturnHours_whenPresent() {
-        YearEntity year = YearEntity.builder().workYear(2025).build();
-        MonthEntity month = MonthEntity.builder().monthOfYear(7).hours(10L).build();
-        year.addMonth(month);
-        existingTrainer.addYear(year);
+        YEAR_ENTITY.addMonth(MONTH_ENTITY);
+        existingTrainer.addYear(YEAR_ENTITY);
 
         when(trainerRepository.findWithWorkloadByUsername("username")).thenReturn(Optional.of(existingTrainer));
 
         Long actual = helper.getMonthlyWorkload("username", 2025, 7);
 
-        assertThat(actual).isEqualTo(10L);
+        assertThat(actual).isEqualTo(5L);
     }
 
     private IncreaseWorkloadParams getIncreaseParams() {
@@ -117,8 +112,8 @@ class WorkloadChangePersistorTest {
                 "first",
                 "last",
                 true,
-                (short) 2025,
-                (short) 7,
+                2025,
+                7,
                 2L
         );
     }
@@ -128,9 +123,17 @@ class WorkloadChangePersistorTest {
                 "first",
                 "last",
                 true,
-                (short) 2025,
-                (short) 7,
+                2025,
+                7,
                 -2L
+        );
+    }
+
+    private DecreaseWorkloadParams getDecreaseParamsWithZeroHours() {
+        return new DecreaseWorkloadParams("first_last",
+                2025,
+                7,
+                0L
         );
     }
 }

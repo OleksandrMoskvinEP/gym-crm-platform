@@ -1,6 +1,7 @@
 package com.trainersworkloadservice.service.impl;
 
 import com.trainersworkloadservice.model.dto.ActionType;
+import com.trainersworkloadservice.model.dto.DecreaseWorkloadParams;
 import com.trainersworkloadservice.model.dto.IncreaseWorkloadParams;
 import com.trainersworkloadservice.model.dto.MonthlyWorkloadRequest;
 import com.trainersworkloadservice.model.dto.MonthlyWorkloadResponse;
@@ -40,12 +41,12 @@ class WorkloadServiceImplTest {
 
         service.calculateAndStoreWorkload(request);
 
-        verify(helper).decreaseWorkload("first_last", (short) 2025, (short) 7, 5L);
+        verify(helper).decreaseWorkload(getDecreaseParams());
     }
 
     @Test
     void shouldRetrieveAndGetMonthlyWorkload_MapHelperValueToResponse() {
-        MonthlyWorkloadRequest request = new MonthlyWorkloadRequest("username", (short) 7, (short) 2025);
+        MonthlyWorkloadRequest request = getMonthlyWorkloadRequest();
 
         when(helper.getMonthlyWorkload("username", (short) 2025, (short) 7)).thenReturn(5L);
 
@@ -70,6 +71,14 @@ class WorkloadServiceImplTest {
         );
     }
 
+    private DecreaseWorkloadParams getDecreaseParams() {
+        return new DecreaseWorkloadParams("first_last",
+                2025,
+                7,
+                5L
+        );
+    }
+
     private static WorkloadEventRequest getAddEventRequest() {
         return new WorkloadEventRequest(
                 "first_last", "first", "last", true,
@@ -84,5 +93,9 @@ class WorkloadServiceImplTest {
                 LocalDate.of(2025, 7, 15), 5L,
                 ActionType.DELETE
         );
+    }
+
+    private static MonthlyWorkloadRequest getMonthlyWorkloadRequest() {
+        return new MonthlyWorkloadRequest("username", (short) 7, (short) 2025);
     }
 }

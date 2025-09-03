@@ -3,6 +3,7 @@ package com.trainersworkloadservice.service.util;
 import com.trainersworkloadservice.model.MonthEntity;
 import com.trainersworkloadservice.model.TrainerEntity;
 import com.trainersworkloadservice.model.YearEntity;
+import com.trainersworkloadservice.model.dto.DecreaseWorkloadParams;
 import com.trainersworkloadservice.model.dto.IncreaseWorkloadParams;
 import com.trainersworkloadservice.repository.TrainerRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,22 +31,20 @@ public class WorkloadChangePersistor {
         repository.save(trainer);
     }
 
-    public void decreaseWorkload(String username,
-                                 int workYear,
-                                 int monthOfYear,
-                                 long hoursToRemove) {
-        if (hoursToRemove == 0) {
+    public void decreaseWorkload(DecreaseWorkloadParams params) {
+        if (params.hoursToRemove() == 0) {
             return;
         }
-        if (hoursToRemove < 0) {
+
+        if (params.hoursToRemove() < 0) {
             throw new IllegalArgumentException("hoursToRemove must be > 0");
         }
 
-        TrainerEntity trainer = getTrainerOrThrow(username);
-        YearEntity year = getYearOrThrow(trainer, workYear);
-        MonthEntity month = getMonthOrThrow(year, monthOfYear);
+        TrainerEntity trainer = getTrainerOrThrow(params.username());
+        YearEntity year = getYearOrThrow(trainer, params.workYear());
+        MonthEntity month = getMonthOrThrow(year, params.monthOfYear());
 
-        long newHours = month.getHours() - hoursToRemove;
+        long newHours = month.getHours() - params.hoursToRemove();
 
         if (newHours > 0) {
             month.setHours(newHours);
