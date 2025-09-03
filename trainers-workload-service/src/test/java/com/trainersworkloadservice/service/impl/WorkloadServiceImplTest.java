@@ -1,6 +1,7 @@
 package com.trainersworkloadservice.service.impl;
 
 import com.trainersworkloadservice.model.dto.ActionType;
+import com.trainersworkloadservice.model.dto.IncreaseWorkloadParams;
 import com.trainersworkloadservice.model.dto.MonthlyWorkloadRequest;
 import com.trainersworkloadservice.model.dto.MonthlyWorkloadResponse;
 import com.trainersworkloadservice.model.dto.WorkloadEventRequest;
@@ -26,24 +27,16 @@ class WorkloadServiceImplTest {
 
     @Test
     void shouldCalculateAndStoreWorkload_routeAddToHelper() {
-        WorkloadEventRequest request = new WorkloadEventRequest(
-                "first_last", "first", "last", true,
-                LocalDate.of(2025, 7, 15), 2L,
-                ActionType.ADD
-        );
+        WorkloadEventRequest request = getAddEventRequest();
 
         service.calculateAndStoreWorkload(request);
 
-        verify(helper).increaseWorkload("first_last", "first", "last", true, (short) 2025, (short) 7, 2L);
+        verify(helper).increaseWorkload(getIncreaseParams());
     }
 
     @Test
     void shouldCalculateAndStoreWorkload_routeDeleteToHelper() {
-        WorkloadEventRequest request = new WorkloadEventRequest(
-                "first_last", "first", "last", true,
-                LocalDate.of(2025, 7, 15), 5L,
-                ActionType.DELETE
-        );
+        WorkloadEventRequest request = getDeleteEventRequest();
 
         service.calculateAndStoreWorkload(request);
 
@@ -64,5 +57,32 @@ class WorkloadServiceImplTest {
         assertThat(actual.month()).isEqualTo((short) 7);
         assertThat(actual.totalHours()).isEqualTo(5L);
         assertThat(actual.totalMinutes()).isEqualTo(300L);
+    }
+
+    private IncreaseWorkloadParams getIncreaseParams() {
+        return new IncreaseWorkloadParams("first_last",
+                "first",
+                "last",
+                true,
+                (short) 2025,
+                (short) 7,
+                2L
+        );
+    }
+
+    private static WorkloadEventRequest getAddEventRequest() {
+        return new WorkloadEventRequest(
+                "first_last", "first", "last", true,
+                LocalDate.of(2025, 7, 15), 2L,
+                ActionType.ADD
+        );
+    }
+
+    private static WorkloadEventRequest getDeleteEventRequest() {
+        return new WorkloadEventRequest(
+                "first_last", "first", "last", true,
+                LocalDate.of(2025, 7, 15), 5L,
+                ActionType.DELETE
+        );
     }
 }

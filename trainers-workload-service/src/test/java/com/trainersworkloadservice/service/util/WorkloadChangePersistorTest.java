@@ -3,6 +3,7 @@ package com.trainersworkloadservice.service.util;
 import com.trainersworkloadservice.model.MonthEntity;
 import com.trainersworkloadservice.model.TrainerEntity;
 import com.trainersworkloadservice.model.YearEntity;
+import com.trainersworkloadservice.model.dto.IncreaseWorkloadParams;
 import com.trainersworkloadservice.repository.TrainerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,7 +46,7 @@ class WorkloadChangePersistorTest {
 
         when(trainerRepository.findWithWorkloadByUsername("first_last")).thenReturn(Optional.of(existingTrainer));
 
-        helper.increaseWorkload("first_last", "first", "last", true, (short) 2025, (short) 7, 3L);
+        helper.increaseWorkload(getIncreaseParams());
         verify(trainerRepository).save(captor.capture());
 
         TrainerEntity saved = captor.getValue();
@@ -54,7 +55,7 @@ class WorkloadChangePersistorTest {
 
         MonthEntity m = y.getMonths().stream().filter(v -> v.getMonthOfYear() == 7).findFirst().orElse(null);
         assertThat(m).isNotNull();
-        assertThat(m.getHours()).isEqualTo(3L);
+        assertThat(m.getHours()).isEqualTo(2L);
     }
 
     @Test
@@ -67,7 +68,7 @@ class WorkloadChangePersistorTest {
 
         when(trainerRepository.findWithWorkloadByUsername("first_last")).thenReturn(Optional.of(existingTrainer));
 
-        helper.increaseWorkload("first_last", "first", "last", true, (short) 2025, (short) 7, 2L);
+        helper.increaseWorkload(getIncreaseParams());
 
         verify(trainerRepository).save(existingTrainer);
         assertThat(month.getHours()).isEqualTo(7L);
@@ -75,8 +76,8 @@ class WorkloadChangePersistorTest {
 
     @Test
     void shouldThrowsOnNegativeDelta() {
-        assertThrows(IllegalArgumentException.class, () ->
-                helper.increaseWorkload("first_last", "first", "last", true, (short) 2025, (short) 7, -2L)
+        assertThrows(IllegalArgumentException.class,
+                () -> helper.increaseWorkload(getWrongIncreaseParams())
         );
         verifyNoInteractions(trainerRepository);
     }
@@ -109,5 +110,27 @@ class WorkloadChangePersistorTest {
         Long actual = helper.getMonthlyWorkload("username", 2025, 7);
 
         assertThat(actual).isEqualTo(10L);
+    }
+
+    private IncreaseWorkloadParams getIncreaseParams() {
+        return new IncreaseWorkloadParams("first_last",
+                "first",
+                "last",
+                true,
+                (short) 2025,
+                (short) 7,
+                2L
+        );
+    }
+
+    private IncreaseWorkloadParams getWrongIncreaseParams() {
+        return new IncreaseWorkloadParams("first_last",
+                "first",
+                "last",
+                true,
+                (short) 2025,
+                (short) 7,
+                -2L
+        );
     }
 }

@@ -1,6 +1,7 @@
 package com.trainersworkloadservice.service.impl;
 
 import com.trainersworkloadservice.model.dto.ActionType;
+import com.trainersworkloadservice.model.dto.IncreaseWorkloadParams;
 import com.trainersworkloadservice.model.dto.MonthlyWorkloadRequest;
 import com.trainersworkloadservice.model.dto.MonthlyWorkloadResponse;
 import com.trainersworkloadservice.model.dto.WorkloadEventRequest;
@@ -23,12 +24,12 @@ public class WorkloadServiceImpl implements WorkloadService {
         long delta = req.trainingDuration();
 
         if (req.actionType() == ActionType.ADD) {
-            workloadChangePersistor.increaseWorkload(
+            workloadChangePersistor.increaseWorkload(new IncreaseWorkloadParams(
                     req.username(),
                     req.firstName(),
                     req.lastName(),
                     req.isActive(),
-                    year, month, delta
+                    year, month, delta)
             );
         } else if (req.actionType() == ActionType.DELETE) {
             workloadChangePersistor.decreaseWorkload(

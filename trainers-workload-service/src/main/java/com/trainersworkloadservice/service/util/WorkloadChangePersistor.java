@@ -3,6 +3,7 @@ package com.trainersworkloadservice.service.util;
 import com.trainersworkloadservice.model.MonthEntity;
 import com.trainersworkloadservice.model.TrainerEntity;
 import com.trainersworkloadservice.model.YearEntity;
+import com.trainersworkloadservice.model.dto.IncreaseWorkloadParams;
 import com.trainersworkloadservice.repository.TrainerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -10,29 +11,23 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class WorkloadChangePersistor {
-    private final TrainerRepository trainerRepo;
+    private final TrainerRepository repository;
 
-    public void increaseWorkload(String username,
-                                       String firstName,
-                                       String lastName,
-                                       boolean active,
-                                       int workYear,
-                                       int monthOfYear,
-                                       long hoursDelta) {
-        if (hoursDelta == 0) {
+    public void increaseWorkload(IncreaseWorkloadParams params) {
+        if (params.hoursDelta() == 0) {
             return;
         }
-        if (hoursDelta < 0) {
+        if (params.hoursDelta() < 0) {
             throw new IllegalArgumentException("training duration must be > 0");
         }
 
-        TrainerEntity trainer = getOrCreateTrainer(username, firstName, lastName, active);
-        YearEntity year = getOrCreateYear(trainer, workYear);
-        MonthEntity month = getOrCreateMonth(year, monthOfYear);
+        TrainerEntity trainer = getOrCreateTrainer(params.username(), params.firstName(), params.lastName(), params.active());
+        YearEntity year = getOrCreateYear(trainer, params.workYear());
+        MonthEntity month = getOrCreateMonth(year, params.monthOfYear());
 
-        month.setHours(safeAddNonNegative(month.getHours(), hoursDelta));
+        month.setHours(safeAddNonNegative(month.getHours(), params.hoursDelta()));
 
-        trainerRepo.save(trainer);
+        repository.save(trainer);
     }
 
     public void decreaseWorkload(String username,
@@ -54,7 +49,7 @@ public class WorkloadChangePersistor {
 
         if (newHours > 0) {
             month.setHours(newHours);
-            trainerRepo.save(trainer);
+            repository.save(trainer);
 
             return;
         }
@@ -65,7 +60,7 @@ public class WorkloadChangePersistor {
             trainer.removeYear(year);
         }
 
-        trainerRepo.save(trainer);
+        repository.save(trainer);
     }
 
     public Long getMonthlyWorkload(String username, int workYear, int monthOfYear) {
@@ -80,7 +75,7 @@ public class WorkloadChangePersistor {
                                              String firstName,
                                              String lastName,
                                              boolean active) {
-        return trainerRepo.findWithWorkloadByUsername(username)
+        return repository.findWithWorkloadByUsername(username)
                 .orElseGet(() -> TrainerEntity.builder()
                         .username(username)
                         .firstName(firstName)
@@ -123,7 +118,7 @@ public class WorkloadChangePersistor {
     }
 
     private TrainerEntity getTrainerOrThrow(String username) {
-        return trainerRepo.findWithWorkloadByUsername(username)
+        return repository.findWithWorkloadByUsername(username)
                 .orElseThrow(() -> new IllegalStateException("Trainer not found: " + username));
     }
 
