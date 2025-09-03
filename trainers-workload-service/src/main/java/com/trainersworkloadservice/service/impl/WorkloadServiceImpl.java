@@ -5,7 +5,7 @@ import com.trainersworkloadservice.model.dto.MonthlyWorkloadRequest;
 import com.trainersworkloadservice.model.dto.MonthlyWorkloadResponse;
 import com.trainersworkloadservice.model.dto.WorkloadEventRequest;
 import com.trainersworkloadservice.service.WorkloadService;
-import com.trainersworkloadservice.service.util.WorkloadCalculateHelper;
+import com.trainersworkloadservice.service.util.WorkloadChangePersistor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class WorkloadServiceImpl implements WorkloadService {
-    private final WorkloadCalculateHelper workloadCalculateHelper;
+    private final WorkloadChangePersistor workloadChangePersistor;
 
     @Override
     @Transactional
@@ -23,7 +23,7 @@ public class WorkloadServiceImpl implements WorkloadService {
         long delta = req.trainingDuration();
 
         if (req.actionType() == ActionType.ADD) {
-            workloadCalculateHelper.addOrIncrementWorkload(
+            workloadChangePersistor.increaseWorkload(
                     req.username(),
                     req.firstName(),
                     req.lastName(),
@@ -31,7 +31,7 @@ public class WorkloadServiceImpl implements WorkloadService {
                     year, month, delta
             );
         } else if (req.actionType() == ActionType.DELETE) {
-            workloadCalculateHelper.deleteOrDecrementWorkload(
+            workloadChangePersistor.decreaseWorkload(
                     req.username(),
                     year, month, delta
             );
@@ -42,7 +42,7 @@ public class WorkloadServiceImpl implements WorkloadService {
 
     @Override
     public MonthlyWorkloadResponse getMonthlyWorkload(MonthlyWorkloadRequest request) {
-        Long workHours = workloadCalculateHelper.getMonthlyWorkload(
+        Long workHours = workloadChangePersistor.getMonthlyWorkload(
                 request.username(),
                 request.year(),
                 request.month()

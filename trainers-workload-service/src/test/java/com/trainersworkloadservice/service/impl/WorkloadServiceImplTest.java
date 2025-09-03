@@ -4,7 +4,7 @@ import com.trainersworkloadservice.model.dto.ActionType;
 import com.trainersworkloadservice.model.dto.MonthlyWorkloadRequest;
 import com.trainersworkloadservice.model.dto.MonthlyWorkloadResponse;
 import com.trainersworkloadservice.model.dto.WorkloadEventRequest;
-import com.trainersworkloadservice.service.util.WorkloadCalculateHelper;
+import com.trainersworkloadservice.service.util.WorkloadChangePersistor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class WorkloadServiceImplTest {
     @Mock
-    private WorkloadCalculateHelper helper;
+    private WorkloadChangePersistor helper;
     @InjectMocks
     private WorkloadServiceImpl service;
 
@@ -34,7 +34,7 @@ class WorkloadServiceImplTest {
 
         service.calculateAndStoreWorkload(request);
 
-        verify(helper).addOrIncrementWorkload("first_last", "first", "last", true, (short) 2025, (short) 7, 2L);
+        verify(helper).increaseWorkload("first_last", "first", "last", true, (short) 2025, (short) 7, 2L);
     }
 
     @Test
@@ -47,7 +47,7 @@ class WorkloadServiceImplTest {
 
         service.calculateAndStoreWorkload(request);
 
-        verify(helper).deleteOrDecrementWorkload("first_last", (short) 2025, (short) 7, 5L);
+        verify(helper).decreaseWorkload("first_last", (short) 2025, (short) 7, 5L);
     }
 
     @Test

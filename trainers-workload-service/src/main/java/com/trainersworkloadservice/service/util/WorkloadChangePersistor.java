@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class WorkloadCalculateHelper {
+public class WorkloadChangePersistor {
     private final TrainerRepository trainerRepo;
 
-    public void addOrIncrementWorkload(String username,
+    public void increaseWorkload(String username,
                                        String firstName,
                                        String lastName,
                                        boolean active,
@@ -35,10 +35,10 @@ public class WorkloadCalculateHelper {
         trainerRepo.save(trainer);
     }
 
-    public void deleteOrDecrementWorkload(String username,
-                                          int workYear,
-                                          int monthOfYear,
-                                          long hoursToRemove) {
+    public void decreaseWorkload(String username,
+                                 int workYear,
+                                 int monthOfYear,
+                                 long hoursToRemove) {
         if (hoursToRemove == 0) {
             return;
         }

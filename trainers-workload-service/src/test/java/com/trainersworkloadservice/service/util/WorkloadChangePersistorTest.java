@@ -21,13 +21,13 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class WorkloadCalculateHelperTest {
+class WorkloadChangePersistorTest {
     private TrainerEntity existingTrainer;
 
     @Mock
     private TrainerRepository trainerRepository;
     @InjectMocks
-    private WorkloadCalculateHelper helper;
+    private WorkloadChangePersistor helper;
 
     @BeforeEach
     void setUp() {
@@ -45,7 +45,7 @@ class WorkloadCalculateHelperTest {
 
         when(trainerRepository.findWithWorkloadByUsername("first_last")).thenReturn(Optional.of(existingTrainer));
 
-        helper.addOrIncrementWorkload("first_last", "first", "last", true, (short) 2025, (short) 7, 3L);
+        helper.increaseWorkload("first_last", "first", "last", true, (short) 2025, (short) 7, 3L);
         verify(trainerRepository).save(captor.capture());
 
         TrainerEntity saved = captor.getValue();
@@ -67,7 +67,7 @@ class WorkloadCalculateHelperTest {
 
         when(trainerRepository.findWithWorkloadByUsername("first_last")).thenReturn(Optional.of(existingTrainer));
 
-        helper.addOrIncrementWorkload("first_last", "first", "last", true, (short) 2025, (short) 7, 2L);
+        helper.increaseWorkload("first_last", "first", "last", true, (short) 2025, (short) 7, 2L);
 
         verify(trainerRepository).save(existingTrainer);
         assertThat(month.getHours()).isEqualTo(7L);
@@ -76,7 +76,7 @@ class WorkloadCalculateHelperTest {
     @Test
     void shouldThrowsOnNegativeDelta() {
         assertThrows(IllegalArgumentException.class, () ->
-                helper.addOrIncrementWorkload("first_last", "first", "last", true, (short) 2025, (short) 7, -2L)
+                helper.increaseWorkload("first_last", "first", "last", true, (short) 2025, (short) 7, -2L)
         );
         verifyNoInteractions(trainerRepository);
     }
@@ -90,7 +90,7 @@ class WorkloadCalculateHelperTest {
 
         when(trainerRepository.findWithWorkloadByUsername("username")).thenReturn(Optional.of(existingTrainer));
 
-        helper.deleteOrDecrementWorkload("username", 2025, 7, 3L);
+        helper.decreaseWorkload("username", 2025, 7, 3L);
 
         verify(trainerRepository).save(existingTrainer);
         assertThat(year.getMonths()).isNotEmpty();
