@@ -89,16 +89,16 @@ class TrainerRepositoryTest {
                 .build();
 
         YearEntity year = YearEntity.builder()
-                .workYear((short) 2025)
+                .workYear(2025)
                 .months(new LinkedHashSet<>())
                 .build();
 
         MonthEntity jan = MonthEntity.builder()
-                .monthOfYear((short) 1)
+                .monthOfYear(1)
                 .hours(10L)
                 .build();
         MonthEntity feb = MonthEntity.builder()
-                .monthOfYear((short) 2)
+                .monthOfYear(2)
                 .hours(15L)
                 .build();
 

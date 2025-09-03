@@ -38,7 +38,7 @@ public class MonthEntity {
     @Min(1)
     @Max(12)
     @Column(nullable = false)
-    private Short monthOfYear;
+    private Integer monthOfYear;
 
     @NotNull
     @Column(nullable = false)

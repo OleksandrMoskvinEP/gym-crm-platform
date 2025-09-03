@@ -16,8 +16,8 @@ public class WorkloadCalculateHelper {
                                        String firstName,
                                        String lastName,
                                        boolean active,
-                                       short workYear,
-                                       short monthOfYear,
+                                       int workYear,
+                                       int monthOfYear,
                                        long hoursDelta) {
         if (hoursDelta == 0) {
             return;
@@ -36,8 +36,8 @@ public class WorkloadCalculateHelper {
     }
 
     public void deleteOrDecrementWorkload(String username,
-                                          short workYear,
-                                          short monthOfYear,
+                                          int workYear,
+                                          int monthOfYear,
                                           long hoursToRemove) {
         if (hoursToRemove == 0) {
             return;
@@ -68,7 +68,7 @@ public class WorkloadCalculateHelper {
         trainerRepo.save(trainer);
     }
 
-    public Long getMonthlyWorkload(String username, short workYear, short monthOfYear) {
+    public Long getMonthlyWorkload(String username, int workYear, int monthOfYear) {
         TrainerEntity trainer = getTrainerOrThrow(username);
         YearEntity year = getYearOrThrow(trainer, workYear);
         MonthEntity month = getMonthOrThrow(year, monthOfYear);
@@ -89,14 +89,14 @@ public class WorkloadCalculateHelper {
                         .build());
     }
 
-    private YearEntity getOrCreateYear(TrainerEntity trainer, short workYear) {
+    private YearEntity getOrCreateYear(TrainerEntity trainer, int workYear) {
         return trainer.getYears().stream()
                 .filter(year -> year.getWorkYear() == workYear)
                 .findFirst()
                 .orElseGet(() -> buildYearEntity(trainer, workYear));
     }
 
-    private static YearEntity buildYearEntity(TrainerEntity trainer, short workYear) {
+    private static YearEntity buildYearEntity(TrainerEntity trainer, int workYear) {
         YearEntity yearEntity = YearEntity.builder()
                 .workYear(workYear)
                 .build();
@@ -105,14 +105,14 @@ public class WorkloadCalculateHelper {
         return yearEntity;
     }
 
-    private MonthEntity getOrCreateMonth(YearEntity year, short monthOfYear) {
+    private MonthEntity getOrCreateMonth(YearEntity year, int monthOfYear) {
         return year.getMonths().stream()
                 .filter(month -> month.getMonthOfYear() == monthOfYear)
                 .findFirst()
                 .orElseGet(() -> buildMonthEntity(year, monthOfYear));
     }
 
-    private static MonthEntity buildMonthEntity(YearEntity year, short monthOfYear) {
+    private static MonthEntity buildMonthEntity(YearEntity year, int monthOfYear) {
         MonthEntity monthEntity = MonthEntity.builder()
                 .monthOfYear(monthOfYear)
                 .hours(0L)
@@ -127,14 +127,14 @@ public class WorkloadCalculateHelper {
                 .orElseThrow(() -> new IllegalStateException("Trainer not found: " + username));
     }
 
-    private YearEntity getYearOrThrow(TrainerEntity trainer, short workYear) {
+    private YearEntity getYearOrThrow(TrainerEntity trainer, int workYear) {
         return trainer.getYears().stream()
                 .filter(year -> year.getWorkYear() == workYear)
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("Year not found: " + workYear));
     }
 
-    private MonthEntity getMonthOrThrow(YearEntity year, short monthOfYear) {
+    private MonthEntity getMonthOrThrow(YearEntity year, int monthOfYear) {
         return year.getMonths().stream()
                 .filter(month -> month.getMonthOfYear() == monthOfYear)
                 .findFirst()

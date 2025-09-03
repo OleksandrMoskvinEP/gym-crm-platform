@@ -59,8 +59,8 @@ class WorkloadCalculateHelperTest {
 
     @Test
     void shouldIncrementHours_whenMonthExists() {
-        YearEntity year = YearEntity.builder().workYear((short) 2025).build();
-        MonthEntity month = MonthEntity.builder().monthOfYear((short) 7).hours(5L).build();
+        YearEntity year = YearEntity.builder().workYear(2025).build();
+        MonthEntity month = MonthEntity.builder().monthOfYear(7).hours(5L).build();
         year.addMonth(month);
 
         existingTrainer.addYear(year);
@@ -83,14 +83,14 @@ class WorkloadCalculateHelperTest {
 
     @Test
     void shouldDoNothing_whenHoursZero() {
-        YearEntity year = YearEntity.builder().workYear((short) 2025).build();
-        MonthEntity month = MonthEntity.builder().monthOfYear((short) 7).hours(3L).build();
+        YearEntity year = YearEntity.builder().workYear(2025).build();
+        MonthEntity month = MonthEntity.builder().monthOfYear(7).hours(3L).build();
         year.addMonth(month);
         existingTrainer.addYear(year);
 
         when(trainerRepository.findWithWorkloadByUsername("username")).thenReturn(Optional.of(existingTrainer));
 
-        helper.deleteOrDecrementWorkload("username", (short) 2025, (short) 7, 3L);
+        helper.deleteOrDecrementWorkload("username", 2025, 7, 3L);
 
         verify(trainerRepository).save(existingTrainer);
         assertThat(year.getMonths()).isNotEmpty();
@@ -99,14 +99,14 @@ class WorkloadCalculateHelperTest {
 
     @Test
     void shouldReturnHours_whenPresent() {
-        YearEntity year = YearEntity.builder().workYear((short) 2025).build();
-        MonthEntity month = MonthEntity.builder().monthOfYear((short) 7).hours(10L).build();
+        YearEntity year = YearEntity.builder().workYear(2025).build();
+        MonthEntity month = MonthEntity.builder().monthOfYear(7).hours(10L).build();
         year.addMonth(month);
         existingTrainer.addYear(year);
 
         when(trainerRepository.findWithWorkloadByUsername("username")).thenReturn(Optional.of(existingTrainer));
 
-        Long actual = helper.getMonthlyWorkload("username", (short) 2025, (short) 7);
+        Long actual = helper.getMonthlyWorkload("username", 2025, 7);
 
         assertThat(actual).isEqualTo(10L);
     }

@@ -18,8 +18,8 @@ public class WorkloadServiceImpl implements WorkloadService {
     @Override
     @Transactional
     public void calculateAndStoreWorkload(WorkloadEventRequest req) {
-        short year = (short) req.trainingDate().getYear();
-        short month = (short) req.trainingDate().getMonthValue();
+        int year = req.trainingDate().getYear();
+        int month = req.trainingDate().getMonthValue();
         long delta = req.trainingDuration();
 
         if (req.actionType() == ActionType.ADD) {
