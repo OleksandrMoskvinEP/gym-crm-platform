@@ -14,7 +14,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.LinkedHashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -45,21 +47,19 @@ class WorkloadChangePersistorTest {
     }
 
     @Test
-    void shouldCreateYearMonthAndAddsHours_whenNotExists() {
-        ArgumentCaptor<TrainerEntity> captor = ArgumentCaptor.forClass(TrainerEntity.class);
+    void shouldCreateTrainerYearMonthAndAddsHours_whenNotExists() {
+        var captor = ArgumentCaptor.forClass(TrainerEntity.class);
+        TrainerEntity expectedTrainer = buildTrainerWithYearAndMonth();
 
-        when(trainerRepository.findWithWorkloadByUsername("first_last")).thenReturn(Optional.of(existingTrainer));
+        when(trainerRepository.findWithWorkloadByUsername("first_last"))
+                .thenReturn(Optional.of(existingTrainer));
 
         helper.increaseWorkload(getIncreaseParams());
+
         verify(trainerRepository).save(captor.capture());
-
         TrainerEntity saved = captor.getValue();
-        YearEntity y = saved.getYears().stream().filter(v -> v.getWorkYear() == 2025).findFirst().orElse(null);
-        assertThat(y).isNotNull();
 
-        MonthEntity m = y.getMonths().stream().filter(v -> v.getMonthOfYear() == 7).findFirst().orElse(null);
-        assertThat(m).isNotNull();
-        assertThat(m.getHours()).isEqualTo(2L);
+        assertThat(saved).isEqualTo(expectedTrainer);
     }
 
     @Test
@@ -78,8 +78,8 @@ class WorkloadChangePersistorTest {
     @Test
     void shouldThrowsOnNegativeDelta() {
         assertThrows(IllegalArgumentException.class,
-                () -> helper.increaseWorkload(getWrongIncreaseParams())
-        );
+                () -> helper.increaseWorkload(getWrongIncreaseParams()));
+
         verifyNoInteractions(trainerRepository);
     }
 
@@ -135,5 +135,25 @@ class WorkloadChangePersistorTest {
                 7,
                 0L
         );
+    }
+
+    private TrainerEntity buildTrainerWithYearAndMonth() {
+        MonthEntity month = MonthEntity.builder()
+                .monthOfYear(7)
+                .hours(5L)
+                .build();
+
+        YearEntity year = YearEntity.builder()
+                .workYear(2025)
+                .months(new LinkedHashSet<>(Set.of(month)))
+                .build();
+
+        return TrainerEntity.builder()
+                .username("first_last")
+                .firstName("first")
+                .lastName("last")
+                .isActive(true)
+                .years(new LinkedHashSet<>(Set.of(year)))
+                .build();
     }
 }
