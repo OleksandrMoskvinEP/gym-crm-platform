@@ -19,8 +19,12 @@ public class WorkloadCalculateHelper {
                                        short workYear,
                                        short monthOfYear,
                                        long hoursDelta) {
-        if (hoursDelta == 0) return;
-        if (hoursDelta < 0) throw new IllegalArgumentException("training duration must be > 0");
+        if (hoursDelta == 0) {
+            return;
+        }
+        if (hoursDelta < 0) {
+            throw new IllegalArgumentException("training duration must be > 0");
+        }
 
         TrainerEntity trainer = getOrCreateTrainer(username, firstName, lastName, active);
         YearEntity year = getOrCreateYear(trainer, workYear);
@@ -35,8 +39,12 @@ public class WorkloadCalculateHelper {
                                           short workYear,
                                           short monthOfYear,
                                           long hoursToRemove) {
-        if (hoursToRemove == 0) return;
-        if (hoursToRemove < 0) throw new IllegalArgumentException("hoursToRemove must be > 0");
+        if (hoursToRemove == 0) {
+            return;
+        }
+        if (hoursToRemove < 0) {
+            throw new IllegalArgumentException("hoursToRemove must be > 0");
+        }
 
         TrainerEntity trainer = getTrainerOrThrow(username);
         YearEntity year = getYearOrThrow(trainer, workYear);
@@ -46,13 +54,17 @@ public class WorkloadCalculateHelper {
 
         if (newHours > 0) {
             month.setHours(newHours);
-        } else {
-            year.removeMonth(month);
+            trainerRepo.save(trainer);
 
-            if (year.getMonths().isEmpty()) {
-                trainer.removeYear(year);
-            }
+            return;
         }
+
+        year.removeMonth(month);
+
+        if (year.getMonths().isEmpty()) {
+            trainer.removeYear(year);
+        }
+
         trainerRepo.save(trainer);
     }
 
@@ -81,29 +93,33 @@ public class WorkloadCalculateHelper {
         return trainer.getYears().stream()
                 .filter(year -> year.getWorkYear() == workYear)
                 .findFirst()
-                .orElseGet(() -> {
-                    YearEntity yearEntity = YearEntity.builder()
-                            .workYear(workYear)
-                            .build();
-                    trainer.addYear(yearEntity);
+                .orElseGet(() -> buildYearEntity(trainer, workYear));
+    }
 
-                    return yearEntity;
-                });
+    private static YearEntity buildYearEntity(TrainerEntity trainer, short workYear) {
+        YearEntity yearEntity = YearEntity.builder()
+                .workYear(workYear)
+                .build();
+        trainer.addYear(yearEntity);
+
+        return yearEntity;
     }
 
     private MonthEntity getOrCreateMonth(YearEntity year, short monthOfYear) {
         return year.getMonths().stream()
                 .filter(month -> month.getMonthOfYear() == monthOfYear)
                 .findFirst()
-                .orElseGet(() -> {
-                    MonthEntity monthEntity = MonthEntity.builder()
-                            .monthOfYear(monthOfYear)
-                            .hours(0L)
-                            .build();
-                    year.addMonth(monthEntity);
+                .orElseGet(() -> buildMonthEntity(year, monthOfYear));
+    }
 
-                    return monthEntity;
-                });
+    private static MonthEntity buildMonthEntity(YearEntity year, short monthOfYear) {
+        MonthEntity monthEntity = MonthEntity.builder()
+                .monthOfYear(monthOfYear)
+                .hours(0L)
+                .build();
+        year.addMonth(monthEntity);
+
+        return monthEntity;
     }
 
     private TrainerEntity getTrainerOrThrow(String username) {
