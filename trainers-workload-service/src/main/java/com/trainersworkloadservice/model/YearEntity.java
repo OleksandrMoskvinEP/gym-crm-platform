@@ -41,8 +41,9 @@ public class YearEntity {
 
     @NotNull
     @Column(nullable = false)
-    private Short workYear;
+    private Integer workYear;
 
+    @Builder.Default
     @OneToMany(mappedBy = "year", cascade = CascadeType.ALL, orphanRemoval = true, fetch = LAZY)
     @OrderBy("monthOfYear ASC")
     private Set<MonthEntity> months = new LinkedHashSet<>();

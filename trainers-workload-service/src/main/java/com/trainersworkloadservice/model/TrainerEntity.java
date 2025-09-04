@@ -37,6 +37,7 @@ public class TrainerEntity {
     private String username;
     private Boolean isActive;
 
+    @Builder.Default
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = LAZY)
     private Set<YearEntity> years = new LinkedHashSet<>();
 

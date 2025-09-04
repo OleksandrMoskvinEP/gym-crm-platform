@@ -25,23 +25,23 @@ class MonthRepositoryTest {
     void findByYearIdAndMonth_returnsMonth() {
         YearEntity year = prepareTrainerYearWithMonths();
 
-        Optional<MonthEntity> found = monthRepository.findByYearIdAndMonthOfYear(year.getId(), (short) 5);
+        Optional<MonthEntity> found = monthRepository.findByYearIdAndMonthOfYear(year.getId(), 5);
 
         assertThat(found).isPresent();
-        assertThat(found.get().getMonthOfYear()).isEqualTo((short) 5);
+        assertThat(found.get().getMonthOfYear()).isEqualTo(5);
         assertThat(found.get().getYear().getId()).isEqualTo(year.getId());
     }
 
     @Test
     void deleteByYearIdAndMonth_deletesCorrectly() {
         YearEntity year = prepareTrainerYearWithMonths();
-        int deleted = monthRepository.deleteByYearIdAndMonthOfYear(year.getId(), (short) 6);
+        int deleted = monthRepository.deleteByYearIdAndMonthOfYear(year.getId(), 6);
 
         entityManager.flush();
 
         assertThat(deleted).isEqualTo(1);
-        assertThat(monthRepository.findByYearIdAndMonthOfYear(year.getId(), (short) 6)).isNotPresent();
-        assertThat(monthRepository.findByYearIdAndMonthOfYear(year.getId(), (short) 5)).isPresent();
+        assertThat(monthRepository.findByYearIdAndMonthOfYear(year.getId(), 6)).isNotPresent();
+        assertThat(monthRepository.findByYearIdAndMonthOfYear(year.getId(), 5)).isPresent();
     }
 
     private YearEntity prepareTrainerYearWithMonths() {
@@ -54,16 +54,16 @@ class MonthRepositoryTest {
                 .build();
 
         YearEntity year = YearEntity.builder()
-                .workYear((short) 2025)
+                .workYear(2025)
                 .months(new LinkedHashSet<>())
                 .build();
 
         MonthEntity may = MonthEntity.builder()
-                .monthOfYear((short) 5)
+                .monthOfYear(5)
                 .hours(12L)
                 .build();
         MonthEntity jun = MonthEntity.builder()
-                .monthOfYear((short) 6)
+                .monthOfYear(6)
                 .hours(8L)
                 .build();
 

@@ -11,6 +11,7 @@ import java.util.LinkedHashSet;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 class YearRepositoryTest {
@@ -27,9 +28,9 @@ class YearRepositoryTest {
 
         entityManager.persistAndFlush(trainer);
 
-        Optional<YearEntity> found = yearRepository.findByTrainerIdAndWorkYear(trainer.getId(), (short) 2024);
+        Optional<YearEntity> found = yearRepository.findByTrainerIdAndWorkYear(trainer.getId(), 2024);
         assertThat(found).isPresent();
-        assertThat(found.get().getWorkYear()).isEqualTo((short) 2024);
+        assertEquals(2024, found.get().getWorkYear());
         assertThat(found.get().getTrainer().getId()).isEqualTo(trainer.getId());
     }
 
@@ -40,7 +41,7 @@ class YearRepositoryTest {
 
         entityManager.persistAndFlush(trainer);
 
-        boolean actual = yearRepository.existsByTrainerIdAndWorkYear(trainer.getId(), (short) 2023);
+        boolean actual = yearRepository.existsByTrainerIdAndWorkYear(trainer.getId(), 2023);
 
         assertThat(actual).isTrue();
     }
@@ -52,14 +53,14 @@ class YearRepositoryTest {
 
         entityManager.persistAndFlush(trainer);
 
-        boolean actual = yearRepository.existsByTrainerIdAndWorkYear(trainer.getId(), (short) 2022);
+        boolean actual = yearRepository.existsByTrainerIdAndWorkYear(trainer.getId(), 2022);
 
         assertThat(actual).isFalse();
     }
 
     private static void addYearIntoTrainerEntity(TrainerEntity trainer, int yearValue) {
         YearEntity year = YearEntity.builder()
-                .workYear((short) yearValue)
+                .workYear(yearValue)
                 .months(new LinkedHashSet<>())
                 .build();
         trainer.addYear(year);
