@@ -34,8 +34,10 @@ public class WorkloadServiceImpl implements WorkloadService {
             );
         } else if (req.actionType() == ActionType.DELETE) {
             workloadChangePersistor.decreaseWorkload(new DecreaseWorkloadParams(
-                            req.username(), year, month, delta
-                    )
+                            req.username(),
+                            year,
+                            month,
+                            delta)
             );
         } else {
             throw new IllegalArgumentException("Unknown actionType: " + req.actionType());
@@ -53,6 +55,7 @@ public class WorkloadServiceImpl implements WorkloadService {
         if (workHours != null) {
             return new MonthlyWorkloadResponse(request.username(), request.year(), request.month(), workHours, workHours * 60);
         }
+
         return null;
     }
 }

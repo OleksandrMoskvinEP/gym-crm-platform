@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -48,14 +49,14 @@ class WorkloadServiceImplTest {
     void shouldRetrieveAndGetMonthlyWorkload_MapHelperValueToResponse() {
         MonthlyWorkloadRequest request = getMonthlyWorkloadRequest();
 
-        when(helper.getMonthlyWorkload("username", (short) 2025, (short) 7)).thenReturn(5L);
+        when(helper.getMonthlyWorkload("username", 2025, 7)).thenReturn(5L);
 
         MonthlyWorkloadResponse actual = service.getMonthlyWorkload(request);
 
         assertThat(actual).isNotNull();
         assertThat(actual.username()).isEqualTo("username");
-        assertThat(actual.year()).isEqualTo((short) 2025);
-        assertThat(actual.month()).isEqualTo((short) 7);
+        assertEquals(2025, actual.year());
+        assertEquals(7, actual.month());
         assertThat(actual.totalHours()).isEqualTo(5L);
         assertThat(actual.totalMinutes()).isEqualTo(300L);
     }
@@ -65,8 +66,8 @@ class WorkloadServiceImplTest {
                 "first",
                 "last",
                 true,
-                (short) 2025,
-                (short) 7,
+                2025,
+                7,
                 2L
         );
     }
@@ -96,6 +97,6 @@ class WorkloadServiceImplTest {
     }
 
     private static MonthlyWorkloadRequest getMonthlyWorkloadRequest() {
-        return new MonthlyWorkloadRequest("username", (short) 7, (short) 2025);
+        return new MonthlyWorkloadRequest("username", 7, 2025);
     }
 }
