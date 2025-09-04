@@ -1,0 +1,190 @@
+openapi: 3.0.3
+info:
+  title: Trainers Workload Service API
+  version: 1.0.0
+  description: |
+    Minimal contract for the Trainers Workload microservice.
+    Base URL for local dev: `http://localhost:8081/api/v1`.
+servers:
+  - url: http://localhost:8081/api/v1
+    description: Local development server
+
+paths:
+  /trainers-workload:
+    get:
+      tags: [ Trainers Workload ]
+      summary: Get monthly workload summary for a trainer
+      description: Retrieve trainers current workload
+      operationId: getTrainersWorkload
+      parameters:
+        - in: query
+          name: username
+          required: true
+          schema:
+            type: string
+          description: Unique trainer username
+        - in: query
+          name: year
+          required: true
+          schema:
+            type: integer
+            format: int32
+            minimum: 1970
+          description: Work year (e.g., 2025)
+        - in: query
+          name: month
+          required: true
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 12
+            description: Month of year (1-12)
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MonthlyWorkloadResponse'
+              examples:
+                sample:
+                  value:
+                    username: first_last
+                    year: 2025
+                    month: 7
+                    totalHours: 12
+                    totalMinutes: 720
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Trainer or month not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      tags: [ Trainers Workload ]
+      summary: Create or update monthly workload summary for a trainer
+      description: Create or update trainers workload summary
+      operationId: upsertMonthlyWorkload
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkloadEventRequest'
+            examples:
+              add:
+                value:
+                  username: first_last
+                  firstName: First
+                  lastName: Last
+                  active: true
+                  trainingDate: '2025-07-15'
+                  trainingDuration: 90
+                  actionType: ADD
+              delete:
+                value:
+                  username: first_last
+                  firstName: First
+                  lastName: Last
+                  active: true
+                  trainingDate: '2025-07-15'
+                  trainingDuration: 90
+                  actionType: DELETE
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    MonthlyWorkloadResponse:
+      type: object
+      required: [ username, year, month, totalHours, totalMinutes ]
+      properties:
+        username:
+          type: string
+        year:
+          type: integer
+          format: int32
+        month:
+          type: integer
+          format: int32
+        totalHours:
+          type: integer
+          format: int64
+          minimum: 0
+        totalMinutes:
+          type: integer
+          format: int64
+          minimum: 0
+      description: Mirrors the Java record `MonthlyWorkloadResponse(String username, int year, int month, long totalHours, long totalMinutes)`
+
+    ErrorResponse:
+      type: object
+      required: [ code, message ]
+      properties:
+        code:
+          type: string
+          example: VALIDATION_ERROR
+        message:
+          type: string
+          example: month must be between 1 and 12
+          description: Standard error response structure
+
+    WorkloadEventRequest:
+      type: object
+      required: [ username, year, month, hoursDelta ]
+      properties:
+        username:
+          type: string
+          description: Unique trainer username
+        firstName:
+          type: string
+          description: Optional — used to create trainer if not exists
+        lastName:
+          type: string
+          description: Optional — used to create trainer if not exists
+        active:
+          type: boolean
+          default: true
+          description: Optional — current trainer active flag
+        year:
+          type: integer
+          format: int32
+          minimum: 1970
+        month:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 12
+        hoursDelta:
+          type: integer
+          format: int64
+          minimum: 1
+          description: Positive number of hours to add (idempotent by composite key)
+      description: |
+        Payload to upsert and increase monthly workload. Adjust fields to exactly match the final TZ if it differs.
