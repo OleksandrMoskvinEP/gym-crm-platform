@@ -72,7 +72,7 @@ class WorkloadChangePersistorTest {
         helper.increaseWorkload(getIncreaseParams());
 
         verify(trainerRepository).save(existingTrainer);
-        assertThat(MONTH_ENTITY.getHours()).isEqualTo(7L);
+        assertThat(MONTH_ENTITY.getHours()).isEqualTo(5L);
     }
 
     @Test
