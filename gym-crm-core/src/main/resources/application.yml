@@ -65,3 +65,6 @@ app:
 logging:
   level:
     org.springframework.boot.autoconfigure: WARN
+
+workload:
+  service-url: http://localhost:8081/api/v1/trainers-workload

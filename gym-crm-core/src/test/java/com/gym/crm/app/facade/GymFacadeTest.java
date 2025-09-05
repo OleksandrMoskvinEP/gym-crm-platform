@@ -1,5 +1,6 @@
 package com.gym.crm.app.facade;
 
+import com.gym.crm.app.client.WorkloadServiceClient;
 import com.gym.crm.app.domain.dto.trainee.TraineeCreateRequest;
 import com.gym.crm.app.domain.dto.trainee.TraineeDto;
 import com.gym.crm.app.domain.dto.trainee.TraineeUpdateRequest;
@@ -58,6 +59,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -97,6 +99,8 @@ class GymFacadeTest {
     private TrainingService trainingService;
     @Mock
     private HttpSession session;
+    @Mock
+    private WorkloadServiceClient workloadServiceClient;
     @Spy
     private TraineeMapper traineeMapper = Mappers.getMapper(TraineeMapper.class);
     @Spy
@@ -246,7 +250,7 @@ class GymFacadeTest {
         when(traineeService.getTraineeByUsername("kevin.jackson")).thenReturn(trainee);
         when(trainerService.getTrainerByUsername("chris.tenet")).thenReturn(trainer);
         when(trainingService.addTraining(any())).thenReturn(expected);
-
+        doNothing().when(workloadServiceClient).callWorkloadService(nullable(TrainingCreateRequest.class), any(TrainerDto.class));
         TrainingDto actual = facade.addTraining(TRAINING_CREATE_REQUEST);
 
         assertEquals(TRAINING_DTO, actual);

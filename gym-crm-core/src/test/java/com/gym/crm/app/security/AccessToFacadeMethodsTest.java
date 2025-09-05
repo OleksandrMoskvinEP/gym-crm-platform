@@ -1,5 +1,6 @@
 package com.gym.crm.app.security;
 
+import com.gym.crm.app.client.WorkloadServiceClient;
 import com.gym.crm.app.domain.dto.trainee.TraineeCreateRequest;
 import com.gym.crm.app.domain.dto.trainee.TraineeDto;
 import com.gym.crm.app.domain.dto.trainee.TraineeUpdateRequest;
@@ -19,12 +20,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatNoException;
@@ -46,34 +47,36 @@ class AccessToFacadeMethodsTest {
                          TrainerMapper trainerMapper,
                          TrainingMapper trainingMapper,
                          TrainingTypeMapper trainingTypeMapper,
-                         UserMapper userMapper) {
+                         UserMapper userMapper,
+                         WorkloadServiceClient workloadServiceClient) {
             return new GymFacade(traineeService, trainerService, trainingService,
                     userProfileService, traineeMapper, trainerMapper,
-                    trainingMapper, trainingTypeMapper, userMapper);
+                    trainingMapper, trainingTypeMapper, userMapper, workloadServiceClient);
         }
     }
-
     @Autowired
-    GymFacade facade;
+    private GymFacade facade;
 
-    @MockBean
-    TraineeService traineeService;
-    @MockBean
-    TrainerService trainerService;
-    @MockBean
-    TrainingService trainingService;
-    @MockBean
-    UserProfileService userProfileService;
-    @MockBean
-    TraineeMapper traineeMapper;
-    @MockBean
-    TrainerMapper trainerMapper;
-    @MockBean
-    TrainingMapper trainingMapper;
-    @MockBean
-    TrainingTypeMapper trainingTypeMapper;
-    @MockBean
-    UserMapper userMapper;
+    @MockitoBean
+    private TraineeService traineeService;
+    @MockitoBean
+    private TrainerService trainerService;
+    @MockitoBean
+    private TrainingService trainingService;
+    @MockitoBean
+    private UserProfileService userProfileService;
+    @MockitoBean
+    private TraineeMapper traineeMapper;
+    @MockitoBean
+    private TrainerMapper trainerMapper;
+    @MockitoBean
+    private TrainingMapper trainingMapper;
+    @MockitoBean
+    private TrainingTypeMapper trainingTypeMapper;
+    @MockitoBean
+    private UserMapper userMapper;
+    @MockitoBean
+    private WorkloadServiceClient workloadServiceClient;
 
     @Test
     @WithMockUser(username = "vasyl", roles = "TRAINEE")

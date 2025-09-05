@@ -26,7 +26,7 @@ public class WorkloadChangePersistor {
         YearEntity year = getOrCreateYear(trainer, params.workYear());
         MonthEntity month = getOrCreateMonth(year, params.monthOfYear());
 
-        month.setHours(safeAddNonNegative(month.getHours(), params.hoursDelta()));
+        month.setHours(safeAddNonNegative(month.getHours(), params.hoursDelta()/60));
 
         repository.save(trainer);
     }
@@ -44,7 +44,7 @@ public class WorkloadChangePersistor {
         YearEntity year = getYearOrThrow(trainer, params.workYear());
         MonthEntity month = getMonthOrThrow(year, params.monthOfYear());
 
-        long newHours = month.getHours() - params.hoursToRemove();
+        long newHours = month.getHours() - params.hoursToRemove()/60;
 
         if (newHours > 0) {
             month.setHours(newHours);
