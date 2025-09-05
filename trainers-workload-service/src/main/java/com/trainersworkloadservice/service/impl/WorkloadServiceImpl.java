@@ -19,13 +19,13 @@ public class WorkloadServiceImpl implements WorkloadService {
 
     @Override
     @Transactional
-    public void calculateAndStoreWorkload(WorkloadEventRequest eventRequest) {
-        if (eventRequest.actionType().equals(ActionType.ADD.name())) {
-            workloadChangePersistor.increaseWorkload(getIncreaseWorkloadParams(eventRequest));
-        } else if (eventRequest.actionType().equals(ActionType.DELETE.name())) {
-            workloadChangePersistor.decreaseWorkload(getdecreaseWorkloadParams(eventRequest));
+    public void calculateAndStoreWorkload(WorkloadEventRequest request) {
+        if (request.actionType().equals(ActionType.ADD.name())) {
+            workloadChangePersistor.increaseWorkload(getIncreaseWorkloadParams(request));
+        } else if (request.actionType().equals(ActionType.DELETE.name())) {
+            workloadChangePersistor.decreaseWorkload(getdecreaseWorkloadParams(request));
         } else {
-            throw new IllegalArgumentException("Unknown actionType: " + eventRequest.actionType());
+            throw new IllegalArgumentException("Unknown actionType: " + request.actionType());
         }
     }
 
