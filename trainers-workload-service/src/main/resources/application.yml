@@ -36,3 +36,8 @@ springdoc:
 spring.web.resources:
   add-mappings: true
   static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+
+logging:
+  level:
+    root: DEBUG
+    org.springdoc: DEBUG

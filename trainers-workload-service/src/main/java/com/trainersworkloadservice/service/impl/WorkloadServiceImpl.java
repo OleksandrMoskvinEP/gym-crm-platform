@@ -24,7 +24,7 @@ public class WorkloadServiceImpl implements WorkloadService {
         int month = req.trainingDate().getMonthValue();
         long delta = req.trainingDuration();
 
-        if (req.actionType() == ActionType.ADD) {
+        if (req.actionType().equals(ActionType.ADD.name())) {
             workloadChangePersistor.increaseWorkload(new IncreaseWorkloadParams(
                     req.username(),
                     req.firstName(),
@@ -32,12 +32,12 @@ public class WorkloadServiceImpl implements WorkloadService {
                     req.isActive(),
                     year, month, delta)
             );
-        } else if (req.actionType() == ActionType.DELETE) {
+        } else if (req.actionType().equals(ActionType.DELETE.name())) {
             workloadChangePersistor.decreaseWorkload(new DecreaseWorkloadParams(
-                            req.username(),
-                            year,
-                            month,
-                            delta)
+                    req.username(),
+                    year,
+                    month,
+                    delta)
             );
         } else {
             throw new IllegalArgumentException("Unknown actionType: " + req.actionType());

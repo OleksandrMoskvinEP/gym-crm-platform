@@ -14,6 +14,6 @@ public record WorkloadEventRequest(
         @NotBlank Boolean isActive,
         @NotNull @JsonFormat(pattern = "yyyy-MM-dd") LocalDate trainingDate,
         @Positive Long trainingDuration,
-        @NotNull ActionType actionType
+        @NotBlank String actionType
 ) {
 }

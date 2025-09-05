@@ -157,34 +157,37 @@ components:
 
     WorkloadEventRequest:
       type: object
-      required: [ username, year, month, hoursDelta ]
+      required:
+        - username
+        - firstName
+        - lastName
+        - isActive
+        - trainingDate
+        - trainingDuration
+        - actionType
       properties:
         username:
           type: string
           description: Unique trainer username
         firstName:
           type: string
-          description: Optional — used to create trainer if not exists
+          description: Trainer's first name
         lastName:
           type: string
-          description: Optional — used to create trainer if not exists
-        active:
+          description: Trainer's last name
+        isActive:
           type: boolean
-          default: true
-          description: Optional — current trainer active flag
-        year:
-          type: integer
-          format: int32
-          minimum: 1970
-        month:
-          type: integer
-          format: int32
-          minimum: 1
-          maximum: 12
-        hoursDelta:
-          type: integer
+          description: Whether the trainer is active
+        trainingDate:
+          type: string
+          format: date
+          description: Training date in format yyyy-MM-dd
+        trainingDuration:
+          type: number
           format: int64
+          nullable: true
           minimum: 1
-          description: Positive number of hours to add (idempotent by composite key)
-      description: |
-        Payload to upsert and increase monthly workload. Adjust fields to exactly match the final TZ if it differs.
+          description: Duration of training in minutes
+        actionType:
+          type: string
+          description: Type of action — ADD or DELETE
