@@ -77,7 +77,7 @@ paths:
       tags: [ Trainers Workload ]
       summary: Create or update monthly workload summary for a trainer
       description: Create or update trainers workload summary
-      operationId: upsertMonthlyWorkload
+      operationId: updateMonthlyWorkload
       requestBody:
         required: true
         content:
