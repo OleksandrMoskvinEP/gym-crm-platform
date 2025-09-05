@@ -97,6 +97,6 @@ class WorkloadServiceImplTest {
     }
 
     private static MonthlyWorkloadRequest getMonthlyWorkloadRequest() {
-        return new MonthlyWorkloadRequest("username", 7, 2025);
+        return new MonthlyWorkloadRequest("username", 2025, 7);
     }
 }
