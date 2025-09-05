@@ -49,6 +49,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -58,6 +60,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -97,6 +100,8 @@ class GymFacadeTest {
     private TrainingService trainingService;
     @Mock
     private HttpSession session;
+    @Mock
+    private RestTemplate restTemplate;
     @Spy
     private TraineeMapper traineeMapper = Mappers.getMapper(TraineeMapper.class);
     @Spy
@@ -246,6 +251,8 @@ class GymFacadeTest {
         when(traineeService.getTraineeByUsername("kevin.jackson")).thenReturn(trainee);
         when(trainerService.getTrainerByUsername("chris.tenet")).thenReturn(trainer);
         when(trainingService.addTraining(any())).thenReturn(expected);
+        when(restTemplate.postForEntity(
+                nullable(String.class), any(), any())).thenReturn(ResponseEntity.ok().build());
 
         TrainingDto actual = facade.addTraining(TRAINING_CREATE_REQUEST);
 

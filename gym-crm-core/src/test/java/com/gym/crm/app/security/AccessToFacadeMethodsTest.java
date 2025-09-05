@@ -19,13 +19,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.client.RestTemplate;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatNoException;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -46,34 +47,37 @@ class AccessToFacadeMethodsTest {
                          TrainerMapper trainerMapper,
                          TrainingMapper trainingMapper,
                          TrainingTypeMapper trainingTypeMapper,
-                         UserMapper userMapper) {
+                         UserMapper userMapper,
+                         RestTemplate restTemplate) {
             return new GymFacade(traineeService, trainerService, trainingService,
                     userProfileService, traineeMapper, trainerMapper,
-                    trainingMapper, trainingTypeMapper, userMapper);
+                    trainingMapper, trainingTypeMapper, userMapper, restTemplate);
         }
     }
 
     @Autowired
     GymFacade facade;
 
-    @MockBean
+    @MockitoBean
     TraineeService traineeService;
-    @MockBean
+    @MockitoBean
     TrainerService trainerService;
-    @MockBean
+    @MockitoBean
     TrainingService trainingService;
-    @MockBean
+    @MockitoBean
     UserProfileService userProfileService;
-    @MockBean
+    @MockitoBean
     TraineeMapper traineeMapper;
-    @MockBean
+    @MockitoBean
     TrainerMapper trainerMapper;
-    @MockBean
+    @MockitoBean
     TrainingMapper trainingMapper;
-    @MockBean
+    @MockitoBean
     TrainingTypeMapper trainingTypeMapper;
-    @MockBean
+    @MockitoBean
     UserMapper userMapper;
+    @MockitoBean
+    RestTemplate restTemplate;
 
     @Test
     @WithMockUser(username = "vasyl", roles = "TRAINEE")
