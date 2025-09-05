@@ -1,5 +1,8 @@
 package com.trainersworkloadservice.model.dto;
 
+import lombok.Builder;
+
+@Builder
 public record IncreaseWorkloadParams(
         String username,
         String firstName,
