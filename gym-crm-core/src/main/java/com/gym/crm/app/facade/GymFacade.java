@@ -44,6 +44,7 @@ import com.gym.crm.app.service.common.UserProfileService;
 import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -66,6 +67,9 @@ public class GymFacade {
     private final TrainingTypeMapper trainingTypeMapper;
     private final UserMapper userMapper;
     private final RestTemplate restTemplate;
+
+    @Value("${workload.service-url}")
+    private String workloadUrl;
 
     public TrainerCreateResponse addTrainer(@Valid TrainerCreateRequest createRequest) {
         return trainerMapper.toCreateResponse(trainerService.addTrainer(createRequest));
@@ -243,9 +247,8 @@ public class GymFacade {
                 request.getTrainingDuration() > 0 ? "ADD" : "DELETE"
         );
 
-
         ResponseEntity<Void> response = restTemplate.postForEntity(
-                "http://localhost:8081/api/v1/trainers-workload",
+                workloadUrl,
                 workloadEventRequest,
                 Void.class
         );
