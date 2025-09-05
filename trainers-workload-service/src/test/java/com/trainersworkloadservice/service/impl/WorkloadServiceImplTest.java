@@ -83,7 +83,7 @@ class WorkloadServiceImplTest {
     private static WorkloadEventRequest getAddEventRequest() {
         return new WorkloadEventRequest(
                 "first_last", "first", "last", true,
-                LocalDate.of(2025, 7, 15), 2L,
+                LocalDate.of(2025, 7, 15), 2,
                 ActionType.ADD.name()
         );
     }
@@ -91,7 +91,7 @@ class WorkloadServiceImplTest {
     private static WorkloadEventRequest getDeleteEventRequest() {
         return new WorkloadEventRequest(
                 "first_last", "first", "last", true,
-                LocalDate.of(2025, 7, 15), 5L,
+                LocalDate.of(2025, 7, 15), 5,
                 ActionType.DELETE.name()
         );
     }

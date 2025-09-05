@@ -7,13 +7,12 @@ import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDate;
 
-public record WorkloadEventRequest(
+public record WorkloadRequest(
         @NotBlank String username,
         @NotBlank String firstName,
         @NotBlank String lastName,
         @NotNull Boolean isActive,
         @NotNull @JsonFormat(pattern = "yyyy-MM-dd") LocalDate trainingDate,
         @Positive Integer trainingDuration,
-        @NotBlank String actionType
-) {
+        @NotBlank String actionType) {
 }

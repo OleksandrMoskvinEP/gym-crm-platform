@@ -1,6 +1,7 @@
 package com.gym.crm.app.facade;
 
 import com.gym.crm.app.domain.dto.trainee.TraineeCreateRequest;
+import com.gym.crm.app.facade.dto.WorkloadRequest;
 import com.gym.crm.app.domain.dto.trainee.TraineeDto;
 import com.gym.crm.app.domain.dto.trainee.TraineeUpdateRequest;
 import com.gym.crm.app.domain.dto.trainer.TrainerCreateRequest;
@@ -11,7 +12,6 @@ import com.gym.crm.app.domain.dto.training.TrainingSaveRequest;
 import com.gym.crm.app.domain.dto.user.ChangeActivationStatusDto;
 import com.gym.crm.app.domain.model.TrainingType;
 import com.gym.crm.app.exception.CoreServiceException;
-import com.gym.crm.app.facade.dto.WorkloadEventRequest;
 import com.gym.crm.app.mapper.TraineeMapper;
 import com.gym.crm.app.mapper.TrainerMapper;
 import com.gym.crm.app.mapper.TrainingMapper;
@@ -233,7 +233,7 @@ public class GymFacade {
     }
 
     private void callWorkloadService(@Valid TrainingCreateRequest request, TrainerDto trainer) {
-        WorkloadEventRequest workloadEventRequest = new WorkloadEventRequest(
+        WorkloadRequest workloadEventRequest = new WorkloadRequest(
                 trainer.getUsername(),
                 trainer.getFirstName(),
                 trainer.getLastName(),
@@ -242,6 +242,7 @@ public class GymFacade {
                 request.getTrainingDuration(),
                 request.getTrainingDuration() > 0 ? "ADD" : "DELETE"
         );
+
 
         ResponseEntity<Void> response = restTemplate.postForEntity(
                 "http://localhost:8081/api/v1/trainers-workload",
