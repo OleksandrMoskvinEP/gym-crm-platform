@@ -19,28 +19,13 @@ public class WorkloadServiceImpl implements WorkloadService {
 
     @Override
     @Transactional
-    public void calculateAndStoreWorkload(WorkloadEventRequest req) {
-        int year = req.trainingDate().getYear();
-        int month = req.trainingDate().getMonthValue();
-        long delta = req.trainingDuration();
-
-        if (req.actionType().equals(ActionType.ADD.name())) {
-            workloadChangePersistor.increaseWorkload(new IncreaseWorkloadParams(
-                    req.username(),
-                    req.firstName(),
-                    req.lastName(),
-                    req.isActive(),
-                    year, month, delta)
-            );
-        } else if (req.actionType().equals(ActionType.DELETE.name())) {
-            workloadChangePersistor.decreaseWorkload(new DecreaseWorkloadParams(
-                    req.username(),
-                    year,
-                    month,
-                    delta)
-            );
+    public void calculateAndStoreWorkload(WorkloadEventRequest eventRequest) {
+        if (eventRequest.actionType().equals(ActionType.ADD.name())) {
+            workloadChangePersistor.increaseWorkload(getIncreaseWorkloadParams(eventRequest));
+        } else if (eventRequest.actionType().equals(ActionType.DELETE.name())) {
+            workloadChangePersistor.decreaseWorkload(getdecreaseWorkloadParams(eventRequest));
         } else {
-            throw new IllegalArgumentException("Unknown actionType: " + req.actionType());
+            throw new IllegalArgumentException("Unknown actionType: " + eventRequest.actionType());
         }
     }
 
@@ -57,5 +42,26 @@ public class WorkloadServiceImpl implements WorkloadService {
         }
 
         return null;
+    }
+
+    private DecreaseWorkloadParams getdecreaseWorkloadParams(WorkloadEventRequest request) {
+        return DecreaseWorkloadParams.builder()
+                .username(request.username())
+                .workYear(request.trainingDate().getYear())
+                .monthOfYear(request.trainingDate().getMonthValue())
+                .hoursToRemove(request.trainingDuration())
+                .build();
+    }
+
+    private IncreaseWorkloadParams getIncreaseWorkloadParams(WorkloadEventRequest request) {
+        return IncreaseWorkloadParams.builder()
+                .username(request.username())
+                .firstName(request.firstName())
+                .lastName(request.lastName())
+                .active(request.isActive())
+                .workYear(request.trainingDate().getYear())
+                .monthOfYear(request.trainingDate().getMonthValue())
+                .hoursDelta(request.trainingDuration())
+                .build();
     }
 }
