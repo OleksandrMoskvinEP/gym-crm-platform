@@ -1,7 +1,7 @@
 package com.gym.crm.app.facade;
 
+import com.gym.crm.app.client.WorkloadServiceClient;
 import com.gym.crm.app.domain.dto.trainee.TraineeCreateRequest;
-import com.gym.crm.app.facade.dto.WorkloadRequest;
 import com.gym.crm.app.domain.dto.trainee.TraineeDto;
 import com.gym.crm.app.domain.dto.trainee.TraineeUpdateRequest;
 import com.gym.crm.app.domain.dto.trainer.TrainerCreateRequest;
@@ -11,7 +11,6 @@ import com.gym.crm.app.domain.dto.training.TrainingDto;
 import com.gym.crm.app.domain.dto.training.TrainingSaveRequest;
 import com.gym.crm.app.domain.dto.user.ChangeActivationStatusDto;
 import com.gym.crm.app.domain.model.TrainingType;
-import com.gym.crm.app.exception.CoreServiceException;
 import com.gym.crm.app.mapper.TraineeMapper;
 import com.gym.crm.app.mapper.TrainerMapper;
 import com.gym.crm.app.mapper.TrainingMapper;
@@ -44,11 +43,8 @@ import com.gym.crm.app.service.common.UserProfileService;
 import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -66,10 +62,7 @@ public class GymFacade {
     private final TrainingMapper trainingMapper;
     private final TrainingTypeMapper trainingTypeMapper;
     private final UserMapper userMapper;
-    private final RestTemplate restTemplate;
-
-    @Value("${workload.service-url}")
-    private String workloadUrl;
+    private final WorkloadServiceClient workloadServiceClient;
 
     public TrainerCreateResponse addTrainer(@Valid TrainerCreateRequest createRequest) {
         return trainerMapper.toCreateResponse(trainerService.addTrainer(createRequest));
@@ -170,7 +163,7 @@ public class GymFacade {
         TrainerDto trainer = trainerService.getTrainerByUsername(request.getTrainerUsername());
         TraineeDto trainee = traineeService.getTraineeByUsername(request.getTraineeUsername());
 
-        callWorkloadService(request, trainer);
+        workloadServiceClient.callWorkloadService(request, trainer);
 
         TrainingSaveRequest saveRequest = new TrainingSaveRequest();
         saveRequest.setTrainingName(request.getTrainingName());
@@ -234,27 +227,5 @@ public class GymFacade {
         trainingWithTraineeName.setTrainingDuration(trainingDto.getTrainingDuration().intValue());
 
         return trainingWithTraineeName;
-    }
-
-    private void callWorkloadService(@Valid TrainingCreateRequest request, TrainerDto trainer) {
-        WorkloadRequest workloadEventRequest = new WorkloadRequest(
-                trainer.getUsername(),
-                trainer.getFirstName(),
-                trainer.getLastName(),
-                trainer.isActive(),
-                request.getTrainingDate(),
-                request.getTrainingDuration(),
-                request.getTrainingDuration() > 0 ? "ADD" : "DELETE"
-        );
-
-        ResponseEntity<Void> response = restTemplate.postForEntity(
-                workloadUrl,
-                workloadEventRequest,
-                Void.class
-        );
-
-        if (!response.getStatusCode().is2xxSuccessful()) {
-            throw new CoreServiceException("Workload service returned error: " + response.getStatusCode());
-        }
     }
 }

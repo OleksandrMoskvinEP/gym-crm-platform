@@ -1,5 +1,6 @@
 package com.gym.crm.app.security;
 
+import com.gym.crm.app.client.WorkloadServiceClient;
 import com.gym.crm.app.domain.dto.trainee.TraineeCreateRequest;
 import com.gym.crm.app.domain.dto.trainee.TraineeDto;
 import com.gym.crm.app.domain.dto.trainee.TraineeUpdateRequest;
@@ -26,7 +27,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.web.client.RestTemplate;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatNoException;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -48,36 +48,35 @@ class AccessToFacadeMethodsTest {
                          TrainingMapper trainingMapper,
                          TrainingTypeMapper trainingTypeMapper,
                          UserMapper userMapper,
-                         RestTemplate restTemplate) {
+                         WorkloadServiceClient workloadServiceClient) {
             return new GymFacade(traineeService, trainerService, trainingService,
                     userProfileService, traineeMapper, trainerMapper,
-                    trainingMapper, trainingTypeMapper, userMapper, restTemplate);
+                    trainingMapper, trainingTypeMapper, userMapper, workloadServiceClient);
         }
     }
-
     @Autowired
-    GymFacade facade;
+    private GymFacade facade;
 
     @MockitoBean
-    TraineeService traineeService;
+    private TraineeService traineeService;
     @MockitoBean
-    TrainerService trainerService;
+    private TrainerService trainerService;
     @MockitoBean
-    TrainingService trainingService;
+    private TrainingService trainingService;
     @MockitoBean
-    UserProfileService userProfileService;
+    private UserProfileService userProfileService;
     @MockitoBean
-    TraineeMapper traineeMapper;
+    private TraineeMapper traineeMapper;
     @MockitoBean
-    TrainerMapper trainerMapper;
+    private TrainerMapper trainerMapper;
     @MockitoBean
-    TrainingMapper trainingMapper;
+    private TrainingMapper trainingMapper;
     @MockitoBean
-    TrainingTypeMapper trainingTypeMapper;
+    private TrainingTypeMapper trainingTypeMapper;
     @MockitoBean
-    UserMapper userMapper;
+    private UserMapper userMapper;
     @MockitoBean
-    RestTemplate restTemplate;
+    private WorkloadServiceClient workloadServiceClient;
 
     @Test
     @WithMockUser(username = "vasyl", roles = "TRAINEE")

@@ -1,4 +1,4 @@
-package com.gym.crm.app.facade.dto;
+package com.gym.crm.app.client.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
