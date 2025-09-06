@@ -3,7 +3,12 @@ server:
 
 spring:
   application:
-    name: "Workload Service"
+    name: "trainers-workload-service"
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
   main:
     log-startup-info: false
   datasource:

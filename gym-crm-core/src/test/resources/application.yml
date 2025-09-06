@@ -11,5 +11,6 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/changelog-master.xml
     enabled: true
+
 workload:
   service-url: http://test-workload-service

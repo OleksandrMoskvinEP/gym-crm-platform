@@ -143,6 +143,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Cloud -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <version>4.2.1</version>
+        </dependency>
 
         <!-- Prometheus registry -->
         <dependency>
@@ -156,7 +162,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- JUnit  -->
         <dependency>
             <groupId>com.github.database-rider</groupId>
             <artifactId>rider-core</artifactId>

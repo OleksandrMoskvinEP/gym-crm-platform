@@ -3,7 +3,12 @@ server:
 
 spring:
   application:
-    name: "Gym CRM"
+    name: "gym-crm-core"
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
   main:
     log-startup-info: false
 
