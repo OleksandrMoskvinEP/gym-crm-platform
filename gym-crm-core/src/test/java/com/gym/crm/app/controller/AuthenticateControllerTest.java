@@ -79,7 +79,7 @@ class AuthenticateControllerTest {
 
         when(loginService.login(any(LoginRequest.class))).thenReturn(tokens);
 
-        mockMvc.perform(post("/api/v1/login")
+        mockMvc.perform(post("/api/core/v1/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
                 .andExpect(status().isOk())
@@ -96,7 +96,7 @@ class AuthenticateControllerTest {
         when(loginService.login(any(LoginRequest.class)))
                 .thenThrow(new AuthorizationErrorException("Invalid credentials"));
 
-        mockMvc.perform(post("/api/v1/login")
+        mockMvc.perform(post("/api/core/v1/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
                 .andExpect(status().isForbidden());
@@ -113,7 +113,7 @@ class AuthenticateControllerTest {
 
         when(loginService.refresh(oldRefresh)).thenReturn(tokens);
 
-        mockMvc.perform(post("/api/v1/refresh")
+        mockMvc.perform(post("/api/core/v1/refresh")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(Map.of("refreshToken", oldRefresh))))
                 .andExpect(status().isOk())
@@ -130,7 +130,7 @@ class AuthenticateControllerTest {
         when(loginService.refresh(badRefresh))
                 .thenThrow(new AuthorizationErrorException("Invalid or expired refresh token"));
 
-        mockMvc.perform(post("/api/v1/refresh")
+        mockMvc.perform(post("/api/core/v1/refresh")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(Map.of("refreshToken", badRefresh))))
                 .andExpect(status().isForbidden());
@@ -142,7 +142,7 @@ class AuthenticateControllerTest {
     void shouldChangePasswordSuccessfully() throws Exception {
         ChangePasswordRequest request = getChangePasswordRequest();
 
-        mockMvc.perform(put("/api/v1/change-password")
+        mockMvc.perform(put("/api/core/v1/change-password")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
@@ -156,7 +156,7 @@ class AuthenticateControllerTest {
 
         doNothing().when(loginService).logout(anyString());
 
-        mockMvc.perform(post("/api/v1/logout")
+        mockMvc.perform(post("/api/core/v1/logout")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());

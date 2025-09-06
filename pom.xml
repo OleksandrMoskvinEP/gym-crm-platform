@@ -42,5 +42,6 @@
         <module>gym-crm-core</module>
         <module>trainers-workload-service</module>
         <module>discovery-service</module>
+        <module>gateway-service</module>
     </modules>
 </project>

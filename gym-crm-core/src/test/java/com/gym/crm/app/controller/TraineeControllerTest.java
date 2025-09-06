@@ -82,7 +82,7 @@ class TraineeControllerTest {
 
         when(facade.addTrainee(TRAINEE_CREATE_REQUEST)).thenReturn(response);
 
-        mockMvc.perform(post("/api/v1/trainees/register")
+        mockMvc.perform(post("/api/core/v1/trainees/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(TRAINEE_CREATE_REQUEST)))
                 .andExpect(status().isOk())
@@ -99,7 +99,7 @@ class TraineeControllerTest {
 
         when(facade.getTraineeByUsername(TRAINEE_USERNAME)).thenReturn(response);
 
-        mockMvc.perform(get("/api/v1/trainees/{username}", TRAINEE_USERNAME))
+        mockMvc.perform(get("/api/core/v1/trainees/{username}", TRAINEE_USERNAME))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName").value("Olga"))
                 .andExpect(jsonPath("$.lastName").value("Ivanova"))
@@ -116,7 +116,7 @@ class TraineeControllerTest {
 
         when(facade.updateTraineeByUsername(TRAINEE_USERNAME, TRAINEE_UPDATE_REQUEST)).thenReturn(response);
 
-        mockMvc.perform(put("/api/v1/trainees/{username}", TRAINEE_USERNAME)
+        mockMvc.perform(put("/api/core/v1/trainees/{username}", TRAINEE_USERNAME)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(TRAINEE_UPDATE_REQUEST)))
                 .andExpect(status().isOk())
@@ -128,7 +128,7 @@ class TraineeControllerTest {
 
     @Test
     void shouldDeleteTraineeProfileSuccessfully() throws Exception {
-        mockMvc.perform(delete("/api/v1/trainees/{username}", TRAINEE_USERNAME))
+        mockMvc.perform(delete("/api/core/v1/trainees/{username}", TRAINEE_USERNAME))
                 .andExpect(status().isNoContent());
 
         verify(facade).deleteTraineeByUsername(TRAINEE_USERNAME);
@@ -139,7 +139,7 @@ class TraineeControllerTest {
     void shouldReturnAvailableTrainers() throws Exception {
         when(facade.getUnassignedTrainersByTraineeUsername(TRAINEE_USERNAME)).thenReturn(AVAILABLE_TRAINERS_GET_RESPONSE);
 
-        mockMvc.perform(get("/api/v1/trainees/{username}/available-trainers", TRAINEE_USERNAME))
+        mockMvc.perform(get("/api/core/v1/trainees/{username}/available-trainers", TRAINEE_USERNAME))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.trainers[0].username").value("arnold.schwarzenegger"))
                 .andExpect(jsonPath("$.trainers[0].firstName").value("Arnold"))
@@ -153,7 +153,7 @@ class TraineeControllerTest {
     void shouldUpdateTraineeTrainersList() throws Exception {
         when(facade.updateTraineeTrainersList(TRAINEE_USERNAME, TRAINEE_TRAINERS_UPDATE_REQUEST)).thenReturn(TRAINEE_TRAINERS_UPDATE_RESPONSE);
 
-        mockMvc.perform(put("/api/v1/trainees/{username}/trainers", TRAINEE_USERNAME)
+        mockMvc.perform(put("/api/core/v1/trainees/{username}/trainers", TRAINEE_USERNAME)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(TRAINEE_TRAINERS_UPDATE_REQUEST)))
                 .andExpect(status().isOk())
@@ -172,7 +172,7 @@ class TraineeControllerTest {
 
         when(facade.getTraineeTrainingsByFilter(any())).thenReturn(response);
 
-        mockMvc.perform(get("/api/v1/trainees/{username}/trainings", TRAINEE_USERNAME)
+        mockMvc.perform(get("/api/core/v1/trainees/{username}/trainings", TRAINEE_USERNAME)
                         .param("fromDate", "2025-07-01")
                         .param("toDate", "2025-07-31")
                         .param("trainerName", "John")
@@ -195,7 +195,7 @@ class TraineeControllerTest {
         ActivationStatusRequest request = new ActivationStatusRequest();
         request.setIsActive(true);
 
-        mockMvc.perform(patch("/api/v1/trainees/{username}/change-activation-status", TRAINEE_USERNAME)
+        mockMvc.perform(patch("/api/core/v1/trainees/{username}/change-activation-status", TRAINEE_USERNAME)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());

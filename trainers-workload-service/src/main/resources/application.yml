@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8082
 
 spring:
   application:
@@ -45,3 +45,9 @@ eureka:
   instance:
       hostname: localhost
       instance-id: ${spring.application.name}:${server.port}
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.springframework.cloud: DEBUG
+    org.hibernate.SQL: DEBUG

@@ -76,7 +76,7 @@ class TrainerControllerTest {
 
         when(facade.addTrainer(TRAINER_CREATE_REQUEST)).thenReturn(response);
 
-        mockMvc.perform(post("/api/v1/trainers/register")
+        mockMvc.perform(post("/api/core/v1/trainers/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(TRAINER_CREATE_REQUEST)))
                 .andExpect(status().isOk())
@@ -92,7 +92,7 @@ class TrainerControllerTest {
 
         when(facade.getTrainerByUsername(TRAINER_USERNAME)).thenReturn(response);
 
-        mockMvc.perform(get("/api/v1/trainers/{username}", TRAINER_USERNAME))
+        mockMvc.perform(get("/api/core/v1/trainers/{username}", TRAINER_USERNAME))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName").value("Arnold"))
                 .andExpect(jsonPath("$.lastName").value("Schwarzenegger"))
@@ -106,7 +106,7 @@ class TrainerControllerTest {
 
         when(facade.updateTrainerByUsername("olga.ivanova", TRAINER_UPDATE_REQUEST)).thenReturn(response);
 
-        mockMvc.perform(put("/api/v1/trainers/{username}", "olga.ivanova")
+        mockMvc.perform(put("/api/core/v1/trainers/{username}", "olga.ivanova")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(TRAINER_UPDATE_REQUEST)))
                 .andExpect(status().isOk())
@@ -123,7 +123,7 @@ class TrainerControllerTest {
 
         when(facade.getTrainerTrainingsByFilter(any())).thenReturn(response);
 
-        mockMvc.perform(get("/api/v1/trainers/{username}/trainings", TRAINER_USERNAME)
+        mockMvc.perform(get("/api/core/v1/trainers/{username}/trainings", TRAINER_USERNAME)
                         .param("fromDate", "2025-07-01")
                         .param("toDate", "2025-07-31")
                         .param("traineeName", "Mark Freedman"))
@@ -143,7 +143,7 @@ class TrainerControllerTest {
         ActivationStatusRequest request = new ActivationStatusRequest();
         request.setIsActive(true);
 
-        mockMvc.perform(patch("/api/v1/trainers/{username}/change-activation-status", TRAINER_USERNAME)
+        mockMvc.perform(patch("/api/core/v1/trainers/{username}/change-activation-status", TRAINER_USERNAME)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());

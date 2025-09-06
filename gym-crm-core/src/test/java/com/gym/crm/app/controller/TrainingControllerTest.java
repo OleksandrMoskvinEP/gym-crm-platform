@@ -66,7 +66,7 @@ class TrainingControllerTest {
     void getTrainingTypes() throws Exception {
         when(facade.getAllTrainingsTypes()).thenReturn(TRAINING_TYPE_GET_RESPONSE);
 
-        mockMvc.perform(get("/api/v1/training-types")
+        mockMvc.perform(get("/api/core/v1/training-types")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(TRAINING_TYPE_GET_RESPONSE)))
                 .andExpect(status().isOk())
@@ -79,7 +79,7 @@ class TrainingControllerTest {
     void shouldAddTrainingSuccessfully() throws Exception {
         when(facade.addTraining(any(TrainingCreateRequest.class))).thenReturn(TRAINING_DTO);
 
-        mockMvc.perform(post("/api/v1/trainings")
+        mockMvc.perform(post("/api/core/v1/trainings")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(TRAINING_CREATE_REQUEST)))
                 .andExpect(status().isOk());
