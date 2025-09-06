@@ -3,7 +3,8 @@ server:
 
 spring:
   application:
-    name: "Gym CRM"
+    name: "gym-crm-core"
+
   main:
     log-startup-info: false
 
@@ -68,3 +69,11 @@ logging:
 
 workload:
   service-url: http://localhost:8081/api/v1/trainers-workload
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    hostname: localhost
+    instance-id: ${spring.application.name}:${server.port}
