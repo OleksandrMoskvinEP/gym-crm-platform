@@ -1,6 +1,6 @@
 package com.gym.crm.app.facade;
 
-import com.gym.crm.app.client.WorkloadServiceClient;
+import com.gym.crm.app.client.impl.WorkloadServiceClientImpl;
 import com.gym.crm.app.domain.dto.trainee.TraineeCreateRequest;
 import com.gym.crm.app.domain.dto.trainee.TraineeDto;
 import com.gym.crm.app.domain.dto.trainee.TraineeUpdateRequest;
@@ -62,7 +62,7 @@ public class GymFacade {
     private final TrainingMapper trainingMapper;
     private final TrainingTypeMapper trainingTypeMapper;
     private final UserMapper userMapper;
-    private final WorkloadServiceClient workloadServiceClient;
+    private final WorkloadServiceClientImpl workloadServiceClientImpl;
 
     public TrainerCreateResponse addTrainer(@Valid TrainerCreateRequest createRequest) {
         return trainerMapper.toCreateResponse(trainerService.addTrainer(createRequest));
@@ -163,7 +163,7 @@ public class GymFacade {
         TrainerDto trainer = trainerService.getTrainerByUsername(request.getTrainerUsername());
         TraineeDto trainee = traineeService.getTraineeByUsername(request.getTraineeUsername());
 
-        workloadServiceClient.callWorkloadService(request, trainer);
+        workloadServiceClientImpl.callWorkloadService(request, trainer);
 
         TrainingSaveRequest saveRequest = new TrainingSaveRequest();
         saveRequest.setTrainingName(request.getTrainingName());

@@ -1,6 +1,6 @@
 package com.gym.crm.app.security;
 
-import com.gym.crm.app.client.WorkloadServiceClient;
+import com.gym.crm.app.client.impl.WorkloadServiceClientImpl;
 import com.gym.crm.app.domain.dto.trainee.TraineeCreateRequest;
 import com.gym.crm.app.domain.dto.trainee.TraineeDto;
 import com.gym.crm.app.domain.dto.trainee.TraineeUpdateRequest;
@@ -48,10 +48,10 @@ class AccessToFacadeMethodsTest {
                          TrainingMapper trainingMapper,
                          TrainingTypeMapper trainingTypeMapper,
                          UserMapper userMapper,
-                         WorkloadServiceClient workloadServiceClient) {
+                         WorkloadServiceClientImpl workloadServiceClientImpl) {
             return new GymFacade(traineeService, trainerService, trainingService,
                     userProfileService, traineeMapper, trainerMapper,
-                    trainingMapper, trainingTypeMapper, userMapper, workloadServiceClient);
+                    trainingMapper, trainingTypeMapper, userMapper, workloadServiceClientImpl);
         }
     }
     @Autowired
@@ -76,7 +76,7 @@ class AccessToFacadeMethodsTest {
     @MockitoBean
     private UserMapper userMapper;
     @MockitoBean
-    private WorkloadServiceClient workloadServiceClient;
+    private WorkloadServiceClientImpl workloadServiceClientImpl;
 
     @Test
     @WithMockUser(username = "vasyl", roles = "TRAINEE")

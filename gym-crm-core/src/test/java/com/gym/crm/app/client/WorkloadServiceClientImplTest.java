@@ -1,9 +1,10 @@
 package com.gym.crm.app.client;
 
+import com.gym.crm.app.client.dto.WorkloadRequest;
+import com.gym.crm.app.client.impl.WorkloadServiceClientImpl;
 import com.gym.crm.app.domain.dto.trainer.TrainerDto;
 import com.gym.crm.app.exception.CoreServiceException;
 import com.gym.crm.app.rest.TrainingCreateRequest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,52 +12,48 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
 
-import java.lang.reflect.Field;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class WorkloadServiceClientTest {
+class WorkloadServiceClientImplTest {
     @Mock
-    private RestTemplate restTemplate;
-    @InjectMocks
     private WorkloadServiceClient client;
-
-    @BeforeEach
-    void setUp() throws Exception {
-        Field urlField = WorkloadServiceClient.class.getDeclaredField("workloadUrl");
-        urlField.setAccessible(true);
-        urlField.set(client, "http://dummy");
-    }
+    @InjectMocks
+    private WorkloadServiceClientImpl workloadServiceClient;
 
     @Test
     void shouldCallWorkloadService_whenResponseIsOk() {
         TrainingCreateRequest request = getTrainingCreateRequest();
         TrainerDto trainer = getTrainerDto();
 
-        when(restTemplate.postForEntity(anyString(), any(), eq(Void.class)))
+        when(client.addWorkloadEvent(any()))
                 .thenReturn(ResponseEntity.ok().build());
 
-        assertDoesNotThrow(() -> client.callWorkloadService(request, trainer));
+        assertDoesNotThrow(() -> workloadServiceClient.callWorkloadService(request, trainer));
+
+        verify(client).addWorkloadEvent(any(WorkloadRequest.class));
     }
+
 
     @Test
     void shouldThrowException_whenResponseIsNotOk() {
         TrainingCreateRequest request = getTrainingCreateRequest();
         TrainerDto trainer = getTrainerDto();
 
-        when(restTemplate.postForEntity(anyString(), any(), eq(Void.class)))
+        when(client.addWorkloadEvent(any()))
                 .thenReturn(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
 
-        assertThrows(CoreServiceException.class, () -> client.callWorkloadService(request, trainer));
+        assertThrows(CoreServiceException.class,
+                () -> workloadServiceClient.callWorkloadService(request, trainer));
+
+        verify(client).addWorkloadEvent(any(WorkloadRequest.class));
     }
 
     private static TrainingCreateRequest getTrainingCreateRequest() {
