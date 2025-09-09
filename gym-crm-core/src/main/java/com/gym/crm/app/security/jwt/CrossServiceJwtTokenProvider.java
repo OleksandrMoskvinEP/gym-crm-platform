@@ -27,6 +27,7 @@ public class CrossServiceJwtTokenProvider {
 
     public String generateTokenForService() {
         String serviceName = "core-service";
+
         return Jwts.builder()
                 .setSubject(serviceName)
                 .setIssuedAt(new Date())
