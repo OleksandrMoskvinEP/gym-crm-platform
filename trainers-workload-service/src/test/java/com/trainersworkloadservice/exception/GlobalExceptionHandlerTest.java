@@ -1,5 +1,7 @@
 package com.trainersworkloadservice.exception;
 
+import io.jsonwebtoken.JwtException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Path;
@@ -13,13 +15,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import java.time.Instant;
+import java.util.Map;
 import java.util.Set;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -85,6 +91,48 @@ class GlobalExceptionHandlerTest {
         assertNotNull(entity.getBody());
         assertEquals(VALIDATION_ERROR_RESPONSE.message(), entity.getBody().message());
         assertEquals(VALIDATION_ERROR_RESPONSE.code(), entity.getBody().code());
+    }
+
+    @Test
+    void shouldHandleJwtException() {
+        JwtException ex = new JwtException("Invalid token");
+        HttpServletRequest request = mock(HttpServletRequest.class);
+
+        when(request.getRequestURI()).thenReturn("/api/v1/resource");
+
+        ResponseEntity<Map<String, Object>> response = exceptionHandler.handleJwtException(ex, request);
+
+        assertEquals("401 UNAUTHORIZED", response.getStatusCode().toString());
+
+        Map<String, Object> body = response.getBody();
+
+        assertThat(body).isNotNull();
+        assertEquals(401, body.get("status"));
+        assertEquals("Invalid token", body.get("message"));
+        assertEquals("Unauthorized", body.get("error"));
+        assertEquals("/api/v1/resource", body.get("path"));
+        assertThat(Instant.parse((String) body.get("timestamp"))).isBefore(Instant.now());
+    }
+
+    @Test
+    void shouldHandleAccessDenied() {
+        AccessDeniedException ex = new AccessDeniedException("forbidden");
+        HttpServletRequest request = mock(HttpServletRequest.class);
+
+        when(request.getRequestURI()).thenReturn("/api/v1/secure");
+
+        ResponseEntity<Map<String, Object>> response = exceptionHandler.handleAccessDenied(ex, request);
+
+        assertEquals(403, response.getStatusCode().value());
+
+        Map<String, Object> body = response.getBody();
+
+        assertNotNull(response.getBody());
+        assertEquals(403, body.get("status"));
+        assertEquals("Forbidden", body.get("error"));
+        assertEquals("/api/v1/secure", body.get("path"));
+        assertEquals("You don’t have permission to access this resource", body.get("message"));
+        assertThat(Instant.parse((String) body.get("timestamp"))).isBeforeOrEqualTo(Instant.now());
     }
 
     private BindingResult buildBindingResult() {

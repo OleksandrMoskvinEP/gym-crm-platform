@@ -1,6 +1,7 @@
 package com.trainersworkloadservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.trainersworkloadservice.config.TestSecurityConfig;
 import com.trainersworkloadservice.model.dto.MonthlyWorkloadRequest;
 import com.trainersworkloadservice.model.dto.MonthlyWorkloadResponse;
 import com.trainersworkloadservice.service.WorkloadService;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,8 +23,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 @WebMvcTest(controllers = WorkloadController.class)
+@Import(TestSecurityConfig.class)
 class WorkloadControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -35,7 +37,7 @@ class WorkloadControllerTest {
     @DisplayName("GET monthly workload returns 200 with body")
     void getMonthlyWorkload_success() throws Exception {
         MonthlyWorkloadResponse response = new MonthlyWorkloadResponse(
-                "john.doe",
+                "arnold_schwarzenegger",
                 2025,
                 8,
                 10L,
@@ -45,11 +47,11 @@ class WorkloadControllerTest {
         when(workloadService.getMonthlyWorkload(any(MonthlyWorkloadRequest.class)))
                 .thenReturn(response);
 
-        mockMvc.perform(get("/api/v1/trainers-workload/{username}/{year}/{month}", "john.doe", 2025, 8)
+        mockMvc.perform(get("/api/v1/trainers-workload/{username}/{year}/{month}", "arnold_schwarzenegger", 2025, 8)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.username").value("john.doe"))
+                .andExpect(jsonPath("$.username").value("arnold_schwarzenegger"))
                 .andExpect(jsonPath("$.year").value(2025))
                 .andExpect(jsonPath("$.month").value(8))
                 .andExpect(jsonPath("$.totalHours").value(10))
