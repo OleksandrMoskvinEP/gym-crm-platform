@@ -51,6 +51,12 @@ management:
 security:
   jwt:
     secret: SecuredSecretKeyThatIsLongEnough123456
+    workload-service-secret: AnotherSecuredSecretKeyForWorkloadService123456
+
+services:
+  workload-service: "workload-service"
+  discovery-service: "discovery-eureka-service"
+  gateway-service: "api-gateway-service"
 
 app:
   cors:
