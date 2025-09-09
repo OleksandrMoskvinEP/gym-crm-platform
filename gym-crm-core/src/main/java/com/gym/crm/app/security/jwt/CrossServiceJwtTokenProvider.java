@@ -16,7 +16,7 @@ import java.util.Date;
 public class CrossServiceJwtTokenProvider {
     private static final long EXPIRATION_MILLIS = 5 * 60 * 1000L;
 
-    @Value("${security.jwt.workload-service-secret}")
+    @Value("${security.jwt.workloadServiceSecret}")
     private String secret;
     private SecretKey secretKey;
 

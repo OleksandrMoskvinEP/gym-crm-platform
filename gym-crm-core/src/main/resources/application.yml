@@ -51,7 +51,7 @@ management:
 security:
   jwt:
     secret: SecuredSecretKeyThatIsLongEnough123456
-    workload-service-secret: AnotherSecuredSecretKeyForWorkloadService123456
+    workloadServiceSecret: AnotherSecuredSecretKeyForWorkloadService123456
 
 services:
   workload-service: "workload-service"
