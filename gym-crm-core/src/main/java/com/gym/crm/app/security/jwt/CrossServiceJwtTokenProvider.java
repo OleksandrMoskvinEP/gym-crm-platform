@@ -26,10 +26,8 @@ public class CrossServiceJwtTokenProvider {
     }
 
     public String generateTokenForService() {
-        String serviceName = "core-service";
-
         return Jwts.builder()
-                .setSubject(serviceName)
+                .setSubject("core-service")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_MILLIS))
                 .signWith(secretKey)

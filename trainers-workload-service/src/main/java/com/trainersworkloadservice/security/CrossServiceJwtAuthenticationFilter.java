@@ -43,6 +43,7 @@ public class CrossServiceJwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing Authorization header");
+
             return;
         }
 
@@ -53,11 +54,13 @@ public class CrossServiceJwtAuthenticationFilter extends OncePerRequestFilter {
 
             if (!"core-service".equals(claims.getSubject())) {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN, "Invalid service identity");
+
                 return;
             }
 
         } catch (JwtException e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token");
+
             return;
         }
 
