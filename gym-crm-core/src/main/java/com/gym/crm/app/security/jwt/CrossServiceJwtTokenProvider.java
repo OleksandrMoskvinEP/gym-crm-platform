@@ -14,14 +14,11 @@ import java.util.Date;
 @Component
 @RequiredArgsConstructor
 public class CrossServiceJwtTokenProvider {
-    private static final long EXPIRATION_MILLIS = 60 * 1000L;
+    private static final long EXPIRATION_MILLIS = 5 * 60 * 1000L;
 
     @Value("${security.jwt.workload-service-secret}")
     private String secret;
     private SecretKey secretKey;
-
-    @Value("${services.workload-service}")
-    private String serviceName;
 
     @PostConstruct
     public void init() {
@@ -29,6 +26,7 @@ public class CrossServiceJwtTokenProvider {
     }
 
     public String generateTokenForService() {
+        String serviceName = "core-service";
         return Jwts.builder()
                 .setSubject(serviceName)
                 .setIssuedAt(new Date())
