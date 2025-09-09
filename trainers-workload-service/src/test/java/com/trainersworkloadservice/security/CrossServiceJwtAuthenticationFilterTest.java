@@ -86,5 +86,4 @@ class CrossServiceJwtAuthenticationFilterTest {
                 .signWith(secretKey)
                 .compact();
     }
-
 }

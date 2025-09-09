@@ -39,6 +39,7 @@ public class CrossServiceJwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         if (request.getRequestURI().startsWith("/h2-console")) {
             filterChain.doFilter(request, response);
+
             return;
         }
 
@@ -77,9 +78,9 @@ public class CrossServiceJwtAuthenticationFilter extends OncePerRequestFilter {
 
     private Claims validateToken(String token) {
         return Jwts.parser()
-                .setSigningKey(secretKey)   // твой SecretKey из @PostConstruct
+                .setSigningKey(secretKey)
                 .build()
-                .parseClaimsJws(token)      // возвращает Jws<Claims>
+                .parseClaimsJws(token)
                 .getBody();
     }
 }

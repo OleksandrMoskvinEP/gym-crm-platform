@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 public class FeignConfig implements RequestInterceptor {
     private final CrossServiceJwtTokenProvider crossServiceJwtTokenProvider;
 
-
     @Override
     public void apply(RequestTemplate requestTemplate) {
         requestTemplate.header("Authorization", "Bearer " + crossServiceJwtTokenProvider.generateTokenForService());
