@@ -11,12 +11,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 
 @Component
 @RequiredArgsConstructor
@@ -57,7 +60,12 @@ public class CrossServiceJwtAuthenticationFilter extends OncePerRequestFilter {
 
                 return;
             }
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    claims.getSubject(),
+                    null,
+                    Collections.emptyList());
 
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (JwtException e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token");
 
@@ -69,10 +77,10 @@ public class CrossServiceJwtAuthenticationFilter extends OncePerRequestFilter {
 
     private Claims validateToken(String token) {
         return Jwts.parser()
-                .verifyWith(secretKey)
+                .setSigningKey(secretKey)   // твой SecretKey из @PostConstruct
                 .build()
-                .parseSignedClaims(token)
-                .getPayload();
+                .parseClaimsJws(token)      // возвращает Jws<Claims>
+                .getBody();
     }
 }
 
