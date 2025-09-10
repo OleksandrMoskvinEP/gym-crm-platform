@@ -11,9 +11,9 @@
         </filter>
     </appender>
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/app.log</file>
+        <file>logs/core/app.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <fileNamePattern>logs/app.%i.log.zip</fileNamePattern>
+            <fileNamePattern>logs/core/app.%i.log.zip</fileNamePattern>
             <minIndex>1</minIndex>
             <maxIndex>3</maxIndex>
         </rollingPolicy>
@@ -28,9 +28,9 @@
         </encoder>
     </appender>
     <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/app-error.log</file>
+        <file>logs/core/app-error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/app-error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>logs/core/app-error.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -41,9 +41,9 @@
         </encoder>
     </appender>
     <appender name="FILE_FEIGN" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/feign.log</file>
+        <file>logs/core/feign.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <fileNamePattern>logs/feign.%i.log.zip</fileNamePattern>
+            <fileNamePattern>logs/core/feign.%i.log.zip</fileNamePattern>
             <minIndex>1</minIndex>
             <maxIndex>5</maxIndex>
         </rollingPolicy>
