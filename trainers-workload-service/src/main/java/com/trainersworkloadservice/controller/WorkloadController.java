@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.trainersworkloadservice.controller.ApiConstants.ROOT_PATH;
 
+@Slf4j
 @RestController
 @RequestMapping(ROOT_PATH + "/trainers-workload")
 @RequiredArgsConstructor
@@ -44,6 +46,8 @@ public class WorkloadController {
     public ResponseEntity<MonthlyWorkloadResponse> getTrainersWorkload(@PathVariable("username") String username,
                                                                        @PathVariable("year") Integer year,
                                                                        @PathVariable("month") Integer month) {
+        log.info("getTrainersWorkload for username={}, year={}, month={}", username, year, month);
+
         return ResponseEntity.ok(workloadService.getMonthlyWorkload(new MonthlyWorkloadRequest(username, year, month)));
     }
 
@@ -60,7 +64,10 @@ public class WorkloadController {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<Void> updateMonthlyWorkload(@RequestBody @Valid WorkloadEventRequest workloadEventRequest) {
+        log.info("updateMonthlyWorkload for request={}", workloadEventRequest);
+
         workloadService.calculateAndStoreWorkload(workloadEventRequest);
+        log.info("updating for request={} was successfully", workloadEventRequest);
 
         return ResponseEntity.ok().build();
     }

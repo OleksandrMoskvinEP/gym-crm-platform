@@ -7,8 +7,10 @@ import com.trainersworkloadservice.model.dto.DecreaseWorkloadParams;
 import com.trainersworkloadservice.model.dto.IncreaseWorkloadParams;
 import com.trainersworkloadservice.repository.TrainerRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class WorkloadChangePersistor {
@@ -26,8 +28,10 @@ public class WorkloadChangePersistor {
         YearEntity year = getOrCreateYear(trainer, params.workYear());
         MonthEntity month = getOrCreateMonth(year, params.monthOfYear());
 
-        month.setHours(safeAddNonNegative(month.getHours(), params.hoursDelta()/60));
+        month.setHours(safeAddNonNegative(month.getHours(), params.hoursDelta() / 60));
 
+        log.info("Increasing workload of trainer {} by {} hours in {}/{}",
+                trainer.getUsername(), params.hoursDelta() / 60, params.monthOfYear(), params.workYear());
         repository.save(trainer);
     }
 
@@ -44,10 +48,13 @@ public class WorkloadChangePersistor {
         YearEntity year = getYearOrThrow(trainer, params.workYear());
         MonthEntity month = getMonthOrThrow(year, params.monthOfYear());
 
-        long newHours = month.getHours() - params.hoursToRemove()/60;
+        long newHours = month.getHours() - params.hoursToRemove() / 60;
 
         if (newHours > 0) {
             month.setHours(newHours);
+
+            log.info("Decreasing workload of trainer {} by {} hours in {}/{}",
+                    trainer.getUsername(), params.hoursToRemove() / 60, params.monthOfYear(), params.workYear());
             repository.save(trainer);
 
             return;
@@ -59,6 +66,8 @@ public class WorkloadChangePersistor {
             trainer.removeYear(year);
         }
 
+        log.info("Decreasing workload of trainer {} by {} hours in {}/{}. Month removed.",
+                trainer.getUsername(), params.hoursToRemove() / 60, params.monthOfYear(), params.workYear());
         repository.save(trainer);
     }
 

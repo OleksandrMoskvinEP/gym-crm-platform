@@ -10,6 +10,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class CrossServiceJwtAuthenticationFilter extends OncePerRequestFilter {
@@ -39,6 +41,7 @@ public class CrossServiceJwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         if (request.getRequestURI().startsWith("/h2-console")) {
             filterChain.doFilter(request, response);
+            log.info("Skipping JWT authentication for H2 console");
 
             return;
         }
@@ -47,6 +50,7 @@ public class CrossServiceJwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing Authorization header");
+            log.info("Rejecting request due to missing or invalid Authorization header");
 
             return;
         }
@@ -58,6 +62,7 @@ public class CrossServiceJwtAuthenticationFilter extends OncePerRequestFilter {
 
             if (!"core-service".equals(claims.getSubject())) {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN, "Invalid service identity");
+                log.info("Rejecting request due to invalid service identity");
 
                 return;
             }
@@ -67,8 +72,10 @@ public class CrossServiceJwtAuthenticationFilter extends OncePerRequestFilter {
                     Collections.emptyList());
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            log.info("Setting authentication for service: {}  - successfully", claims.getSubject());
         } catch (JwtException e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token");
+            log.info("Rejecting request due to invalid JWT token");
 
             return;
         }
