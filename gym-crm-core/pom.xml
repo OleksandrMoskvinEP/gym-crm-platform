@@ -314,8 +314,8 @@
                             <inputSpec>${project.basedir}/src/main/resources/openapi/gym.yaml</inputSpec>
                             <generatorName>spring</generatorName>
                             <output>${project.build.directory}/generated-sources/openapi</output>
-                            <apiPackage>com.gym.crm.app.api</apiPackage>
-                            <modelPackage>com.gym.crm.app.rest</modelPackage>
+                            <apiPackage>com.gym.crm.core.api</apiPackage>
+                            <modelPackage>com.gym.crm.core.rest</modelPackage>
                             <configOptions>
                                 <interfaceOnly>true</interfaceOnly>
                                 <dateLibrary>java8</dateLibrary>

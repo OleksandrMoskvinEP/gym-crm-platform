@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>
@@ -10,10 +11,11 @@
             <level>DEBUG</level>
         </filter>
     </appender>
+
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/core/app.log</file>
+        <file>logs/workload/app.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <fileNamePattern>logs/core/app.%i.log.zip</fileNamePattern>
+            <fileNamePattern>logs/workload/app.%i.log.zip</fileNamePattern>
             <minIndex>1</minIndex>
             <maxIndex>3</maxIndex>
         </rollingPolicy>
@@ -27,10 +29,11 @@
             <pattern>%d{HH:mm:ss.SSS} [%X{transactionId}] %-5level %logger{20} - %msg%n</pattern>
         </encoder>
     </appender>
+
     <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/core/app-error.log</file>
+        <file>logs/workload/app-error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/core/app-error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>logs/workload/app-error.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -40,25 +43,6 @@
             <pattern>%d{HH:mm:ss.SSS} [%X{transactionId}] %-5level %logger{20} - %msg%n</pattern>
         </encoder>
     </appender>
-    <appender name="FILE_FEIGN" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/core/feign.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <fileNamePattern>logs/core/feign.%i.log.zip</fileNamePattern>
-            <minIndex>1</minIndex>
-            <maxIndex>5</maxIndex>
-        </rollingPolicy>
-        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <maxFileSize>10MB</maxFileSize>
-        </triggeringPolicy>
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%X{transactionId}] %-5level %logger{20} - %msg%n</pattern>
-        </encoder>
-    </appender>
-
-    <logger name="com.gym.crm.core.client" level="DEBUG" additivity="false">
-        <appender-ref ref="FILE_FEIGN"/>
-        <appender-ref ref="CONSOLE"/>
-    </logger>
 
     <root level="DEBUG">
         <appender-ref ref="FILE"/>
