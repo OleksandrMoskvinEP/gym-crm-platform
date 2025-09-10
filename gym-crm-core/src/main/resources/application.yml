@@ -68,10 +68,12 @@ app:
       - "POST"
       - "PUT"
       - "DELETE"
-      -
+
 logging:
   level:
     org.springframework.boot.autoconfigure: WARN
+    com.gym.crm.app.client.feign: DEBUG
+    feign.Logger: DEBUG
 
 workload:
   service-url: http://localhost:8081/api/v1/trainers-workload

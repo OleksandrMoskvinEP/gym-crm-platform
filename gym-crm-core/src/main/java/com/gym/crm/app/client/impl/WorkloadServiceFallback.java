@@ -13,6 +13,7 @@ public class WorkloadServiceFallback implements WorkloadServiceClient {
     @Override
     public ResponseEntity<Void> addWorkloadEvent(WorkloadRequest workloadRequest) {
         log.error("Fallback triggered! Workload service unavailable for {}", workloadRequest);
+
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
     }
 }

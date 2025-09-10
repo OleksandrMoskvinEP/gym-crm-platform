@@ -1,9 +1,12 @@
 package com.gym.crm.app.config;
 
 import com.gym.crm.app.security.jwt.CrossServiceJwtTokenProvider;
+import feign.Logger;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.MDC;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -14,5 +17,16 @@ public class FeignConfig implements RequestInterceptor {
     @Override
     public void apply(RequestTemplate requestTemplate) {
         requestTemplate.header("Authorization", "Bearer " + crossServiceJwtTokenProvider.generateTokenForService());
+
+        String transactionId = MDC.get("transactionId");
+
+        if (transactionId != null) {
+            requestTemplate.header("X-Transaction-Id", transactionId);
+        }
+    }
+
+    @Bean
+    Logger.Level feignLoggerLevel() {
+        return Logger.Level.FULL;
     }
 }
