@@ -51,3 +51,7 @@ logging:
     org.springframework.web: DEBUG
     org.springframework.cloud: DEBUG
     org.hibernate.SQL: DEBUG
+
+security:
+  jwt:
+    secret: AnotherSecuredSecretKeyForWorkloadService123456

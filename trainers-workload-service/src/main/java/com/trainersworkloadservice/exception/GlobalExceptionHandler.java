@@ -1,13 +1,20 @@
 package com.trainersworkloadservice.exception;
 
+import io.jsonwebtoken.JwtException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.Instant;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -52,5 +59,34 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(BAD_REQUEST_CODE, message));
+    }
+
+    @ExceptionHandler({JwtException.class})
+    public ResponseEntity<Map<String, Object>> handleJwtException(JwtException ex, HttpServletRequest request) {
+        Map<String, Object> body = new LinkedHashMap<>();
+
+        body.put("timestamp", Instant.now().toString());
+        body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
+        body.put("error", "Unauthorized");
+        body.put("message", ex.getMessage());
+        body.put("path", request.getRequestURI());
+
+        return ResponseEntity
+                .status(HttpServletResponse.SC_UNAUTHORIZED)
+                .body(body);
+    }
+
+    @ExceptionHandler({AccessDeniedException.class})
+    public ResponseEntity<Map<String, Object>> handleAccessDenied(AccessDeniedException ex, HttpServletRequest request) {
+        Map<String, Object> body = new LinkedHashMap<>();
+
+        body.put("timestamp", Instant.now().toString());
+        body.put("status", HttpServletResponse.SC_FORBIDDEN);
+        body.put("error", "Forbidden");
+        body.put("message", "You don’t have permission to access this resource");
+        body.put("path", request.getRequestURI());
+
+        return ResponseEntity.status(HttpServletResponse.SC_FORBIDDEN)
+                .body(body);
     }
 }

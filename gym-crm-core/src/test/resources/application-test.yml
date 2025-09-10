@@ -1,6 +1,7 @@
 security:
   jwt:
     secret: "ThisIsAVeryStrongAndSecureTestSecretKeyWhichHas256bits!"
+    workloadServiceSecret: AnotherSecuredSecretKeyForWorkloadService123456
 
 eureka:
   client:
