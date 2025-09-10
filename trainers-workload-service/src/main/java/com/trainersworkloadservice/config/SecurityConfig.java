@@ -21,6 +21,7 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(crossServiceJwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

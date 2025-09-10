@@ -39,9 +39,9 @@ public class CrossServiceJwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        if (request.getRequestURI().startsWith("/h2-console")) {
+        if (request.getRequestURI().startsWith("/h2-console") || request.getRequestURI().startsWith("/actuator")) {
             filterChain.doFilter(request, response);
-            log.info("Skipping JWT authentication for H2 console");
+            log.info("Skipping JWT authentication for path: {}", request.getRequestURI());
 
             return;
         }
@@ -85,10 +85,10 @@ public class CrossServiceJwtAuthenticationFilter extends OncePerRequestFilter {
 
     private Claims validateToken(String token) {
         return Jwts.parser()
-                .setSigningKey(secretKey)
+                .verifyWith(secretKey)
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
+                .parseSignedClaims(token)
+                .getPayload();
     }
 }
 
