@@ -26,7 +26,7 @@ public class TransactionLoggingFilter extends OncePerRequestFilter {
         if (transactionId == null || transactionId.isBlank()) {
             log.info("Generated new transaction ID: {}", transactionId);
             transactionId = UUID.randomUUID().toString();
-        }else {
+        } else {
             log.info("Using provided transaction ID: {}", transactionId);
         }
         MDC.put(TRANSACTION_ID, transactionId);
