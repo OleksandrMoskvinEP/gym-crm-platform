@@ -1,0 +1,40 @@
+package com.gym.crm.core.mapper;
+
+import com.gym.crm.core.domain.dto.trainee.TraineeDto;
+import com.gym.crm.core.domain.dto.trainee.TraineeUpdateRequest;
+import com.gym.crm.core.domain.model.Trainee;
+import com.gym.crm.core.rest.TraineeCreateResponse;
+import com.gym.crm.core.rest.TraineeGetResponse;
+import com.gym.crm.core.rest.TraineeUpdateResponse;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+
+@Mapper(componentModel = "spring", uses = {UserMapper.class})
+public interface TraineeMapper {
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "trainers", ignore = true)
+    @Mapping(target = "trainings", ignore = true)
+    void update(@MappingTarget Trainee trainee, TraineeUpdateRequest dto);
+
+    @Mapping(source = "user.firstName", target = "firstName")
+    @Mapping(source = "user.lastName", target = "lastName")
+    @Mapping(source = "user.username", target = "username")
+    @Mapping(source = "user.password", target = "password")
+    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "user.isActive", target = "isActive")
+    @Mapping(source = "id", target = "traineeId")
+    TraineeDto toDto(Trainee trainee);
+
+    TraineeCreateResponse dtoToCreateResponse(TraineeDto traineeDto);
+
+    @Mapping(target = "trainer", ignore = true)
+    @Mapping(source = "active", target = "isActive")
+    TraineeGetResponse dtoToGetResponse(TraineeDto dto);
+
+    @Mapping(target = "trainers", ignore = true)
+    @Mapping(source = "active", target = "isActive")
+    TraineeUpdateResponse dtoToUpdateResponse(TraineeDto traineeDto);
+}

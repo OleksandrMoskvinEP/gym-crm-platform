@@ -55,7 +55,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.gym.crm.app.client" level="DEBUG" additivity="false">
+    <logger name="com.gym.crm.core.client" level="DEBUG" additivity="false">
         <appender-ref ref="FILE_FEIGN"/>
         <appender-ref ref="CONSOLE"/>
     </logger>

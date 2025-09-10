@@ -1,0 +1,483 @@
+package com.gym.crm.core.facade;
+
+import com.gym.crm.core.client.impl.WorkloadServiceClientImpl;
+import com.gym.crm.core.domain.dto.trainee.TraineeCreateRequest;
+import com.gym.crm.core.domain.dto.trainee.TraineeDto;
+import com.gym.crm.core.domain.dto.trainee.TraineeUpdateRequest;
+import com.gym.crm.core.domain.dto.trainer.TrainerCreateRequest;
+import com.gym.crm.core.domain.dto.trainer.TrainerDto;
+import com.gym.crm.core.domain.dto.trainer.TrainerUpdateRequest;
+import com.gym.crm.core.domain.dto.training.TrainingDto;
+import com.gym.crm.core.domain.dto.training.TrainingSaveRequest;
+import com.gym.crm.core.domain.dto.user.ChangeActivationStatusDto;
+import com.gym.crm.core.domain.model.TrainingType;
+import com.gym.crm.core.mapper.TraineeMapper;
+import com.gym.crm.core.mapper.TrainerMapper;
+import com.gym.crm.core.mapper.TrainingMapper;
+import com.gym.crm.core.mapper.TrainingTypeMapper;
+import com.gym.crm.core.mapper.UserMapper;
+import com.gym.crm.core.repository.search.filters.TraineeTrainingSearchFilter;
+import com.gym.crm.core.repository.search.filters.TrainerTrainingSearchFilter;
+import com.gym.crm.core.rest.ActivationStatusRequest;
+import com.gym.crm.core.rest.AvailableTrainerGetResponse;
+import com.gym.crm.core.rest.ChangePasswordRequest;
+import com.gym.crm.core.rest.TraineeAssignedTrainersUpdateRequest;
+import com.gym.crm.core.rest.TraineeCreateResponse;
+import com.gym.crm.core.rest.TraineeGetResponse;
+import com.gym.crm.core.rest.TraineeTrainingGetResponse;
+import com.gym.crm.core.rest.TraineeUpdateResponse;
+import com.gym.crm.core.rest.TrainerCreateResponse;
+import com.gym.crm.core.rest.TrainerGetResponse;
+import com.gym.crm.core.rest.TrainerTrainingGetResponse;
+import com.gym.crm.core.rest.TrainerUpdateResponse;
+import com.gym.crm.core.rest.TrainingCreateRequest;
+import com.gym.crm.core.rest.TrainingTypeGetResponse;
+import com.gym.crm.core.rest.TrainingTypeRestDto;
+import com.gym.crm.core.rest.TrainingWithTraineeName;
+import com.gym.crm.core.rest.TrainingWithTrainerName;
+import com.gym.crm.core.service.TraineeService;
+import com.gym.crm.core.service.TrainerService;
+import com.gym.crm.core.service.TrainingService;
+import com.gym.crm.core.service.common.UserProfileService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.mapstruct.factory.Mappers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.nullable;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
+class GymFacadeTest {
+    private static final String FIRST_NAME = "Anna";
+    private static final String LAST_NAME = "Smith";
+    private static final String USERNAME = "anna.smith";
+    private static final TrainingType TRAINING_TYPE = TrainingType.builder().build();
+    private static final Long USER_ID = 1L;
+    private static final String ADDRESS = "Independence Avenue 57/23";
+    private static final LocalDate DATE_OF_BIRTH = LocalDate.parse("1990-12-27");
+
+    private static final TrainerDto TRAINER_DTO = buildTrainerDto();
+    private static final TraineeDto TRAINEE_DTO = buildTraineeDto();
+    private static final TrainingDto TRAINING_DTO = buildTrainingDto();
+
+    private static final TraineeCreateResponse TRAINEE_CREATE_RESPONSE = buildTraineeCreateResponse();
+    private static final TrainerCreateResponse TRAINER_CREATE_RESPONSE = buildTrainerCreateResponse();
+    private static final TraineeGetResponse TRAINEE_GET_RESPONSE = buildTraineeGetResponse();
+    private static final TrainerGetResponse TRAINER_GET_RESPONSE = buildTrainerGetResponse();
+    private static final TraineeUpdateResponse TRAINEE_UPDATE_RESPONSE = buildTraineeUpdateResponse();
+    private static final TrainerUpdateResponse TRAINER_UPDATE_RESPONSE = buildTrainerUpdateResponse();
+    private static final TraineeAssignedTrainersUpdateRequest TRAINEE_ASSIGNED_TRAINERS_UPDATE_REQUEST = buildAssignedTrainerRequest();
+    private static final TrainingCreateRequest TRAINING_CREATE_REQUEST = getTrainingCreateRequest();
+
+    @Mock
+    private HttpServletRequest request;
+    @Mock
+    private UserProfileService userProfileService;
+    @Mock
+    private TraineeService traineeService;
+    @Mock
+    private TrainerService trainerService;
+    @Mock
+    private TrainingService trainingService;
+    @Mock
+    private HttpSession session;
+    @Mock
+    private WorkloadServiceClientImpl workloadServiceClientImpl;
+    @Spy
+    private TraineeMapper traineeMapper = Mappers.getMapper(TraineeMapper.class);
+    @Spy
+    private TrainerMapper trainerMapper = Mappers.getMapper(TrainerMapper.class);
+    @Spy
+    private TrainingMapper trainingMapper = Mappers.getMapper(TrainingMapper.class);
+    @Spy
+    private TrainingTypeMapper trainingTypeMapper = Mappers.getMapper(TrainingTypeMapper.class);
+    @Spy
+    private UserMapper userMapper = Mappers.getMapper(UserMapper.class);
+    @InjectMocks
+    private GymFacade facade;
+
+    @Test
+    void shouldReturnAllTrainers() {
+        List<TrainerDto> expected = List.of(TRAINER_DTO);
+        when(trainerService.getAllTrainers()).thenReturn(expected);
+
+        List<TrainerDto> actual = facade.getAllTrainers();
+
+        assertEquals(expected, actual);
+        verify(trainerService).getAllTrainers();
+    }
+
+    @Test
+    void shouldReturnTrainerByUsername() {
+        when(trainerService.getTrainerByUsername(USERNAME)).thenReturn(TRAINER_DTO);
+
+        TrainerGetResponse actual = facade.getTrainerByUsername(USERNAME);
+
+        assertEquals(TRAINER_GET_RESPONSE, actual);
+        verify(trainerService).getTrainerByUsername(USERNAME);
+    }
+
+    @Test
+    void shouldAddTrainer() {
+        TrainerCreateRequest createRequest = TrainerCreateRequest.builder().build();
+        when(trainerService.addTrainer(createRequest)).thenReturn(TRAINER_DTO);
+
+        TrainerCreateResponse actual = facade.addTrainer(createRequest);
+
+        assertEquals(TRAINER_CREATE_RESPONSE, actual);
+        verify(trainerService).addTrainer(createRequest);
+    }
+
+    @Test
+    void shouldUpdateTrainerByUsername() {
+        TrainerUpdateRequest updateRequest = TrainerUpdateRequest.builder().build();
+        when(trainerService.updateTrainerByUsername(USERNAME, updateRequest)).thenReturn(TRAINER_DTO);
+
+        TrainerUpdateResponse actual = facade.updateTrainerByUsername(USERNAME, updateRequest);
+
+        assertEquals(TRAINER_UPDATE_RESPONSE, actual);
+        verify(trainerService).updateTrainerByUsername(USERNAME, updateRequest);
+    }
+
+    @Test
+    void shouldDeleteTrainerByUsername() {
+        doNothing().when(trainerService).deleteTrainerByUsername(USERNAME);
+
+        facade.deleteTrainerByUsername(USERNAME);
+
+        verify(trainerService).deleteTrainerByUsername(USERNAME);
+    }
+
+    @Test
+    void shouldReturnAllTrainees() {
+        List<TraineeDto> expected = List.of(TRAINEE_DTO);
+        when(traineeService.getAllTrainees()).thenReturn(expected);
+
+        List<TraineeDto> actual = facade.getAllTrainees();
+
+        assertEquals(expected, actual);
+        verify(traineeService).getAllTrainees();
+    }
+
+    @Test
+    void shouldReturnTraineeByUsername() {
+        when(traineeService.getTraineeByUsername(USERNAME)).thenReturn(TRAINEE_DTO);
+
+        TraineeGetResponse actual = facade.getTraineeByUsername(USERNAME);
+
+        assertEquals(TRAINEE_GET_RESPONSE, actual);
+        verify(traineeService).getTraineeByUsername(USERNAME);
+    }
+
+    @Test
+    void shouldAddTrainee() {
+        TraineeCreateRequest createRequest = TraineeCreateRequest.builder().build();
+        when(traineeService.addTrainee(createRequest)).thenReturn(TRAINEE_DTO);
+
+        TraineeCreateResponse actual = facade.addTrainee(createRequest);
+
+        assertEquals(TRAINEE_CREATE_RESPONSE, actual);
+        verify(traineeService).addTrainee(createRequest);
+    }
+
+    @Test
+    void shouldUpdateTraineeByUsername() {
+        TraineeUpdateRequest updateRequest = TraineeUpdateRequest.builder().build();
+        when(traineeService.updateTraineeByUsername(USERNAME, updateRequest)).thenReturn(TRAINEE_DTO);
+
+        TraineeUpdateResponse actual = facade.updateTraineeByUsername(USERNAME, updateRequest);
+
+        assertEquals(TRAINEE_UPDATE_RESPONSE, actual);
+        verify(traineeService).updateTraineeByUsername(USERNAME, updateRequest);
+    }
+
+    @Test
+    void shouldDeleteTraineeByUsername() {
+        doNothing().when(traineeService).deleteTraineeByUsername(USERNAME);
+
+        facade.deleteTraineeByUsername(USERNAME);
+
+        verify(traineeService).deleteTraineeByUsername(USERNAME);
+    }
+
+    @Test
+    void shouldReturnAllTrainings() {
+        List<TrainingDto> expected = List.of(TRAINING_DTO);
+
+        when(trainingService.getAllTrainings()).thenReturn(expected);
+
+        List<TrainingDto> actual = facade.getAllTrainings();
+
+        assertEquals(expected, actual);
+        verify(trainingService).getAllTrainings();
+    }
+
+    @Test
+    void shouldAddTraining() {
+        TraineeDto trainee = new TraineeDto();
+        trainee.setUserId(1L);
+
+        TrainerDto trainer = new TrainerDto();
+        trainer.setUserId(2L);
+        trainer.setSpecialization(TrainingType.builder().trainingTypeName("windsurfing").build());
+
+        TrainingDto expected = new TrainingDto();
+        expected.setTrainingName("Yoga");
+        expected.setTrainerId(trainer.getUserId());
+        expected.setTraineeId(trainee.getUserId());
+        expected.setTrainingDuration(BigDecimal.valueOf(1));
+        expected.setTrainingType(TrainingType.builder().build());
+        expected.setTrainingDate(LocalDate.now());
+
+        when(traineeService.getTraineeByUsername("kevin.jackson")).thenReturn(trainee);
+        when(trainerService.getTrainerByUsername("chris.tenet")).thenReturn(trainer);
+        when(trainingService.addTraining(any())).thenReturn(expected);
+        doNothing().when(workloadServiceClientImpl).callWorkloadService(nullable(TrainingCreateRequest.class), any(TrainerDto.class));
+        TrainingDto actual = facade.addTraining(TRAINING_CREATE_REQUEST);
+
+        assertEquals(TRAINING_DTO, actual);
+        assertEquals(expected, actual);
+        verify(trainingService).addTraining(any(TrainingSaveRequest.class));
+    }
+
+    @Test
+    void shouldUpdateTraining() {
+        TrainingSaveRequest saveRequest = TrainingSaveRequest.builder().build();
+        when(trainingService.updateTraining(saveRequest)).thenReturn(TRAINING_DTO);
+
+        TrainingDto actual = facade.updateTraining(saveRequest);
+
+        assertEquals(TRAINING_DTO, actual);
+        verify(trainingService).updateTraining(saveRequest);
+    }
+
+    @Test
+    void shouldChangePassword() {
+        String username = "username";
+        String password = "password";
+
+        facade.changePassword(new ChangePasswordRequest(username, "", password));
+
+        verify(userProfileService).changePassword(username, "", password);
+    }
+
+    @Test
+    void shouldReturnUnassignedTrainersByTraineeUsername() {
+        List<TrainerDto> trainerDtoList = List.of(TRAINER_DTO);
+        AvailableTrainerGetResponse expected = new AvailableTrainerGetResponse(trainerDtoList.stream()
+                .map(trainerMapper::toEntity).toList());
+
+        when(traineeService.getUnassignedTrainersByTraineeUsername(anyString())).thenReturn(trainerDtoList);
+
+        AvailableTrainerGetResponse actual = facade.getUnassignedTrainersByTraineeUsername("username");
+
+        assertEquals(expected, actual);
+        verify(traineeService).getUnassignedTrainersByTraineeUsername("username");
+    }
+
+    @Test
+    void shouldUpdateTraineeTrainersList() {
+        when(traineeService.updateTraineeTrainersByUsername(anyString(), anyList())).thenReturn(List.of());
+
+        facade.updateTraineeTrainersList("username", TRAINEE_ASSIGNED_TRAINERS_UPDATE_REQUEST);
+
+        verify(traineeService).updateTraineeTrainersByUsername("username", List.of("username"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    void shouldSwitchActivationStatus(boolean isActive) {
+        ActivationStatusRequest restRequest = new ActivationStatusRequest(isActive);
+        ChangeActivationStatusDto activationStatusDto = ChangeActivationStatusDto.builder()
+                .username(USERNAME)
+                .isActive(isActive)
+                .build();
+
+        doNothing().when(userProfileService).switchActivationStatus(activationStatusDto);
+
+        facade.switchActivationStatus(USERNAME, restRequest);
+
+        verify(userProfileService).switchActivationStatus(activationStatusDto);
+    }
+
+    @Test
+    void shouldReturnTrainingFoundByTraineeCriteria() {
+        TraineeTrainingSearchFilter searchFilter = TraineeTrainingSearchFilter.builder()
+                .username(USERNAME)
+                .build();
+        TrainingWithTrainerName expected = getTrainingWithTrainerName();
+
+        when(trainingService.getTraineeTrainingsByFilter(searchFilter)).thenReturn(List.of(TRAINING_DTO));
+        when(trainerService.getTrainerNameById(TRAINING_DTO.getTrainerId())).thenReturn("anna.smith");
+
+        TraineeTrainingGetResponse actual = facade.getTraineeTrainingsByFilter(searchFilter);
+
+        assertEquals(1, actual.getTrainings().size());
+        assertEquals(expected, actual.getTrainings().get(0));
+        verify(trainingService).getTraineeTrainingsByFilter(searchFilter);
+    }
+
+    @Test
+    void shouldReturnTrainingFoundByTrainerCriteria() {
+        TrainerTrainingSearchFilter searchFilter = TrainerTrainingSearchFilter.builder()
+                .username(USERNAME)
+                .build();
+        TrainingWithTraineeName expected = getTrainingWithTraineeName();
+
+        when(trainingService.getTrainerTrainingsByFilter(searchFilter)).thenReturn(List.of(TRAINING_DTO));
+        when(traineeService.getTraineeNameById(TRAINING_DTO.getTrainerId())).thenReturn("anna.smith");
+
+        TrainerTrainingGetResponse actual = facade.getTrainerTrainingsByFilter(searchFilter);
+
+        assertEquals(1, actual.getTrainings().size());
+        assertEquals(expected, actual.getTrainings().get(0));
+        verify(trainingService).getTrainerTrainingsByFilter(searchFilter);
+    }
+
+    @Test
+    void ShouldReturnAllTrainingsTypes() {
+        TrainingTypeGetResponse response = new TrainingTypeGetResponse().trainingTypes(List.of(new TrainingTypeRestDto()));
+
+        when(trainingService.getTrainingTypes()).thenReturn(List.of(TrainingType.builder().build()));
+
+        var actual = facade.getAllTrainingsTypes();
+
+        assertEquals(response.getTrainingTypes(), actual.getTrainingTypes());
+        verify(trainingService).getTrainingTypes();
+    }
+
+    private static TrainerDto buildTrainerDto() {
+        return TrainerDto.builder()
+                .firstName(FIRST_NAME)
+                .lastName(LAST_NAME)
+                .username(USERNAME)
+                .userId(USER_ID)
+                .specialization(TRAINING_TYPE)
+                .build();
+    }
+
+    private static TraineeDto buildTraineeDto() {
+        return TraineeDto.builder()
+                .firstName(FIRST_NAME)
+                .lastName(LAST_NAME)
+                .username(USERNAME)
+                .userId(USER_ID)
+                .address(ADDRESS)
+                .dateOfBirth(DATE_OF_BIRTH)
+                .isActive(true)
+                .build();
+    }
+
+    private static TrainingDto buildTrainingDto() {
+        return TrainingDto.builder()
+                .traineeId(1L)
+                .trainerId(2L)
+                .trainingDate(LocalDate.now())
+                .trainingDuration(BigDecimal.ONE)
+                .trainingName("Yoga")
+                .trainingType(TRAINING_TYPE)
+                .build();
+    }
+
+    private static TraineeCreateResponse buildTraineeCreateResponse() {
+        return new TraineeCreateResponse(TRAINEE_DTO.getUsername(), TRAINEE_DTO.getPassword());
+    }
+
+    private static TrainerCreateResponse buildTrainerCreateResponse() {
+        return new TrainerCreateResponse(TRAINER_DTO.getUsername(), TRAINER_DTO.getPassword());
+    }
+
+    private static TraineeGetResponse buildTraineeGetResponse() {
+        return new TraineeGetResponse()
+                .firstName(TRAINEE_DTO.getFirstName())
+                .lastName(TRAINEE_DTO.getLastName())
+                .address(TRAINEE_DTO.getAddress())
+                .dateOfBirth(TRAINEE_DTO.getDateOfBirth())
+                .isActive(TRAINEE_DTO.isActive());
+    }
+
+    private static TrainerGetResponse buildTrainerGetResponse() {
+        return new TrainerGetResponse()
+                .firstName(TRAINER_DTO.getFirstName())
+                .lastName(TRAINER_DTO.getLastName())
+                .specialization(TRAINER_DTO.getSpecialization().getTrainingTypeName())
+                .isActive(TRAINER_DTO.isActive());
+    }
+
+    private static TraineeUpdateResponse buildTraineeUpdateResponse() {
+        return new TraineeUpdateResponse()
+                .firstName(TRAINEE_DTO.getFirstName())
+                .lastName(TRAINEE_DTO.getLastName())
+                .username(TRAINEE_DTO.getUsername())
+                .address(TRAINEE_DTO.getAddress())
+                .dateOfBirth(TRAINEE_DTO.getDateOfBirth())
+                .isActive(TRAINEE_DTO.isActive());
+    }
+
+    private static TrainerUpdateResponse buildTrainerUpdateResponse() {
+        return new TrainerUpdateResponse()
+                .firstName(TRAINER_DTO.getFirstName())
+                .lastName(TRAINER_DTO.getLastName())
+                .specialization(TRAINER_DTO.getSpecialization().getTrainingTypeName())
+                .isActive(TRAINER_DTO.isActive())
+                .username(TRAINER_DTO.getUsername());
+    }
+
+    private static TraineeAssignedTrainersUpdateRequest buildAssignedTrainerRequest() {
+        List<String> list = List.of("username");
+
+        return new TraineeAssignedTrainersUpdateRequest(list);
+    }
+
+    private static TrainingWithTrainerName getTrainingWithTrainerName() {
+        TrainingWithTrainerName expected = new TrainingWithTrainerName();
+        expected.setTrainingName(TRAINING_DTO.getTrainingName());
+        expected.setTrainingDate(TRAINING_DTO.getTrainingDate());
+        expected.setTrainingDuration(TRAINING_DTO.getTrainingDuration().intValue());
+        expected.setTrainingType(TRAINING_DTO.getTrainingType().getTrainingTypeName());
+        expected.setTrainerName("anna.smith");
+
+        return expected;
+    }
+
+    private static TrainingWithTraineeName getTrainingWithTraineeName() {
+        TrainingWithTraineeName expected = new TrainingWithTraineeName();
+        expected.setTrainingName(TRAINING_DTO.getTrainingName());
+        expected.setTrainingDate(TRAINING_DTO.getTrainingDate());
+        expected.setTrainingDuration(TRAINING_DTO.getTrainingDuration().intValue());
+        expected.setTrainingType(TRAINING_DTO.getTrainingType().getTrainingTypeName());
+        expected.setTraineeName("anna.smith");
+
+        return expected;
+    }
+
+    private static TrainingCreateRequest getTrainingCreateRequest() {
+        TrainingCreateRequest request = new TrainingCreateRequest();
+        request.setTrainingName("Cardio");
+        request.setTrainingDate(LocalDate.of(2025, 7, 22));
+        request.setTrainingDuration(60);
+        request.setTrainingName("Stretching");
+        request.setTraineeUsername("kevin.jackson");
+        request.setTrainerUsername("chris.tenet");
+
+        return request;
+    }
+}
