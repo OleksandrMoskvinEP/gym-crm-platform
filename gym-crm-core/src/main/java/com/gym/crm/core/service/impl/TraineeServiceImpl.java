@@ -1,5 +1,6 @@
 package com.gym.crm.core.service.impl;
 
+import com.gym.crm.core.client.impl.WorkloadServiceClientImpl;
 import com.gym.crm.core.domain.dto.trainee.TraineeCreateRequest;
 import com.gym.crm.core.domain.dto.trainee.TraineeDto;
 import com.gym.crm.core.domain.dto.trainee.TraineeUpdateRequest;
@@ -42,6 +43,7 @@ public class TraineeServiceImpl implements TraineeService {
     private final TrainerMapper trainerMapper;
     private final TraineeMapper traineeMapper;
     private final TrainerRepository trainerRepository;
+    private final WorkloadServiceClientImpl workloadService;
 
     @Setter
     private ModelMapper modelMapper;
@@ -101,11 +103,12 @@ public class TraineeServiceImpl implements TraineeService {
 
     @Override
     public void deleteTraineeByUsername(String username) {
-        if (repository.findByUserUsername(username).isEmpty()) {
-            throw new DataBaseErrorException(String.format(NOT_FOUND_ERROR_RESPONSE, username));
-        }
+        Trainee trainee = repository.findByUserUsername(username).orElseThrow(
+                () -> new DataBaseErrorException(String.format(NOT_FOUND_ERROR_RESPONSE, username)));
 
         repository.deleteByUserUsername(username);
+
+        trainee.getTrainings().forEach(workloadService::callWorkloadServiceDelete);
         logger.info("Trainee was successfully deleted");
     }
 

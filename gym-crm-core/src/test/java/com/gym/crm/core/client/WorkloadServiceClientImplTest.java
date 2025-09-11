@@ -29,14 +29,14 @@ class WorkloadServiceClientImplTest {
     private WorkloadServiceClientImpl workloadServiceClient;
 
     @Test
-    void shouldCallWorkloadService_whenResponseIsOk() {
+    void shouldCallWorkloadService_Add_whenResponseIsOk() {
         TrainingCreateRequest request = getTrainingCreateRequest();
         TrainerDto trainer = getTrainerDto();
 
         when(client.addWorkloadEvent(any()))
                 .thenReturn(ResponseEntity.ok().build());
 
-        assertDoesNotThrow(() -> workloadServiceClient.callWorkloadService(request, trainer));
+        assertDoesNotThrow(() -> workloadServiceClient.callWorkloadServiceAdd(request, trainer));
 
         verify(client).addWorkloadEvent(any(WorkloadRequest.class));
     }
@@ -51,7 +51,7 @@ class WorkloadServiceClientImplTest {
                 .thenReturn(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
 
         assertThrows(CoreServiceException.class,
-                () -> workloadServiceClient.callWorkloadService(request, trainer));
+                () -> workloadServiceClient.callWorkloadServiceAdd(request, trainer));
 
         verify(client).addWorkloadEvent(any(WorkloadRequest.class));
     }

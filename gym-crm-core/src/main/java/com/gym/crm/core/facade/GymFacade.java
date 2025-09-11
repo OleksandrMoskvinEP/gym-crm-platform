@@ -163,7 +163,7 @@ public class GymFacade {
         TrainerDto trainer = trainerService.getTrainerByUsername(request.getTrainerUsername());
         TraineeDto trainee = traineeService.getTraineeByUsername(request.getTraineeUsername());
 
-        workloadServiceClientImpl.callWorkloadService(request, trainer);
+        workloadServiceClientImpl.callWorkloadServiceAdd(request, trainer);
 
         TrainingSaveRequest saveRequest = new TrainingSaveRequest();
         saveRequest.setTrainingName(request.getTrainingName());
