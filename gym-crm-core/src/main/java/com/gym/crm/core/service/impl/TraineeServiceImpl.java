@@ -107,9 +107,10 @@ public class TraineeServiceImpl implements TraineeService {
                 () -> new DataBaseErrorException(String.format(NOT_FOUND_ERROR_RESPONSE, username)));
 
         repository.deleteByUserUsername(username);
+        logger.info("Trainee was successfully deleted");
 
         trainee.getTrainings().forEach(workloadService::callWorkloadServiceDelete);
-        logger.info("Trainee was successfully deleted");
+        logger.info("Workload service was notified to delete {} trainings", trainee.getTrainings().size());
     }
 
     @Override
