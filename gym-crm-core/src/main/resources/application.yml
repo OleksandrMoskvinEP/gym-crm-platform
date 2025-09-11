@@ -58,17 +58,6 @@ services:
   discovery-service: "discovery-eureka-service"
   gateway-service: "api-gateway-service"
 
-app:
-  cors:
-    allowed-origins:
-      - "http://localhost:3000"
-      - "http://localhost:4200"
-    allowed-methods:
-      - "GET"
-      - "POST"
-      - "PUT"
-      - "DELETE"
-
 logging:
   level:
     org.springframework.boot.autoconfigure: WARN
