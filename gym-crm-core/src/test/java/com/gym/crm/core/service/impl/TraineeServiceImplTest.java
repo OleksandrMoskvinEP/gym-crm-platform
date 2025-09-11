@@ -1,5 +1,6 @@
 package com.gym.crm.core.service.impl;
 
+import com.gym.crm.core.client.impl.WorkloadServiceClientImpl;
 import com.gym.crm.core.data.TestData;
 import com.gym.crm.core.domain.dto.trainee.TraineeCreateRequest;
 import com.gym.crm.core.domain.dto.trainee.TraineeDto;
@@ -8,6 +9,7 @@ import com.gym.crm.core.domain.dto.trainer.TrainerDto;
 import com.gym.crm.core.domain.dto.user.UserCreateRequest;
 import com.gym.crm.core.domain.model.Trainee;
 import com.gym.crm.core.domain.model.Trainer;
+import com.gym.crm.core.domain.model.Training;
 import com.gym.crm.core.domain.model.User;
 import com.gym.crm.core.exception.DataBaseErrorException;
 import com.gym.crm.core.mapper.TraineeMapper;
@@ -31,6 +33,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -42,8 +45,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -68,6 +74,8 @@ class TraineeServiceImplTest {
     private AuthenticatedUserService authenticatedUserService;
     @Mock
     private TrainerMapper trainerMapper;
+    @Mock
+    private WorkloadServiceClientImpl workloadService;
     @Spy
     private TraineeMapper traineeMapper;
 
@@ -141,6 +149,33 @@ class TraineeServiceImplTest {
         assertEquals(expected.getPassword(), actual.getPassword());
         assertEquals(expected.getAddress(), actual.getAddress());
         assertEquals(expected.getDateOfBirth(), actual.getDateOfBirth());
+    }
+
+    @Test
+    void shouldThrowException_whenTraineeNotFoundOnDelete() {
+        String username = "not.exists";
+
+        when(repository.findByUserUsername(username)).thenReturn(Optional.empty());
+
+        assertThrows(DataBaseErrorException.class,
+                () -> traineeService.deleteTraineeByUsername(username));
+
+        verify(repository, never()).deleteByUserUsername(anyString());
+        verifyNoInteractions(workloadService);
+    }
+
+    @Test
+    void shouldDeleteTraineeAndNotifyWorkloadService() {
+        String username = "Bob.Williams";
+        Trainee trainee = getTraineeEntity(username);
+
+        when(repository.findByUserUsername(username)).thenReturn(Optional.of(trainee));
+        doNothing().when(repository).deleteByUserUsername(username);
+
+        traineeService.deleteTraineeByUsername(username);
+
+        verify(repository).deleteByUserUsername(username);
+        verify(workloadService, times(1)).callWorkloadServiceDelete(any(Training.class));
     }
 
     @ParameterizedTest
@@ -301,5 +336,17 @@ class TraineeServiceImplTest {
                         .user(User.builder().firstName("Anna").lastName("Stone").username("Anna.Stone").build())
                         .build()
         );
+    }
+
+    private static Trainee getTraineeEntity(String username) {
+        Training training = Training.builder()
+                .trainingDate(LocalDate.now())
+                .trainingDuration(new BigDecimal(60))
+                .build();
+        return Trainee.builder()
+                .id(1L)
+                .user(User.builder().username(username).build())
+                .trainings(List.of(training))
+                .build();
     }
 }
