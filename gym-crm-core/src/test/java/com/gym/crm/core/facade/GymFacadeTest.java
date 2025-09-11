@@ -250,7 +250,7 @@ class GymFacadeTest {
         when(traineeService.getTraineeByUsername("kevin.jackson")).thenReturn(trainee);
         when(trainerService.getTrainerByUsername("chris.tenet")).thenReturn(trainer);
         when(trainingService.addTraining(any())).thenReturn(expected);
-        doNothing().when(workloadServiceClientImpl).callWorkloadService(nullable(TrainingCreateRequest.class), any(TrainerDto.class));
+        doNothing().when(workloadServiceClientImpl).callWorkloadServiceAdd(nullable(TrainingCreateRequest.class), any(TrainerDto.class));
         TrainingDto actual = facade.addTraining(TRAINING_CREATE_REQUEST);
 
         assertEquals(TRAINING_DTO, actual);
