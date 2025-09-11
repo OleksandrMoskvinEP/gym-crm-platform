@@ -8,6 +8,7 @@ To run this application, you should have the following installed:
 - **Maven** -- Apache Maven 3.9.9
 - **Git** -- 2.49.0.windows.1
 - **Docker** + **Docker Compose** — to run PostgreSQL, Prometheus, Grafana, and the application in containers
+
 ## Setup Instructions
 
 Run the following script to create the database and add a user:
@@ -35,6 +36,7 @@ Alternatively, run the packaged jar located in the `target` directory:
    mvn -pl gym-crm-core -am -DskipTests package
    java -jar gym-crm-core/target/gym-crm-core-0.0.1-SNAPSHOT.jar
 ```
+
 The application will be accessible at `http://localhost:8080`.
 
 ## 📚 API Documentation
