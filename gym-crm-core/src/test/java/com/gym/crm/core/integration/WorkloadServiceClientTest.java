@@ -1,7 +1,8 @@
-package com.gym.crm.core.client;
+package com.gym.crm.core.integration;
 
-import com.gym.crm.core.client.common.MessageSender;
-import com.gym.crm.core.client.dto.WorkloadEventRequest;
+import com.gym.crm.core.integration.workload.WorkloadServiceClient;
+import com.gym.crm.core.integration.workload.common.MessageSender;
+import com.gym.crm.core.integration.workload.dto.WorkloadEventRequest;
 import com.gym.crm.core.domain.dto.trainer.TrainerDto;
 import com.gym.crm.core.domain.model.Trainer;
 import com.gym.crm.core.domain.model.Training;

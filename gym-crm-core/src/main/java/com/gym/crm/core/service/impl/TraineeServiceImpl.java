@@ -1,6 +1,6 @@
 package com.gym.crm.core.service.impl;
 
-import com.gym.crm.core.client.WorkloadServiceClient;
+import com.gym.crm.core.integration.workload.WorkloadServiceClient;
 import com.gym.crm.core.domain.dto.trainee.TraineeCreateRequest;
 import com.gym.crm.core.domain.dto.trainee.TraineeDto;
 import com.gym.crm.core.domain.dto.trainee.TraineeUpdateRequest;

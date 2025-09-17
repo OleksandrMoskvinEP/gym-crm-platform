@@ -11,6 +11,18 @@ spring:
     properties:
       hibernate:
         show_sql: false
+  activemq:
+    broker-url: ${BROKER_URL}
+    user: ${BROKER_USER}
+    password: ${BROKER_PASSWORD}
+    packages:
+      trust-all: true
+  jms:
+    client-id: workload-service
+    listener:
+      auto-startup: true
+      session:
+        acknowledge-mode: auto
 
 logging:
   level:
