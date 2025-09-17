@@ -79,6 +79,8 @@ class AccessToFacadeMethodsTest {
     @MockitoBean
     private UserMapper userMapper;
     @MockitoBean
+    private PendingTrainingStore pendingTrainingStore;
+    @MockitoBean
     private WorkloadServiceClient workloadServiceClient;
 
     @Test
