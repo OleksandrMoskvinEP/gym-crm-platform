@@ -1,86 +1,53 @@
-package com.gym.crm.core.client;
+package com.gym.crm.core.integration;
 
-import com.gym.crm.core.client.dto.WorkloadRequest;
-import com.gym.crm.core.client.impl.WorkloadServiceClientImpl;
+import com.gym.crm.core.integration.workload.WorkloadServiceClient;
+import com.gym.crm.core.integration.workload.common.MessageSender;
+import com.gym.crm.core.integration.workload.dto.WorkloadEventRequest;
 import com.gym.crm.core.domain.dto.trainer.TrainerDto;
 import com.gym.crm.core.domain.model.Trainer;
 import com.gym.crm.core.domain.model.Training;
 import com.gym.crm.core.domain.model.User;
-import com.gym.crm.core.exception.CoreServiceException;
 import com.gym.crm.core.rest.TrainingCreateRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class WorkloadServiceClientImplTest {
+class WorkloadServiceClientTest {
     @Mock
-    private WorkloadServiceClient client;
+    private MessageSender messageSender;
     @InjectMocks
-    private WorkloadServiceClientImpl workloadServiceClient;
+    private WorkloadServiceClient workloadServiceClient;
 
     @Test
     void shouldCallWorkloadService_Add_whenResponseIsOk() {
         TrainingCreateRequest request = getTrainingCreateRequest();
         TrainerDto trainer = getTrainerDto();
 
-        when(client.addWorkloadEvent(any()))
-                .thenReturn(ResponseEntity.ok().build());
+        doNothing().when(messageSender).notifyWorkloadService(any(WorkloadEventRequest.class));
 
         assertDoesNotThrow(() -> workloadServiceClient.callWorkloadServiceAdd(request, trainer));
-
-        verify(client).addWorkloadEvent(any(WorkloadRequest.class));
-    }
-
-
-    @Test
-    void shouldThrowException_whenResponseIsNotOk() {
-        TrainingCreateRequest request = getTrainingCreateRequest();
-        TrainerDto trainer = getTrainerDto();
-
-        when(client.addWorkloadEvent(any()))
-                .thenReturn(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
-
-        assertThrows(CoreServiceException.class,
-                () -> workloadServiceClient.callWorkloadServiceAdd(request, trainer));
-
-        verify(client).addWorkloadEvent(any(WorkloadRequest.class));
+        verify(messageSender).notifyWorkloadService(any(WorkloadEventRequest.class));
     }
 
     @Test
-    void shouldCallWorkloadService_Delete_whenResponseIsOk() {
+    void shouldCallWorkloadService_Delete() {
         Training training = getTraining();
 
-        when(client.addWorkloadEvent(any()))
-                .thenReturn(ResponseEntity.ok().build());
+        doNothing().when(messageSender).notifyWorkloadService(any(WorkloadEventRequest.class));
 
         assertDoesNotThrow(() -> workloadServiceClient.callWorkloadServiceDelete(training));
-        verify(client).addWorkloadEvent(any(WorkloadRequest.class));
-    }
-
-    @Test
-    void shouldThrowException_whenDeleteResponseIsNotOk() {
-        Training training = getTraining();
-
-        when(client.addWorkloadEvent(any()))
-                .thenReturn(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
-
-        assertThrows(CoreServiceException.class,
-                () -> workloadServiceClient.callWorkloadServiceDelete(training));
-        verify(client).addWorkloadEvent(any(WorkloadRequest.class));
+        verify(messageSender).notifyWorkloadService(any(WorkloadEventRequest.class));
     }
 
     private static TrainingCreateRequest getTrainingCreateRequest() {

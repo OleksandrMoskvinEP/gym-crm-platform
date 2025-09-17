@@ -1,6 +1,6 @@
 package com.gym.crm.core.service.impl;
 
-import com.gym.crm.core.client.impl.WorkloadServiceClientImpl;
+import com.gym.crm.core.integration.workload.WorkloadServiceClient;
 import com.gym.crm.core.data.TestData;
 import com.gym.crm.core.domain.dto.trainee.TraineeCreateRequest;
 import com.gym.crm.core.domain.dto.trainee.TraineeDto;
@@ -75,7 +75,7 @@ class TraineeServiceImplTest {
     @Mock
     private TrainerMapper trainerMapper;
     @Mock
-    private WorkloadServiceClientImpl workloadService;
+    private WorkloadServiceClient workloadService;
     @Spy
     private TraineeMapper traineeMapper;
 

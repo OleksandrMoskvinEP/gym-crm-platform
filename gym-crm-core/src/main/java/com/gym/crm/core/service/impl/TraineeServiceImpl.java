@@ -1,6 +1,6 @@
 package com.gym.crm.core.service.impl;
 
-import com.gym.crm.core.client.impl.WorkloadServiceClientImpl;
+import com.gym.crm.core.integration.workload.WorkloadServiceClient;
 import com.gym.crm.core.domain.dto.trainee.TraineeCreateRequest;
 import com.gym.crm.core.domain.dto.trainee.TraineeDto;
 import com.gym.crm.core.domain.dto.trainee.TraineeUpdateRequest;
@@ -43,7 +43,7 @@ public class TraineeServiceImpl implements TraineeService {
     private final TrainerMapper trainerMapper;
     private final TraineeMapper traineeMapper;
     private final TrainerRepository trainerRepository;
-    private final WorkloadServiceClientImpl workloadService;
+    private final WorkloadServiceClient workloadService;
 
     @Setter
     private ModelMapper modelMapper;

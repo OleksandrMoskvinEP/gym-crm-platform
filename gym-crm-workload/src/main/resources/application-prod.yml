@@ -3,3 +3,16 @@ logging:
     org.springframework.web: INFO
     org.springframework.cloud: INFO
     org.hibernate.SQL: INFO
+
+  activemq:
+    broker-url: ${BROKER_URL}
+    user: ${BROKER_USER}
+    password: ${BROKER_PASSWORD}
+    packages:
+      trust-all: true
+  jms:
+    client-id: workload-service
+    listener:
+      auto-startup: true
+      session:
+        acknowledge-mode: auto

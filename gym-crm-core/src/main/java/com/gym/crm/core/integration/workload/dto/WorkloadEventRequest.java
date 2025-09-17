@@ -1,4 +1,4 @@
-package com.gym.crm.core.client.dto;
+package com.gym.crm.core.integration.workload.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDate;
 
-public record WorkloadRequest(
+public record WorkloadEventRequest(
         @NotBlank String username,
         @NotBlank String firstName,
         @NotBlank String lastName,

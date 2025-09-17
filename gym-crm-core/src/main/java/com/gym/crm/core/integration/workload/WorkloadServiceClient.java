@@ -1,23 +1,21 @@
-package com.gym.crm.core.client.impl;
+package com.gym.crm.core.integration.workload;
 
-import com.gym.crm.core.client.WorkloadServiceClient;
-import com.gym.crm.core.client.dto.WorkloadRequest;
+import com.gym.crm.core.integration.workload.common.MessageSender;
+import com.gym.crm.core.integration.workload.dto.WorkloadEventRequest;
 import com.gym.crm.core.domain.dto.trainer.TrainerDto;
 import com.gym.crm.core.domain.model.Training;
-import com.gym.crm.core.exception.CoreServiceException;
 import com.gym.crm.core.rest.TrainingCreateRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class WorkloadServiceClientImpl {
-    private final WorkloadServiceClient workloadClient;
+public class WorkloadServiceClient {
+    private final MessageSender messageSender;
 
     public void callWorkloadServiceAdd(@Valid TrainingCreateRequest request, TrainerDto trainer) {
-        WorkloadRequest workloadEventRequest = new WorkloadRequest(
+        WorkloadEventRequest workloadEventRequest = new WorkloadEventRequest(
                 trainer.getUsername(),
                 trainer.getFirstName(),
                 trainer.getLastName(),
@@ -27,15 +25,11 @@ public class WorkloadServiceClientImpl {
                 request.getTrainingDuration() > 0 ? "ADD" : "DELETE"
         );
 
-        ResponseEntity<Void> response = workloadClient.addWorkloadEvent(workloadEventRequest);
-
-        if (!response.getStatusCode().is2xxSuccessful()) {
-            throw new CoreServiceException("Workload service returned error: " + response.getStatusCode());
-        }
+        messageSender.notifyWorkloadService(workloadEventRequest);
     }
 
     public void callWorkloadServiceDelete(Training training) {
-        WorkloadRequest workloadEventRequest = new WorkloadRequest(
+        WorkloadEventRequest workloadEventRequest = new WorkloadEventRequest(
                 training.getTrainer().getUser().getUsername(),
                 training.getTrainer().getUser().getFirstName(),
                 training.getTrainer().getUser().getLastName(),
@@ -45,10 +39,6 @@ public class WorkloadServiceClientImpl {
                 "DELETE"
         );
 
-        ResponseEntity<Void> response = workloadClient.addWorkloadEvent(workloadEventRequest);
-
-        if (!response.getStatusCode().is2xxSuccessful()) {
-            throw new CoreServiceException("Workload service returned error: " + response.getStatusCode());
-        }
+        messageSender.notifyWorkloadService(workloadEventRequest);
     }
 }

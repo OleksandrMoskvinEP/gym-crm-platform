@@ -11,8 +11,22 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
   liquibase:
     enabled: true
+
+  activemq:
+    broker-url: tcp://localhost:61616
+    user: admin
+    password: admin
+    packages:
+      trust-all: true
+  jms:
+    client-id: core-service
+    listener:
+      auto-startup: true
+      session:
+        acknowledge-mode: auto
 
 logging:
   level:

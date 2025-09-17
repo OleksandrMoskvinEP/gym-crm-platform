@@ -22,22 +22,80 @@ GRANT ALL PRIVILEGES ON DATABASE
 "gym" TO gym;
 ```
 
-### ⚙️ Running the application
+### ⚙️ Running Gym CRM Platform with ActiveMQ
+The Gym CRM Platform consists of several microservices that work together to provide
+a comprehensive solution for managing gym operations.
 
-After building the project you can start the server using Spring Boot:
+#### Services
+- **core-service** – main business logic (trainings, users)
+- **workload-service** – trainer workload aggregation
+- **discovery-service** – Eureka server
+- **gateway-service** – API Gateway
+- **ActiveMQ** – message broker (Docker)
+- **Zipkin** *(optional)* – distributed tracing
 
+---
+
+##  Required Environment Variables
+
+Before running any service you must set up the following variables:
+
+### Database (Postgres)
+- `DB_URL` – JDBC connection string
+    - Local: `jdbc:postgresql://localhost:5432/gymcrm`
+    - Prod (docker-compose): `jdbc:postgresql://postgres:5432/gymcrm`
+- `DB_USERNAME` – database username
+    - default: `postgres`
+- `DB_PASSWORD` – database password
+    - default: `postgres`
+
+### ActiveMQ
+- `ACTIVEMQ_URL` – broker connection URL
+    - Local: `tcp://localhost:61616`
+    - Prod (docker-compose): `tcp://activemq:61616`
+- `ACTIVEMQ_USER` – broker username (default: `admin`)
+- `ACTIVEMQ_PASSWORD` – broker password (default: `admin`)
+
+---
+
+## ▶️ Running Locally
+
+Set the required environment variables in your terminal:
+**Windows (PowerShell)**
 ```bash
-  mvn spring-boot:run
-```
+   $env:DB_URL="jdbc:postgresql://localhost:5432/gymcrm"
+   $env:DB_USERNAME="postgres"
+   $env:DB_PASSWORD="postgres"
 
-Alternatively, run the packaged jar located in the `target` directory:
+   $env:ACTIVEMQ_URL="tcp://localhost:61616"
+   $env:ACTIVEMQ_USER="admin"
+   $env:ACTIVEMQ_PASSWORD="admin"
+````
+### Start the services in order:
 
-```bash
-   mvn -pl gym-crm-core -am -DskipTests package
-   java -jar gym-crm-core/target/gym-crm-core-0.0.1-SNAPSHOT.jar
-```
+discovery-service
 
-The application will be accessible at `http://localhost:8080`.
+gateway-service
+
+workload-service (profile: local)
+
+core-service (profile: local)
+
+### Access the services:
+Management UI: http://localhost:8161
+
+Credentials: admin/admin
+
+Start services in the following order:
+
+discovery-service → http://localhost:8761
+
+gateway-service → http://localhost:8080
+
+workload-service (with local profile)
+
+core-service (with local profile)
+
 
 ## 📚 API Documentation
 

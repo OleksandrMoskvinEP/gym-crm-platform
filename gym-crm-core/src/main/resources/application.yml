@@ -9,20 +9,17 @@ spring:
     log-startup-info: false
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/gym_crm_db
-    driver-class-name: org.postgresql.Driver
-    username: gym
-    password: gym
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   jpa:
+    open-in-view: false
     hibernate:
-      ddl-auto: none
-    show-sql: false
+      ddl-auto: validate
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-        hbm2ddl.auto: none
+        show_sql: false
 
   liquibase:
     change-log: classpath:db/changelog/changelog-master.xml
@@ -31,13 +28,13 @@ spring:
     drop-first: false
 
   activemq:
-    broker-url: tcp://localhost:61616
-    user: admin
-    password: admin
+    broker-url: ${BROKER_URL}
+    user: ${BROKER_USER}
+    password: ${BROKER_PASSWORD}
     packages:
       trust-all: true
   jms:
-    client-id: core-service
+    client-id: workload-service
     listener:
       auto-startup: true
       session:
@@ -71,22 +68,23 @@ services:
   discovery-service: "discovery-eureka-service"
   gateway-service: "api-gateway-service"
 
+workload:
+  service-url: http://localhost:8081/api/v1/trainers-workload
+
 logging:
   level:
     org.springframework.boot.autoconfigure: WARN
     com.gym.crm.app.client.feign: DEBUG
     feign.Logger: DEBUG
 
-workload:
-  service-url: http://localhost:8081/api/v1/trainers-workload
-
 eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+    hostname: ${spring.application.name}
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
-  instance:
-    hostname: localhost
-    instance-id: ${spring.application.name}:${server.port}
+      defaultZone: ${EUREKA_SERVICE_URL}
 
 resilience4j:
   circuitbreaker:
