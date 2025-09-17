@@ -1,7 +1,7 @@
 package com.gym.crm.core.client;
 
 import com.gym.crm.core.client.common.MessageSender;
-import com.gym.crm.core.client.dto.WorkloadRequest;
+import com.gym.crm.core.client.dto.WorkloadEventRequest;
 import com.gym.crm.core.domain.dto.trainer.TrainerDto;
 import com.gym.crm.core.domain.model.Trainer;
 import com.gym.crm.core.domain.model.Training;
@@ -33,20 +33,20 @@ class WorkloadServiceClientTest {
         TrainingCreateRequest request = getTrainingCreateRequest();
         TrainerDto trainer = getTrainerDto();
 
-        doNothing().when(messageSender).notifyWorkloadService(any(WorkloadRequest.class));
+        doNothing().when(messageSender).notifyWorkloadService(any(WorkloadEventRequest.class));
 
         assertDoesNotThrow(() -> workloadServiceClient.callWorkloadServiceAdd(request, trainer));
-        verify(messageSender).notifyWorkloadService(any(WorkloadRequest.class));
+        verify(messageSender).notifyWorkloadService(any(WorkloadEventRequest.class));
     }
 
     @Test
     void shouldCallWorkloadService_Delete() {
         Training training = getTraining();
 
-        doNothing().when(messageSender).notifyWorkloadService(any(WorkloadRequest.class));
+        doNothing().when(messageSender).notifyWorkloadService(any(WorkloadEventRequest.class));
 
         assertDoesNotThrow(() -> workloadServiceClient.callWorkloadServiceDelete(training));
-        verify(messageSender).notifyWorkloadService(any(WorkloadRequest.class));
+        verify(messageSender).notifyWorkloadService(any(WorkloadEventRequest.class));
     }
 
     private static TrainingCreateRequest getTrainingCreateRequest() {

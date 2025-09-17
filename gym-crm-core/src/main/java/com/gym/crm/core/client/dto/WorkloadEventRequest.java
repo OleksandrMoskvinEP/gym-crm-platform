@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDate;
 
-public record WorkloadRequest(
+public record WorkloadEventRequest(
         @NotBlank String username,
         @NotBlank String firstName,
         @NotBlank String lastName,

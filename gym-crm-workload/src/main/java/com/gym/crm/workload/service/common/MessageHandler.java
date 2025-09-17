@@ -20,7 +20,7 @@ public class MessageHandler {
 
     @JmsListener(destination = "core.to.workload.queue", containerFactory = "jmsListenerContainerFactory")
     public void receiveWorkloadEvent(@Payload WorkloadEventRequest request,
-                                     @Header(name = "JMSMessageID") String correlationId) {
+                                     @Header(name = "JMSMessageID", required = false) String correlationId) {
         try {
             log.info("Received Workload Event with correlationId={}: {}", correlationId, request);
 

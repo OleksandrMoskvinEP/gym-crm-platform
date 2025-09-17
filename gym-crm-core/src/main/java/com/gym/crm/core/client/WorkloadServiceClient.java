@@ -1,7 +1,7 @@
 package com.gym.crm.core.client;
 
 import com.gym.crm.core.client.common.MessageSender;
-import com.gym.crm.core.client.dto.WorkloadRequest;
+import com.gym.crm.core.client.dto.WorkloadEventRequest;
 import com.gym.crm.core.domain.dto.trainer.TrainerDto;
 import com.gym.crm.core.domain.model.Training;
 import com.gym.crm.core.rest.TrainingCreateRequest;
@@ -15,7 +15,7 @@ public class WorkloadServiceClient {
     private final MessageSender messageSender;
 
     public void callWorkloadServiceAdd(@Valid TrainingCreateRequest request, TrainerDto trainer) {
-        WorkloadRequest workloadEventRequest = new WorkloadRequest(
+        WorkloadEventRequest workloadEventRequest = new WorkloadEventRequest(
                 trainer.getUsername(),
                 trainer.getFirstName(),
                 trainer.getLastName(),
@@ -29,7 +29,7 @@ public class WorkloadServiceClient {
     }
 
     public void callWorkloadServiceDelete(Training training) {
-        WorkloadRequest workloadEventRequest = new WorkloadRequest(
+        WorkloadEventRequest workloadEventRequest = new WorkloadEventRequest(
                 training.getTrainer().getUser().getUsername(),
                 training.getTrainer().getUser().getFirstName(),
                 training.getTrainer().getUser().getLastName(),
