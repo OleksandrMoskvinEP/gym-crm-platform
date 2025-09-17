@@ -11,6 +11,7 @@ import com.gym.crm.core.domain.dto.training.TrainingDto;
 import com.gym.crm.core.domain.dto.training.TrainingSaveRequest;
 import com.gym.crm.core.domain.dto.user.ChangeActivationStatusDto;
 import com.gym.crm.core.domain.model.TrainingType;
+import com.gym.crm.core.integration.workload.common.PendingTrainingStore;
 import com.gym.crm.core.mapper.TraineeMapper;
 import com.gym.crm.core.mapper.TrainerMapper;
 import com.gym.crm.core.mapper.TrainingMapper;
@@ -59,6 +60,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
@@ -101,6 +103,8 @@ class GymFacadeTest {
     private HttpSession session;
     @Mock
     private WorkloadServiceClient workloadServiceClient;
+    @Mock
+    private PendingTrainingStore pendingTrainingStore;
     @Spy
     private TraineeMapper traineeMapper = Mappers.getMapper(TraineeMapper.class);
     @Spy
@@ -237,25 +241,26 @@ class GymFacadeTest {
 
         TrainerDto trainer = new TrainerDto();
         trainer.setUserId(2L);
-        trainer.setSpecialization(TrainingType.builder().trainingTypeName("windsurfing").build());
+        trainer.setSpecialization(TrainingType.builder()
+                .trainingTypeName("windsurfing")
+                .build());
 
-        TrainingDto expected = new TrainingDto();
-        expected.setTrainingName("Yoga");
-        expected.setTrainerId(trainer.getUserId());
-        expected.setTraineeId(trainee.getUserId());
-        expected.setTrainingDuration(BigDecimal.valueOf(1));
-        expected.setTrainingType(TrainingType.builder().build());
-        expected.setTrainingDate(LocalDate.now());
+        when(traineeService.getTraineeByUsername("kevin.jackson"))
+                .thenReturn(trainee);
+        when(trainerService.getTrainerByUsername("chris.tenet"))
+                .thenReturn(trainer);
+        when(workloadServiceClient.callWorkloadServiceAdd(any(), any()))
+                .thenReturn("some_id");
 
-        when(traineeService.getTraineeByUsername("kevin.jackson")).thenReturn(trainee);
-        when(trainerService.getTrainerByUsername("chris.tenet")).thenReturn(trainer);
-        when(trainingService.addTraining(any())).thenReturn(expected);
-        doNothing().when(workloadServiceClient).callWorkloadServiceAdd(nullable(TrainingCreateRequest.class), any(TrainerDto.class));
         TrainingDto actual = facade.addTraining(TRAINING_CREATE_REQUEST);
 
-        assertEquals(TRAINING_DTO, actual);
-        assertEquals(expected, actual);
-        verify(trainingService).addTraining(any(TrainingSaveRequest.class));
+        assertEquals(TRAINING_CREATE_REQUEST.getTrainingName(), actual.getTrainingName());
+        assertEquals(TRAINING_CREATE_REQUEST.getTrainingDate(), actual.getTrainingDate());
+        assertEquals(BigDecimal.valueOf(TRAINING_CREATE_REQUEST.getTrainingDuration()), actual.getTrainingDuration());
+        assertEquals(trainer.getUserId(), actual.getTrainerId());
+        assertEquals(trainee.getUserId(), actual.getTraineeId());
+
+        verify(pendingTrainingStore).put(eq("some_id"), any(TrainingSaveRequest.class));
     }
 
     @Test

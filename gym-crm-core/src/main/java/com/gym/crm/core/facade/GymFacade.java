@@ -172,8 +172,8 @@ public class GymFacade {
         saveRequest.setTrainingDate(request.getTrainingDate());
         saveRequest.setTrainingDuration(BigDecimal.valueOf(request.getTrainingDuration()));
         saveRequest.setTrainingTypeName(trainer.getSpecialization().getTrainingTypeName());
-        saveRequest.setTraineeId(trainee.getTraineeId());
-        saveRequest.setTrainerId(trainer.getTrainerId());
+        saveRequest.setTraineeId(trainee.getUserId());
+        saveRequest.setTrainerId(trainer.getUserId());
 
         pendingTrainingStore.put(correlationId, saveRequest);
 
@@ -181,6 +181,9 @@ public class GymFacade {
         trainingDto.setTrainingName(saveRequest.getTrainingName());
         trainingDto.setTrainingDate(saveRequest.getTrainingDate());
         trainingDto.setTrainingDuration(saveRequest.getTrainingDuration());
+        trainingDto.setTrainerId(saveRequest.getTrainerId());
+        trainingDto.setTraineeId(saveRequest.getTraineeId());
+        trainingDto.setTrainingType(TrainingType.builder().trainingTypeName(saveRequest.getTrainingTypeName()).build());
 
         return trainingDto;
     }
