@@ -19,9 +19,10 @@ import java.util.Map;
 public class JmsConfig {
 
     @Bean
-    public JmsTemplate jmsTemplate(ConnectionFactory connectionFactory) {
+    public JmsTemplate jmsTemplate(ConnectionFactory connectionFactory, MessageConverter messageConverter) {
         JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
         jmsTemplate.setDefaultDestinationName("core.to.workload.queue");
+        jmsTemplate.setMessageConverter(messageConverter);
 
         return jmsTemplate;
     }
@@ -34,8 +35,12 @@ public class JmsConfig {
         converter.setObjectMapper(objectMapper);
 
         Map<String, Class<?>> typeIdMappings = new HashMap<>();
-        typeIdMappings.put("com.gym.crm.core.client.dto.WorkloadEventRequest",
+        typeIdMappings.put("com.gym.crm.core.integration.workload.dto.WorkloadEventRequest",
                 com.gym.crm.workload.model.dto.WorkloadEventRequest.class);
+        typeIdMappings.put(
+                "com.gym.crm.workload.model.dto.WorkloadEventResponse",
+                com.gym.crm.workload.model.dto.WorkloadEventResponse.class
+        );
         converter.setTypeIdMappings(typeIdMappings);
 
         return converter;
