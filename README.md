@@ -125,3 +125,14 @@ All services are launched together using:
    docker compose up -d
 ```
 
+## Messaging (ActiveMQ)
+The application uses ActiveMQ for messaging. You can access the ActiveMQ web console at:
+
+- **ActiveMQ Web Console**: [http://localhost:8161/admin](http://localhost:8161/admin)  
+  Default credentials: `admin` / `admin`
+- **Broker URL**: `tcp://localhost:61616`
+
+### To srart ActiveMQ using Docker Compose, run:
+```bash
+   docker compose -f docker-compose-activemq.yml up -d
+```
