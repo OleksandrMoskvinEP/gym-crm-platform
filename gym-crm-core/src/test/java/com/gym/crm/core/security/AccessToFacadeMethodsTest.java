@@ -1,11 +1,12 @@
 package com.gym.crm.core.security;
 
-import com.gym.crm.core.integration.workload.WorkloadServiceClient;
 import com.gym.crm.core.domain.dto.trainee.TraineeCreateRequest;
 import com.gym.crm.core.domain.dto.trainee.TraineeDto;
 import com.gym.crm.core.domain.dto.trainee.TraineeUpdateRequest;
 import com.gym.crm.core.domain.dto.trainer.TrainerUpdateRequest;
 import com.gym.crm.core.facade.GymFacade;
+import com.gym.crm.core.integration.workload.WorkloadServiceClient;
+import com.gym.crm.core.integration.workload.common.PendingTrainingStore;
 import com.gym.crm.core.mapper.TraineeMapper;
 import com.gym.crm.core.mapper.TrainerMapper;
 import com.gym.crm.core.mapper.TrainingMapper;
@@ -48,12 +49,14 @@ class AccessToFacadeMethodsTest {
                          TrainingMapper trainingMapper,
                          TrainingTypeMapper trainingTypeMapper,
                          UserMapper userMapper,
-                         WorkloadServiceClient workloadServiceClient) {
+                         WorkloadServiceClient workloadServiceClient,
+                         PendingTrainingStore pendingTrainingStore) {
             return new GymFacade(traineeService, trainerService, trainingService,
                     userProfileService, traineeMapper, trainerMapper,
-                    trainingMapper, trainingTypeMapper, userMapper, workloadServiceClient);
+                    trainingMapper, trainingTypeMapper, userMapper, workloadServiceClient, pendingTrainingStore);
         }
     }
+
     @Autowired
     private GymFacade facade;
 
