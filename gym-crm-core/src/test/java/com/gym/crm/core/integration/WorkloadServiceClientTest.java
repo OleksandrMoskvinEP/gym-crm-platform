@@ -18,9 +18,13 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class WorkloadServiceClientTest {
@@ -34,17 +38,25 @@ class WorkloadServiceClientTest {
         TrainingCreateRequest request = getTrainingCreateRequest();
         TrainerDto trainer = getTrainerDto();
 
-        doNothing().when(messageSender).notifyWorkloadService(any(WorkloadEventRequest.class));
+        when(messageSender.notifyWorkloadService(any()))
+                .thenReturn("test-correlation-id");
+
+        String  actual = workloadServiceClient.callWorkloadServiceAdd(request, trainer);
 
         assertDoesNotThrow(() -> workloadServiceClient.callWorkloadServiceAdd(request, trainer));
-        verify(messageSender).notifyWorkloadService(any(WorkloadEventRequest.class));
+        assertNotNull(actual);
+        assertEquals("test-correlation-id", actual);
+        verify(messageSender, times(2))
+                .notifyWorkloadService(any(WorkloadEventRequest.class));
+
     }
 
     @Test
     void shouldCallWorkloadService_Delete() {
         Training training = getTraining();
 
-        doNothing().when(messageSender).notifyWorkloadService(any(WorkloadEventRequest.class));
+        when(messageSender.notifyWorkloadService(any()))
+                .thenReturn("test-correlation-id");
 
         assertDoesNotThrow(() -> workloadServiceClient.callWorkloadServiceDelete(training));
         verify(messageSender).notifyWorkloadService(any(WorkloadEventRequest.class));
