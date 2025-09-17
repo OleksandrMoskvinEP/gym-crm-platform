@@ -27,26 +27,29 @@ class MessageHandlerTest {
     @Mock
     private JmsTemplate jmsTemplate;
     @InjectMocks
-    private MessageHandler messageHandler;
+    private MessageHandler handler;
 
     @Test
     void shouldHandleEventDirectly() {
         ArgumentCaptor<WorkloadEventResponse> captor = ArgumentCaptor.forClass(WorkloadEventResponse.class);
         WorkloadEventRequest request = getEventRequest();
-        messageHandler.receiveWorkloadEvent(request, UUID.randomUUID().toString());
+        handler.receiveWorkloadEvent(request, UUID.randomUUID().toString());
 
         verify(jmsTemplate).convertAndSend(eq("workload.to.core.queue"), captor.capture());
         WorkloadEventResponse response = captor.getValue();
         assertEquals("SUCCESS", response.status());
-
         verify(workloadService).calculateAndStoreWorkload(any());
-
     }
 
     private static WorkloadEventRequest getEventRequest() {
         return new WorkloadEventRequest(
-                "arnold", "Arnold", "Schwarzenegger",
-                true, LocalDate.of(2025, 9, 17), 90, "ADD"
+                "arnold_schwarzenegger",
+                "Arnold",
+                "Schwarzenegger",
+                true,
+                LocalDate.of(2025, 9, 17),
+                90,
+                "ADD"
         );
     }
 }

@@ -1,40 +1,5 @@
-spring:
-  datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-  activemq:
-    broker-url: ${BROKER_URL}
-    user: ${BROKER_USER}
-    password: ${BROKER_PASSWORD}
-    packages:
-      trust-all: true
-  jms:
-    client-id: workload-service
-    listener:
-      auto-startup: true
-      session:
-        acknowledge-mode: auto
-
-  jpa:
-    open-in-view: false
-    hibernate:
-      ddl-auto: validate
-    properties:
-      hibernate:
-        show_sql: false
-
 logging:
   level:
     root: WARN
     org.springframework: WARN
     com.gcs.app: INFO
-
-eureka:
-  instance:
-    prefer-ip-address: true
-    instance-id: ${spring.application.name}:${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
-    hostname: ${spring.application.name}
-  client:
-    service-url:
-      defaultZone: ${EUREKA_SERVICE_URL}
