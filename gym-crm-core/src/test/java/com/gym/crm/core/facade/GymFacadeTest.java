@@ -1,6 +1,6 @@
 package com.gym.crm.core.facade;
 
-import com.gym.crm.core.client.impl.WorkloadServiceClientImpl;
+import com.gym.crm.core.client.WorkloadServiceClient;
 import com.gym.crm.core.domain.dto.trainee.TraineeCreateRequest;
 import com.gym.crm.core.domain.dto.trainee.TraineeDto;
 import com.gym.crm.core.domain.dto.trainee.TraineeUpdateRequest;
@@ -100,7 +100,7 @@ class GymFacadeTest {
     @Mock
     private HttpSession session;
     @Mock
-    private WorkloadServiceClientImpl workloadServiceClientImpl;
+    private WorkloadServiceClient workloadServiceClient;
     @Spy
     private TraineeMapper traineeMapper = Mappers.getMapper(TraineeMapper.class);
     @Spy
@@ -250,7 +250,7 @@ class GymFacadeTest {
         when(traineeService.getTraineeByUsername("kevin.jackson")).thenReturn(trainee);
         when(trainerService.getTrainerByUsername("chris.tenet")).thenReturn(trainer);
         when(trainingService.addTraining(any())).thenReturn(expected);
-        doNothing().when(workloadServiceClientImpl).callWorkloadServiceAdd(nullable(TrainingCreateRequest.class), any(TrainerDto.class));
+        doNothing().when(workloadServiceClient).callWorkloadServiceAdd(nullable(TrainingCreateRequest.class), any(TrainerDto.class));
         TrainingDto actual = facade.addTraining(TRAINING_CREATE_REQUEST);
 
         assertEquals(TRAINING_DTO, actual);
