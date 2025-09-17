@@ -73,51 +73,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-#    post:
-#      tags: [ Trainers Workload ]
-#      summary: Create or update monthly workload summary for a trainer
-#      description: Create or update trainers workload summary
-#      operationId: updateMonthlyWorkload
-#      requestBody:
-#        required: true
-#        content:
-#          application/json:
-#            schema:
-#              $ref: '#/components/schemas/WorkloadEventRequest'
-#            examples:
-#              add:
-#                value:
-#                  username: first_last
-#                  firstName: First
-#                  lastName: Last
-#                  active: true
-#                  trainingDate: '2025-07-15'
-#                  trainingDuration: 90
-#                  actionType: ADD
-#              delete:
-#                value:
-#                  username: first_last
-#                  firstName: First
-#                  lastName: Last
-#                  active: true
-#                  trainingDate: '2025-07-15'
-#                  trainingDuration: 90
-#                  actionType: DELETE
-#      responses:
-#        '200':
-#          description: OK
-#        '400':
-#          description: Validation error
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/ErrorResponse'
-#        '500':
-#          description: Internal server error
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/ErrorResponse'
 
 components:
   schemas:
