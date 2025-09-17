@@ -15,10 +15,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -58,84 +56,84 @@ class WorkloadControllerTest {
                 .andExpect(jsonPath("$.totalMinutes").value(30));
     }
 
-    @Test
-    @DisplayName("POST update workload returns 200")
-    void updateMonthlyWorkload_success() throws Exception {
-        String requestBody = getRequestBody();
-
-        mockMvc.perform(post("/api/v1/trainers-workload")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @DisplayName("POST with invalid body returns 400 and error message")
-    void updateMonthlyWorkload_validationError() throws Exception {
-        String invalidRequestBody = getInvalidRequestBody();
-
-        mockMvc.perform(post("/api/v1/trainers-workload")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(invalidRequestBody))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.code").value("BAD_REQUEST"));
-    }
-
-    @Test
-    @DisplayName("POST service throws IllegalArgumentException -> 400")
-    void updateMonthlyWorkload_illegalArgument() throws Exception {
-        String requestBody = getIncorrectRequestBody();
-
-        doThrow(new IllegalArgumentException("Bad input"))
-                .when(workloadService).calculateAndStoreWorkload(any());
-
-        mockMvc.perform(post("/api/v1/trainers-workload")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code").value("BAD_REQUEST"));
-    }
-
-    private static String getIncorrectRequestBody() {
-        return """
-                {
-                  "username": "john.doe",
-                  "firstName": "John",
-                  "lastName": "Doe",
-                  "isActive": true,
-                  "trainingDate": "2025-08-12",
-                  "trainingDuration": 90,
-                  "actionType": "INCREASE"
-                }
-                """;
-    }
-
-    private static String getInvalidRequestBody() {
-        return """
-                {
-                  "username": "",
-                  "firstName": "",
-                  "lastName": "",
-                  "isActive": null,
-                  "trainingDate": null,
-                  "trainingDuration": 0,
-                  "actionType": ""
-                }
-                """;
-    }
-
-    private static String getRequestBody() {
-        return """
-                {
-                  "username": "arnold_schwarzenegger",
-                  "firstName": "Arnold",
-                  "lastName": "Schwarzenegger",
-                  "isActive": true,
-                  "trainingDate": "2025-08-12",
-                  "trainingDuration": 90,
-                  "actionType": "INCREASE"
-                }
-                """;
-    }
+//    @Test
+//    @DisplayName("POST update workload returns 200")
+//    void updateMonthlyWorkload_success() throws Exception {
+//        String requestBody = getRequestBody();
+//
+//        mockMvc.perform(post("/api/v1/trainers-workload")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(requestBody))
+//                .andExpect(status().isOk());
+//    }
+//
+//    @Test
+//    @DisplayName("POST with invalid body returns 400 and error message")
+//    void updateMonthlyWorkload_validationError() throws Exception {
+//        String invalidRequestBody = getInvalidRequestBody();
+//
+//        mockMvc.perform(post("/api/v1/trainers-workload")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(invalidRequestBody))
+//                .andExpect(status().isBadRequest())
+//                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+//                .andExpect(jsonPath("$.code").value("BAD_REQUEST"));
+//    }
+//
+//    @Test
+//    @DisplayName("POST service throws IllegalArgumentException -> 400")
+//    void updateMonthlyWorkload_illegalArgument() throws Exception {
+//        String requestBody = getIncorrectRequestBody();
+//
+//        doThrow(new IllegalArgumentException("Bad input"))
+//                .when(workloadService).calculateAndStoreWorkload(any());
+//
+//        mockMvc.perform(post("/api/v1/trainers-workload")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(requestBody))
+//                .andExpect(status().isBadRequest())
+//                .andExpect(jsonPath("$.code").value("BAD_REQUEST"));
+//    }
+//
+//    private static String getIncorrectRequestBody() {
+//        return """
+//                {
+//                  "username": "john.doe",
+//                  "firstName": "John",
+//                  "lastName": "Doe",
+//                  "isActive": true,
+//                  "trainingDate": "2025-08-12",
+//                  "trainingDuration": 90,
+//                  "actionType": "INCREASE"
+//                }
+//                """;
+//    }
+//
+//    private static String getInvalidRequestBody() {
+//        return """
+//                {
+//                  "username": "",
+//                  "firstName": "",
+//                  "lastName": "",
+//                  "isActive": null,
+//                  "trainingDate": null,
+//                  "trainingDuration": 0,
+//                  "actionType": ""
+//                }
+//                """;
+//    }
+//
+//    private static String getRequestBody() {
+//        return """
+//                {
+//                  "username": "arnold_schwarzenegger",
+//                  "firstName": "Arnold",
+//                  "lastName": "Schwarzenegger",
+//                  "isActive": true,
+//                  "trainingDate": "2025-08-12",
+//                  "trainingDuration": 90,
+//                  "actionType": "INCREASE"
+//                }
+//                """;
+//    }
 }

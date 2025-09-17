@@ -51,24 +51,24 @@ public class WorkloadController {
         return ResponseEntity.ok(workloadService.getMonthlyWorkload(new MonthlyWorkloadRequest(username, year, month)));
     }
 
-    @PostMapping
-    @Operation(
-            summary = "Update monthly workload",
-            description = "Create or update workload data for a trainer"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Workload updated successfully"),
-            @ApiResponse(responseCode = "400", description = "Validation error",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(responseCode = "500", description = "Unexpected server error",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
-    public ResponseEntity<Void> updateMonthlyWorkload(@RequestBody @Valid WorkloadEventRequest workloadEventRequest) {
-        log.info("updateMonthlyWorkload for request={}", workloadEventRequest);
-
-        workloadService.calculateAndStoreWorkload(workloadEventRequest);
-        log.info("updating for request={} was successfully", workloadEventRequest);
-
-        return ResponseEntity.ok().build();
-    }
+//    @PostMapping
+//    @Operation(
+//            summary = "Update monthly workload",
+//            description = "Create or update workload data for a trainer"
+//    )
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "Workload updated successfully"),
+//            @ApiResponse(responseCode = "400", description = "Validation error",
+//                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+//            @ApiResponse(responseCode = "500", description = "Unexpected server error",
+//                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+//    })
+//    public ResponseEntity<Void> updateMonthlyWorkload(@RequestBody @Valid WorkloadEventRequest workloadEventRequest) {
+//        log.info("updateMonthlyWorkload for request={}", workloadEventRequest);
+//
+//        workloadService.calculateAndStoreWorkload(workloadEventRequest);
+//        log.info("updating for request={} was successfully", workloadEventRequest);
+//
+//        return ResponseEntity.ok().build();
+//    }
 }
