@@ -1,12 +1,12 @@
 package com.gym.crm.core.integration;
 
-import com.gym.crm.core.integration.workload.WorkloadServiceClient;
-import com.gym.crm.core.integration.workload.common.MessageSender;
-import com.gym.crm.core.integration.workload.dto.WorkloadEventRequest;
 import com.gym.crm.core.domain.dto.trainer.TrainerDto;
 import com.gym.crm.core.domain.model.Trainer;
 import com.gym.crm.core.domain.model.Training;
 import com.gym.crm.core.domain.model.User;
+import com.gym.crm.core.integration.workload.WorkloadServiceClient;
+import com.gym.crm.core.integration.workload.common.MessageSender;
+import com.gym.crm.core.integration.workload.dto.WorkloadEventRequest;
 import com.gym.crm.core.rest.TrainingCreateRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -41,7 +40,7 @@ class WorkloadServiceClientTest {
         when(messageSender.notifyWorkloadService(any()))
                 .thenReturn("test-correlation-id");
 
-        String  actual = workloadServiceClient.callWorkloadServiceAdd(request, trainer);
+        String actual = workloadServiceClient.callWorkloadServiceAdd(request, trainer);
 
         assertDoesNotThrow(() -> workloadServiceClient.callWorkloadServiceAdd(request, trainer));
         assertNotNull(actual);
@@ -78,6 +77,7 @@ class WorkloadServiceClientTest {
         trainer.setFirstName("First");
         trainer.setLastName("Last");
         trainer.setActive(true);
+
         return trainer;
     }
 

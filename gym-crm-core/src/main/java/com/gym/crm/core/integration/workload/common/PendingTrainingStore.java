@@ -11,13 +11,13 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 @RequiredArgsConstructor
 public class PendingTrainingStore {
-    private final Map<String, TrainingSaveRequest> correlationIdToTraining = new ConcurrentHashMap<>();
+    private final Map<String, TrainingSaveRequest> pendingRequests = new ConcurrentHashMap<>();
 
     public void put(String correlationId, TrainingSaveRequest request) {
-        correlationIdToTraining.put(correlationId, request);
+        pendingRequests.put(correlationId, request);
     }
 
     public Optional<TrainingSaveRequest> remove(String correlationId) {
-        return Optional.ofNullable(correlationIdToTraining.remove(correlationId));
+        return Optional.ofNullable(pendingRequests.remove(correlationId));
     }
 }

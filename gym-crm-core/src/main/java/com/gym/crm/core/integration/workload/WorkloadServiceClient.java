@@ -1,9 +1,9 @@
 package com.gym.crm.core.integration.workload;
 
-import com.gym.crm.core.integration.workload.common.MessageSender;
-import com.gym.crm.core.integration.workload.dto.WorkloadEventRequest;
 import com.gym.crm.core.domain.dto.trainer.TrainerDto;
 import com.gym.crm.core.domain.model.Training;
+import com.gym.crm.core.integration.workload.common.MessageSender;
+import com.gym.crm.core.integration.workload.dto.WorkloadEventRequest;
 import com.gym.crm.core.rest.TrainingCreateRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

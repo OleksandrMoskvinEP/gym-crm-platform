@@ -1,6 +1,5 @@
 package com.gym.crm.core.facade;
 
-import com.gym.crm.core.integration.workload.WorkloadServiceClient;
 import com.gym.crm.core.domain.dto.trainee.TraineeCreateRequest;
 import com.gym.crm.core.domain.dto.trainee.TraineeDto;
 import com.gym.crm.core.domain.dto.trainee.TraineeUpdateRequest;
@@ -11,6 +10,7 @@ import com.gym.crm.core.domain.dto.training.TrainingDto;
 import com.gym.crm.core.domain.dto.training.TrainingSaveRequest;
 import com.gym.crm.core.domain.dto.user.ChangeActivationStatusDto;
 import com.gym.crm.core.domain.model.TrainingType;
+import com.gym.crm.core.integration.workload.WorkloadServiceClient;
 import com.gym.crm.core.integration.workload.common.PendingTrainingStore;
 import com.gym.crm.core.mapper.TraineeMapper;
 import com.gym.crm.core.mapper.TrainerMapper;
