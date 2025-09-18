@@ -57,7 +57,7 @@ class PendingTrainingStoreTest {
     }
 
     @Test
-    void put_shouldOverwriteExistingCorrelationId() {
+    void shouldOverwriteExistingCorrelationId() {
         String correlationId = "test-correlation-id";
         TrainingSaveRequest firstRequest = createTrainingSaveRequest();
         TrainingSaveRequest secondRequest = createTrainingSaveRequest();
@@ -74,7 +74,7 @@ class PendingTrainingStoreTest {
     }
 
     @Test
-    void concurrentAccess_shouldHandleMultipleThreads() throws InterruptedException {
+    void shouldHandleMultipleThreads() throws InterruptedException {
         int numberOfThreads = 10;
         int requestsPerThread = 100;
         Thread[] threads = new Thread[numberOfThreads];
