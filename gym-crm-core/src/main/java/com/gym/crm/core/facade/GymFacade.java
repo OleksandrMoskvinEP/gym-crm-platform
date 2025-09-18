@@ -1,6 +1,5 @@
 package com.gym.crm.core.facade;
 
-import com.gym.crm.core.integration.workload.WorkloadServiceClient;
 import com.gym.crm.core.domain.dto.trainee.TraineeCreateRequest;
 import com.gym.crm.core.domain.dto.trainee.TraineeDto;
 import com.gym.crm.core.domain.dto.trainee.TraineeUpdateRequest;
@@ -11,6 +10,8 @@ import com.gym.crm.core.domain.dto.training.TrainingDto;
 import com.gym.crm.core.domain.dto.training.TrainingSaveRequest;
 import com.gym.crm.core.domain.dto.user.ChangeActivationStatusDto;
 import com.gym.crm.core.domain.model.TrainingType;
+import com.gym.crm.core.integration.workload.WorkloadServiceClient;
+import com.gym.crm.core.integration.workload.common.PendingTrainingStore;
 import com.gym.crm.core.mapper.TraineeMapper;
 import com.gym.crm.core.mapper.TrainerMapper;
 import com.gym.crm.core.mapper.TrainingMapper;
@@ -63,6 +64,7 @@ public class GymFacade {
     private final TrainingTypeMapper trainingTypeMapper;
     private final UserMapper userMapper;
     private final WorkloadServiceClient workloadServiceClient;
+    private final PendingTrainingStore pendingTrainingStore;
 
     public TrainerCreateResponse addTrainer(@Valid TrainerCreateRequest createRequest) {
         return trainerMapper.toCreateResponse(trainerService.addTrainer(createRequest));
@@ -163,17 +165,27 @@ public class GymFacade {
         TrainerDto trainer = trainerService.getTrainerByUsername(request.getTrainerUsername());
         TraineeDto trainee = traineeService.getTraineeByUsername(request.getTraineeUsername());
 
-        workloadServiceClient.callWorkloadServiceAdd(request, trainer);
+        String correlationId = workloadServiceClient.callWorkloadServiceAdd(request, trainer);
 
         TrainingSaveRequest saveRequest = new TrainingSaveRequest();
         saveRequest.setTrainingName(request.getTrainingName());
         saveRequest.setTrainingDate(request.getTrainingDate());
         saveRequest.setTrainingDuration(BigDecimal.valueOf(request.getTrainingDuration()));
         saveRequest.setTrainingTypeName(trainer.getSpecialization().getTrainingTypeName());
-        saveRequest.setTraineeId(trainee.getTraineeId());
-        saveRequest.setTrainerId(trainer.getTrainerId());
+        saveRequest.setTraineeId(trainee.getUserId());
+        saveRequest.setTrainerId(trainer.getUserId());
 
-        return trainingService.addTraining(saveRequest);
+        pendingTrainingStore.put(correlationId, saveRequest);
+
+        TrainingDto trainingDto = new TrainingDto();
+        trainingDto.setTrainingName(saveRequest.getTrainingName());
+        trainingDto.setTrainingDate(saveRequest.getTrainingDate());
+        trainingDto.setTrainingDuration(saveRequest.getTrainingDuration());
+        trainingDto.setTrainerId(saveRequest.getTrainerId());
+        trainingDto.setTraineeId(saveRequest.getTraineeId());
+        trainingDto.setTrainingType(TrainingType.builder().trainingTypeName(saveRequest.getTrainingTypeName()).build());
+
+        return trainingDto;
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','TRAINER','TRAINEE')")

@@ -16,7 +16,7 @@ public class MessageSender {
 
     private final JmsTemplate jmsTemplate;
 
-    public void notifyWorkloadService(WorkloadEventRequest request) {
+    public String notifyWorkloadService(WorkloadEventRequest request) {
         String id = UUID.randomUUID().toString();
         log.info("Sending message with request: {}  to workload service with ID: {}", request, id);
 
@@ -25,5 +25,7 @@ public class MessageSender {
 
             return message;
         });
+
+        return id;
     }
 }

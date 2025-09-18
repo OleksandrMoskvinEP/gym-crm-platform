@@ -1,9 +1,9 @@
 package com.gym.crm.core.integration.workload;
 
-import com.gym.crm.core.integration.workload.common.MessageSender;
-import com.gym.crm.core.integration.workload.dto.WorkloadEventRequest;
 import com.gym.crm.core.domain.dto.trainer.TrainerDto;
 import com.gym.crm.core.domain.model.Training;
+import com.gym.crm.core.integration.workload.common.MessageSender;
+import com.gym.crm.core.integration.workload.dto.WorkloadEventRequest;
 import com.gym.crm.core.rest.TrainingCreateRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class WorkloadServiceClient {
     private final MessageSender messageSender;
 
-    public void callWorkloadServiceAdd(@Valid TrainingCreateRequest request, TrainerDto trainer) {
+    public String callWorkloadServiceAdd(@Valid TrainingCreateRequest request, TrainerDto trainer) {
         WorkloadEventRequest workloadEventRequest = new WorkloadEventRequest(
                 trainer.getUsername(),
                 trainer.getFirstName(),
@@ -25,7 +25,7 @@ public class WorkloadServiceClient {
                 request.getTrainingDuration() > 0 ? "ADD" : "DELETE"
         );
 
-        messageSender.notifyWorkloadService(workloadEventRequest);
+        return messageSender.notifyWorkloadService(workloadEventRequest);
     }
 
     public void callWorkloadServiceDelete(Training training) {

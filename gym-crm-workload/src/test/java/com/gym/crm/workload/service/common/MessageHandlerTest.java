@@ -33,9 +33,10 @@ class MessageHandlerTest {
     void shouldHandleEventDirectly() {
         ArgumentCaptor<WorkloadEventResponse> captor = ArgumentCaptor.forClass(WorkloadEventResponse.class);
         WorkloadEventRequest request = getEventRequest();
+
         handler.receiveWorkloadEvent(request, UUID.randomUUID().toString());
 
-        verify(jmsTemplate).convertAndSend(eq("workload.to.core.queue"), captor.capture());
+        verify(jmsTemplate).convertAndSend(eq("workload.to.core.queue"), captor.capture(), any());
         WorkloadEventResponse response = captor.getValue();
         assertEquals("SUCCESS", response.status());
         verify(workloadService).calculateAndStoreWorkload(any());

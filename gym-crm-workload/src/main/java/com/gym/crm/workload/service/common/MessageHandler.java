@@ -27,11 +27,15 @@ public class MessageHandler {
             workloadService.calculateAndStoreWorkload(request);
 
             WorkloadEventResponse response = new WorkloadEventResponse(correlationId, "SUCCESS");
-            jmsTemplate.convertAndSend("workload.to.core.queue", response);
+            jmsTemplate.convertAndSend("workload.to.core.queue", response, message -> {
+                message.setJMSCorrelationID(correlationId);
 
+                return message;
+            });
             log.info("Workload Event with correlationId={} handled successfully", correlationId);
         } catch (Exception e) {
             log.error("Failed to process workload event: {} with correlationId={}", request, correlationId);
+            log.error(e.getMessage(), e);
         }
     }
 }
