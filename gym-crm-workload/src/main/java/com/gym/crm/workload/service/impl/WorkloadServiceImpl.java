@@ -7,38 +7,23 @@ import com.gym.crm.workload.model.dto.MonthlyWorkloadRequest;
 import com.gym.crm.workload.model.dto.MonthlyWorkloadResponse;
 import com.gym.crm.workload.model.dto.WorkloadEventRequest;
 import com.gym.crm.workload.service.WorkloadService;
-import com.gym.crm.workload.service.common.MessageValidator;
 import com.gym.crm.workload.service.util.WorkloadChangePersistor;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindingResult;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class WorkloadServiceImpl implements WorkloadService {
     private final WorkloadChangePersistor workloadChangePersistor;
-    private final MessageValidator messageValidator;
 
     @Override
     @Transactional
     public void calculateAndStoreWorkload(WorkloadEventRequest request) {
-        BindingResult bindingResult = new BeanPropertyBindingResult(request, "request");
-        messageValidator.validate(request, bindingResult);
-
-        if (bindingResult.hasErrors()) {
-            log.error("Validation errors occurred for request {}: {}", request, bindingResult.getAllErrors());
-
-            throw new IllegalArgumentException("Validation failed: " + bindingResult.getAllErrors());
-        }
-
         if (request.actionType().equals(ActionType.ADD.name())) {
             workloadChangePersistor.increaseWorkload(getIncreaseWorkloadParams(request));
         } else if (request.actionType().equals(ActionType.DELETE.name())) {
-            workloadChangePersistor.decreaseWorkload(getDecreaseWorkloadParams(request));
+            workloadChangePersistor.decreaseWorkload(getdecreaseWorkloadParams(request));
         } else {
             throw new IllegalArgumentException("Unknown actionType: " + request.actionType());
         }
@@ -59,7 +44,7 @@ public class WorkloadServiceImpl implements WorkloadService {
         return null;
     }
 
-    private DecreaseWorkloadParams getDecreaseWorkloadParams(WorkloadEventRequest request) {
+    private DecreaseWorkloadParams getdecreaseWorkloadParams(WorkloadEventRequest request) {
         return DecreaseWorkloadParams.builder()
                 .username(request.username())
                 .workYear(request.trainingDate().getYear())
