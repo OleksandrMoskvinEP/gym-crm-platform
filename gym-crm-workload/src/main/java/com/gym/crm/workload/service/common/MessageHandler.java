@@ -35,7 +35,13 @@ public class MessageHandler {
             log.info("Workload Event with correlationId={} handled successfully", correlationId);
         } catch (Exception e) {
             log.error("Failed to process workload event: {} with correlationId={}", request, correlationId);
-            log.error(e.getMessage(), e);
+
+            jmsTemplate.convertAndSend("ActiveMQ.DLQ", request);
         }
+    }
+
+    @JmsListener(destination = "ActiveMQ.DLQ", containerFactory = "jmsListenerContainerFactory")
+    public void receiveDeadLetter(String message) {
+        log.info("Received dead letter queue message: {}", message);
     }
 }
