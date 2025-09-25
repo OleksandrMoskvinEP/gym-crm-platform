@@ -20,7 +20,7 @@
     <properties>
         <java.version>17</java.version>
         <spring.boot.version>3.4.5</spring.boot.version>
-        <spring-cloud.version>2025.0.0</spring-cloud.version>
+        <spring-cloud.version>2024.0.2</spring-cloud.version>
 
         <!-- Third-party dependency versions managed centrally -->
         <jjwt.version>0.12.6</jjwt.version>

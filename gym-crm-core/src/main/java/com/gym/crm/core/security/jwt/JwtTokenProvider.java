@@ -43,10 +43,10 @@ public class JwtTokenProvider {
             String userJson = objectMapper.writeValueAsString(user);
 
             return Jwts.builder()
-                    .setSubject(user.getUsername())
+                    .subject(user.getUsername())
                     .claim("user", userJson)
-                    .setIssuedAt(new Date())
-                    .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_MILLIS))
+                    .issuedAt(Date.from(Instant.now()))
+                    .expiration(Date.from(Instant.now().plusMillis(EXPIRATION_MILLIS)))
                     .signWith(secretKey)
                     .compact();
         } catch (JsonProcessingException e) {
@@ -70,11 +70,11 @@ public class JwtTokenProvider {
 
     public AuthenticatedUser parseToken(String token) {
         try {
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(secretKey)
+            Claims claims = Jwts.parser()
+                    .verifyWith(secretKey)
                     .build()
-                    .parseClaimsJws(token)
-                    .getBody();
+                    .parseSignedClaims(token)
+                    .getPayload();
 
             String userJson = claims.get("user", String.class);
 
