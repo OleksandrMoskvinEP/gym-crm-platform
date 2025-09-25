@@ -24,8 +24,8 @@ public class TransactionLoggingFilter extends OncePerRequestFilter {
         String transactionId = request.getHeader("X-Transaction-Id");
 
         if (transactionId == null || transactionId.isBlank()) {
-            log.info("Generated new transaction ID: {}", transactionId);
             transactionId = UUID.randomUUID().toString();
+            log.info("Generated new transaction ID: {}", transactionId);
         } else {
             log.info("Using provided transaction ID: {}", transactionId);
         }
