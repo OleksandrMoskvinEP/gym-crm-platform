@@ -10,6 +10,8 @@ public interface TrainerRepository extends MongoRepository<TrainerEntity, String
 
     boolean existsByUsername(String username);
 
+    Optional<TrainerEntity> findByFirstNameAndLastName(String firstName, String lastName);
+
     Optional<TrainerEntity> findWithWorkloadByUsername(String username);
 
     void deleteByUsername(String username);
