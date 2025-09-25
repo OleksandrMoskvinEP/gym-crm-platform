@@ -3,24 +3,27 @@ package com.gym.crm.workload.repository;
 import com.gym.crm.workload.model.MonthEntity;
 import com.gym.crm.workload.model.TrainerEntity;
 import com.gym.crm.workload.model.YearEntity;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.LinkedHashSet;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataJpaTest
-class TrainerRepositoryTest {
+class TrainerRepositoryTest extends MongoTestContainer {
+    @Autowired
+    private MongoTemplate mongoTemplate;
     @Autowired
     private TrainerRepository trainerRepository;
 
-    @Autowired
-    private TestEntityManager entityManager;
+    @BeforeEach
+    void cleanDb() {
+        trainerRepository.deleteAll();
+    }
 
     @Test
     void shouldFindTrainerByUsername() {
@@ -74,7 +77,6 @@ class TrainerRepositoryTest {
         persistTrainerWithWorkload("to.delete");
 
         trainerRepository.deleteByUsername("to.delete");
-        entityManager.flush();
 
         assertThat(trainerRepository.findByUsername("to.delete")).isNotPresent();
     }
@@ -106,6 +108,6 @@ class TrainerRepositoryTest {
         year.addMonth(feb);
         trainer.addYear(year);
 
-        return entityManager.persistFlushFind(trainer);
+        return mongoTemplate.save(trainer);
     }
 }
