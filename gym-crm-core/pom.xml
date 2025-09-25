@@ -135,7 +135,7 @@
             <artifactId>micrometer-registry-prometheus</artifactId>
         </dependency>
         
-        <!-- Test -->
+        <!-- Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -262,7 +262,7 @@
                 <version>3.2.5</version>
             </plugin>
 
-            <!-- OpenAPI генерация -->
+            <!-- OpenAPI -->
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>

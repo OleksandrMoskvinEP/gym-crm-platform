@@ -7,7 +7,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.4.5</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <groupId>com</groupId>
@@ -22,7 +22,7 @@
         <spring.boot.version>3.4.5</spring.boot.version>
         <spring-cloud.version>2024.0.2</spring-cloud.version>
 
-        <!-- Third-party dependency versions managed centrally -->
+        <!-- Third-party dependency versions -->
         <jjwt.version>0.12.6</jjwt.version>
         <springdoc.version>2.8.12</springdoc.version>
         <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
