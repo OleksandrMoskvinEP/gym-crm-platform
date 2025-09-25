@@ -44,10 +44,10 @@ class CrossServiceJwtTokenProviderTest {
     }
 
     private Claims parseToken(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(secretTestKey)
+        return Jwts.parser()
+                .verifyWith(secretTestKey)
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
+                .parseSignedClaims(token)
+                .getPayload();
     }
 }

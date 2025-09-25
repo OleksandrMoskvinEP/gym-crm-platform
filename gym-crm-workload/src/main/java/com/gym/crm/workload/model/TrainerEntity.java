@@ -1,26 +1,18 @@
 package com.gym.crm.workload.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import static jakarta.persistence.FetchType.LAZY;
-
-@Entity
-@Table(name = "trainers")
+@Document(collection = "trainers")
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,8 +21,7 @@ import static jakarta.persistence.FetchType.LAZY;
 @Getter
 public class TrainerEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String firstName;
     private String lastName;
@@ -38,16 +29,13 @@ public class TrainerEntity {
     private Boolean isActive;
 
     @Builder.Default
-    @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = LAZY)
     private Set<YearEntity> years = new LinkedHashSet<>();
 
     public void addYear(YearEntity y) {
         years.add(y);
-        y.setTrainer(this);
     }
 
     public void removeYear(YearEntity y) {
         years.remove(y);
-        y.setTrainer(null);
     }
 }

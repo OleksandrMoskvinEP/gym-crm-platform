@@ -12,7 +12,6 @@ import com.gym.crm.workload.service.util.WorkloadChangePersistor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 
@@ -24,7 +23,6 @@ public class WorkloadServiceImpl implements WorkloadService {
     private final MessageValidator messageValidator;
 
     @Override
-    @Transactional
     public void calculateAndStoreWorkload(WorkloadEventRequest request) {
         BindingResult bindingResult = new BeanPropertyBindingResult(request, "request");
         messageValidator.validate(request, bindingResult);
