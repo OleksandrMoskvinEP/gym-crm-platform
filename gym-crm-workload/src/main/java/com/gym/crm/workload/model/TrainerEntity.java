@@ -25,11 +25,10 @@ import java.util.Set;
 public class TrainerEntity {
     @Id
     private String id;
-
     @Indexed(unique = true)
+    private String username;
     private String firstName;
     private String lastName;
-    private String username;
     private Boolean isActive;
 
     @Builder.Default
