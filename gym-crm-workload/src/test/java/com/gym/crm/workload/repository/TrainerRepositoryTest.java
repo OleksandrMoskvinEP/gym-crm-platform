@@ -81,6 +81,17 @@ class TrainerRepositoryTest extends MongoTestContainer {
         assertThat(trainerRepository.findByUsername("to.delete")).isNotPresent();
     }
 
+    @Test
+    void shouldFindTrainersByFirstnameAndLastname() {
+        TrainerEntity expected = persistTrainerWithWorkload("arnold_schwarzenegger");
+
+        Optional<TrainerEntity> actual = trainerRepository.findByFirstNameAndLastName("Arnold", "Schwarzenegger");
+
+        assertThat(actual).isPresent();
+        assertThat(actual.get().getId()).isEqualTo(expected.getId());
+        assertThat(actual.get().getUsername()).isEqualTo("arnold_schwarzenegger");
+    }
+
     private TrainerEntity persistTrainerWithWorkload(String username) {
         TrainerEntity trainer = TrainerEntity.builder()
                 .firstName("Arnold")
