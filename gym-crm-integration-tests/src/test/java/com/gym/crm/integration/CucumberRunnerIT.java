@@ -8,6 +8,6 @@ import org.junit.platform.suite.api.Suite;
 @Suite
 @IncludeEngines("cucumber")
 @SelectClasspathResource("features")
-@ConfigurationParameter(key = "cucumber.glue", value = "com/gym/crm/integration/steps")
+@ConfigurationParameter(key = "cucumber.glue", value = "com.gym.crm.integration.steps")
 public class CucumberRunnerIT {
 }
