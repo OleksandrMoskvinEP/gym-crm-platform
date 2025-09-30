@@ -2,8 +2,6 @@ package com.gym.crm.core.repository;
 
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.gym.crm.core.domain.model.Trainee;
-import com.gym.crm.core.domain.model.Trainer;
-import com.gym.crm.core.domain.model.TrainingType;
 import com.gym.crm.core.domain.model.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,11 +9,9 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataSet(value = "datasets/trainees.xml", cleanBefore = true, cleanAfter = true)
-public class TraineeRepositoryTest extends AbstractRepositoryTest<TraineeRepository> {
+class TraineeRepositoryTest extends AbstractRepositoryTest<TraineeRepository> {
 
     @Test
     void shouldReturnAllTrainees() {
@@ -176,37 +172,6 @@ public class TraineeRepositoryTest extends AbstractRepositoryTest<TraineeReposit
                 .dateOfBirth(LocalDate.of(1990 + id, 1, 13))
                 .address("Test address " + id)
                 .user(user)
-                .build();
-    }
-
-    private Set<Trainer> buildExpectedTrainers() {
-        Set<Trainer> trainers = new HashSet<>();
-        trainers.add(buildTrainer(1L, "John", "Doe", "john.doe", 1L, "Cardio"));
-        trainers.add(buildTrainer(2L, "Mike", "Tyson", "mike.tyson", 2L, "Crossfit"));
-
-        return trainers;
-    }
-
-    private Trainer buildTrainer(Long trainerId,
-                                 String firstName,
-                                 String lastName,
-                                 String username,
-                                 Long specializationId,
-                                 String specializationName) {
-        return Trainer.builder()
-                .id(trainerId)
-                .user(User.builder()
-                        .id(trainerId)
-                        .firstName(firstName)
-                        .lastName(lastName)
-                        .username(username)
-                        .password("123")
-                        .isActive(true)
-                        .build())
-                .specialization(TrainingType.builder()
-                        .id(specializationId)
-                        .trainingTypeName(specializationName)
-                        .build())
                 .build();
     }
 }

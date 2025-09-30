@@ -194,3 +194,32 @@ The application uses ActiveMQ for messaging. You can access the ActiveMQ web con
 ```bash
    docker compose -f docker-compose-activemq.yml up -d
 ```
+---
+
+## Running tests
+
+This project separates unit, component, and integration tests. Component and integration tests are implemented using Cucumber and executed via the Failsafe plugin as `*IT.java`.
+
+- Unit tests (Surefire):
+
+```bash
+  mvn test
+```
+
+- Component tests for core module (Failsafe + Cucumber, tag `@core`):
+
+```bash
+   mvn verify -Dcucumber.filter.tags="@core"
+```
+
+- Component tests for workload module (Failsafe + Cucumber, tag `@workload`):
+
+```bash
+  mvn verify -Dcucumber.filter.tags="@workload"
+```
+
+- Cross-module integration tests in `gym-crm-integration-tests` (Failsafe + Cucumber, tag `@integration`):
+
+```bash
+  mvn verify -Dcucumber.filter.tags="@integration"
+```
