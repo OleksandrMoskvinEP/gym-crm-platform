@@ -44,7 +44,7 @@
         <junit-platform.version>1.10.3</junit-platform.version>
         <cucumber.version>7.18.1</cucumber.version>
         <maven-failsafe-plugin>3.2.5</maven-failsafe-plugin>
-        <maven-surefire-plugin>3.1.2</maven-surefire-plugin>
+        <maven-surefire-plugin>3.2.5</maven-surefire-plugin>
 
         <!-- SonarCloud -->
         <sonar.projectKey>olexandrmoskvinep_gym-crm-platform</sonar.projectKey>
@@ -203,23 +203,17 @@
                 <version>${testcontainers.version}</version>
                 <scope>test</scope>
             </dependency>
-            <!-- JUnit platform suite -->
+            <!-- JUnit Platform for unit tests -->
             <dependency>
                 <groupId>org.junit.platform</groupId>
                 <artifactId>junit-platform-suite-api</artifactId>
                 <version>${junit-platform.version}</version>
                 <scope>test</scope>
             </dependency>
-            <!-- Cucumber -->
+            <!-- Cucumber for component tests -->
             <dependency>
                 <groupId>io.cucumber</groupId>
                 <artifactId>cucumber-java</artifactId>
-                <version>${cucumber.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>io.cucumber</groupId>
-                <artifactId>cucumber-junit-platform-engine</artifactId>
                 <version>${cucumber.version}</version>
                 <scope>test</scope>
             </dependency>
@@ -256,6 +250,18 @@
                             </configuration>
                         </execution>
                     </executions>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.junit.platform</groupId>
+                            <artifactId>junit-platform-suite-engine</artifactId>
+                            <version>${junit-platform.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>io.cucumber</groupId>
+                            <artifactId>cucumber-junit-platform-engine</artifactId>
+                            <version>${cucumber.version}</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
             </plugins>
         </pluginManagement>
