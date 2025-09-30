@@ -270,5 +270,6 @@
         <module>gym-crm-workload</module>
         <module>discovery-service</module>
         <module>gateway-service</module>
+        <module>gym-crm-integration-tests</module>
     </modules>
 </project>
