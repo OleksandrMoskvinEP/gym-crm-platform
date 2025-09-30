@@ -109,7 +109,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- JUnit Platform Suite (аннотации + сам engine) -->
+        <!-- JUnit Platform Suite -->
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-suite-api</artifactId>
@@ -119,17 +119,18 @@
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-suite-engine</artifactId>
         </dependency>
+
+        <!-- Cucumber -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit-platform-engine</artifactId>
+            <scope>test</scope>
         </dependency>
-        <!-- Cucumber: step API + JUnit Platform engine -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
