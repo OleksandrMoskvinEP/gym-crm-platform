@@ -41,7 +41,7 @@
         <hamcrest.version>2.2</hamcrest.version>
         <database-rider.version>1.34.0</database-rider.version>
         <testcontainers.version>1.21.3</testcontainers.version>
-        <junit-platform.version>1.10.3</junit-platform.version>
+        <junit-platform.version>1.11.4</junit-platform.version>
         <cucumber.version>7.18.1</cucumber.version>
         <maven-failsafe-plugin>3.2.5</maven-failsafe-plugin>
         <maven-surefire-plugin>3.2.5</maven-surefire-plugin>
@@ -210,6 +210,16 @@
                 <version>${junit-platform.version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>org.junit.platform</groupId>
+                <artifactId>junit-platform-suite-engine</artifactId>
+                <version>${junit-platform.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.cucumber</groupId>
+                <artifactId>cucumber-junit-platform-engine</artifactId>
+                <version>${cucumber.version}</version>
+            </dependency>
             <!-- Cucumber for component tests -->
             <dependency>
                 <groupId>io.cucumber</groupId>
@@ -250,18 +260,6 @@
                             </configuration>
                         </execution>
                     </executions>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.junit.platform</groupId>
-                            <artifactId>junit-platform-suite-engine</artifactId>
-                            <version>${junit-platform.version}</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>io.cucumber</groupId>
-                            <artifactId>cucumber-junit-platform-engine</artifactId>
-                            <version>${cucumber.version}</version>
-                        </dependency>
-                    </dependencies>
                 </plugin>
             </plugins>
         </pluginManagement>
