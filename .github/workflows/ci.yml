@@ -25,8 +25,14 @@ jobs:
           java-version: 17
           cache: maven
 
+      - name: Build workload image
+        run: docker build -t gym-crm/workload:latest -f gym-crm-workload/Dockerfile .
+
+      - name: Run integration tests
+        run: mvn verify -pl gym-crm-integration-tests
+
       - name: Build & test (with coverage)
         run: mvn -B -U verify
 
       - name: SonarCloud (Maven)
-        run: mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -D"sonar.login=${{ secrets.SONAR_TOKEN }}"
+        run: mvn -B org.sonarsource.scanner.maven:sonar -D"sonar.login=${{ secrets.SONAR_TOKEN }}"
