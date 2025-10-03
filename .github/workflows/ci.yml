@@ -35,4 +35,4 @@ jobs:
         run: mvn -B -U verify
 
       - name: SonarCloud (Maven)
-        run: mvn -B org.sonarsource.scanner.maven:sonar -D"sonar.login=${{ secrets.SONAR_TOKEN }}"
+        run: mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -D"sonar.login=${{ secrets.SONAR_TOKEN }}"
