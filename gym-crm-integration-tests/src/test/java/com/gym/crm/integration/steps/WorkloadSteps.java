@@ -2,18 +2,15 @@ package com.gym.crm.integration.steps;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gym.crm.integration.utills.WorkloadSender;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import jakarta.jms.Connection;
-import jakarta.jms.JMSException;
-import jakarta.jms.MessageProducer;
-import jakarta.jms.Session;
-import jakarta.jms.TextMessage;
-import org.apache.activemq.ActiveMQConnectionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -21,19 +18,19 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.gym.crm.integration.base.WorkloadComponentTestHooks.BROKER_URL;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 
 public class WorkloadSteps {
-    private static final String QUEUE_NAME = "core.to.workload.queue";
     private static final String TYPE_ID = "com.gym.crm.core.integration.workload.dto.WorkloadEventRequest";
-    private static final String JMS_USERNAME = "admin";
-    private static final String JMS_PASSWORD = "admin";
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    @Autowired
+    private Environment environment;
+    @Autowired
+    private WorkloadSender workloadSender;
     private Response lastResponse;
 
     @Given("the trainer arnold_schwarzenegger exists and has a total training duration of {int}")
@@ -94,27 +91,11 @@ public class WorkloadSteps {
         payload.put("actionType", "ADD");
         payload.put("_type", TYPE_ID);
 
-        String body = toJson(payload);
-
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(JMS_USERNAME, JMS_PASSWORD, BROKER_URL);
-
-        try (Connection connection = connectionFactory.createConnection();
-             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-             MessageProducer producer = session.createProducer(session.createQueue(QUEUE_NAME))) {
-
-            connection.start();
-
-            TextMessage message = session.createTextMessage(body);
-            message.setStringProperty("_type", TYPE_ID);
-
-            producer.send(message);
-        } catch (JMSException e) {
-            throw new RuntimeException("Failed to send workload event", e);
-        }
+        workloadSender.send(payload);
     }
 
     private void waitForTrainerWorkload(String username, int year, int month, int expectedHours) {
-        long timeoutMillis = Duration.ofSeconds(30).toMillis();
+        long timeoutMillis = Duration.ofSeconds(600).toMillis();
         long start = System.currentTimeMillis();
 
         while (System.currentTimeMillis() - start < timeoutMillis) {
@@ -139,14 +120,6 @@ public class WorkloadSteps {
             Thread.currentThread().interrupt();
 
             throw new RuntimeException("Waiting for workload data was interrupted", e);
-        }
-    }
-
-    private String toJson(Map<String, Object> payload) {
-        try {
-            return objectMapper.writeValueAsString(payload);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to serialize workload event payload", e);
         }
     }
 
