@@ -4,14 +4,19 @@ import com.gym.crm.integration.utills.WorkloadSender;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +24,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 
 public class WorkloadSteps {
+    private static final String WORKLOAD_SECRET = "AnotherSecuredSecretKeyForWorkloadService123456";
     private static final String TYPE_ID = "com.gym.crm.core.integration.workload.dto.WorkloadEventRequest";
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
 
@@ -30,8 +36,6 @@ public class WorkloadSteps {
     public void the_trainer_arnold_schwarzenegger_exists_and_has_a_total_training_duration_of(Integer duration) {
         LocalDate trainingDate = LocalDate.of(2025, 10, 1);
         sendWorkloadEvent(trainingDate, duration);
-
-      //  waitForTrainerWorkload("arnold_schwarzenegger", 2025, 10, duration / 60);
     }
 
     @When("I request the workload for trainer {string} year {int} month {int}")
@@ -86,42 +90,25 @@ public class WorkloadSteps {
         workloadSender.send(payload, TYPE_ID);
     }
 
-    private void waitForTrainerWorkload(String username, int year, int month, int expectedHours) {
-        long timeoutMillis = Duration.ofSeconds(600).toMillis();
-        long start = System.currentTimeMillis();
-
-        while (System.currentTimeMillis() - start < timeoutMillis) {
-            Response response = requestWorkload(username, year, month);
-            if (response.statusCode() == 200) {
-                int totalHours = response.jsonPath().getInt("totalHours");
-                if (totalHours == expectedHours) {
-                    return;
-                }
-            }
-
-            sleep(500);
-        }
-
-        throw new AssertionError("Trainer workload was not available within the expected time");
-    }
-
-    private void sleep(long millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-
-            throw new RuntimeException("Waiting for workload data was interrupted", e);
-        }
-    }
-
     private Response requestWorkload(String username, Integer year, Integer month) {
         return RestAssured.given()
+                .header("Authorization", "Bearer " + generateServiceToken())
                 .accept(ContentType.JSON)
                 .when()
                 .get("/api/v1/trainers-workload/{username}/{year}/{month}", username, year, month)
                 .then()
                 .extract()
                 .response();
+    }
+
+    private String generateServiceToken() {
+        SecretKey secretKey = Keys.hmacShaKeyFor(WORKLOAD_SECRET.getBytes(StandardCharsets.UTF_8));
+
+        return Jwts.builder()
+                .subject("core-service")
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + Duration.ofMinutes(5).toMillis()))
+                .signWith(secretKey)
+                .compact();
     }
 }

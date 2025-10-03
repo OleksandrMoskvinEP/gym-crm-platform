@@ -127,21 +127,21 @@ public class WorkloadChangePersistor {
 
     private TrainerEntity getTrainerOrThrow(String username) {
         return repository.findWithWorkloadByUsername(username)
-                .orElseThrow(() -> new IllegalStateException("Trainer not found: " + username));
+                .orElseThrow(() -> new IllegalArgumentException("Trainer not found: " + username));
     }
 
     private YearEntity getYearOrThrow(TrainerEntity trainer, int workYear) {
         return trainer.getYears().stream()
                 .filter(year -> year.getWorkYear() == workYear)
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Year not found: " + workYear));
+                .orElseThrow(() -> new IllegalArgumentException("Year not found: " + workYear));
     }
 
     private MonthEntity getMonthOrThrow(YearEntity year, int monthOfYear) {
         return year.getMonths().stream()
                 .filter(month -> month.getMonthOfYear() == monthOfYear)
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Month not found: " + monthOfYear));
+                .orElseThrow(() -> new IllegalArgumentException("Month not found: " + monthOfYear));
     }
 
     private long safeAddNonNegative(long base, long delta) {
