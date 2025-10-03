@@ -45,6 +45,8 @@
         <cucumber.version>7.18.1</cucumber.version>
         <maven-failsafe-plugin>3.2.5</maven-failsafe-plugin>
         <maven-surefire-plugin>3.2.5</maven-surefire-plugin>
+        <rest-assured.version>5.5.6</rest-assured.version>
+        <logback.version>1.5.19</logback.version>
 
         <!-- SonarCloud -->
         <sonar.projectKey>olexandrmoskvinep_gym-crm-platform</sonar.projectKey>
@@ -225,6 +227,19 @@
                 <groupId>io.cucumber</groupId>
                 <artifactId>cucumber-java</artifactId>
                 <version>${cucumber.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.rest-assured</groupId>
+                <artifactId>rest-assured</artifactId>
+                <version>${rest-assured.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <!--Logger for integration testing-->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
