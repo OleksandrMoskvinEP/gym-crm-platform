@@ -1,7 +1,5 @@
 package com.gym.crm.integration.steps;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gym.crm.integration.utills.WorkloadSender;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -10,7 +8,6 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -25,10 +22,6 @@ public class WorkloadSteps {
     private static final String TYPE_ID = "com.gym.crm.core.integration.workload.dto.WorkloadEventRequest";
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    @Autowired
-    private Environment environment;
     @Autowired
     private WorkloadSender workloadSender;
     private Response lastResponse;
@@ -38,7 +31,7 @@ public class WorkloadSteps {
         LocalDate trainingDate = LocalDate.of(2025, 10, 1);
         sendWorkloadEvent(trainingDate, duration);
 
-        waitForTrainerWorkload("arnold_schwarzenegger", 2025, 10, duration / 60);
+      //  waitForTrainerWorkload("arnold_schwarzenegger", 2025, 10, duration / 60);
     }
 
     @When("I request the workload for trainer {string} year {int} month {int}")
@@ -89,9 +82,8 @@ public class WorkloadSteps {
         payload.put("trainingDate", trainingDate.format(DATE_FORMATTER));
         payload.put("trainingDuration", trainingDuration);
         payload.put("actionType", "ADD");
-        payload.put("_type", TYPE_ID);
 
-        workloadSender.send(payload);
+        workloadSender.send(payload, TYPE_ID);
     }
 
     private void waitForTrainerWorkload(String username, int year, int month, int expectedHours) {

@@ -21,10 +21,17 @@ public class WorkloadSender {
         this.objectMapper = objectMapper;
     }
 
-    public void send(Map<String, Object> payload) {
+    public void send(Map<String, Object> payload, String typeId) {
         try {
             String json = objectMapper.writeValueAsString(payload);
-            jmsTemplate.convertAndSend(queueName, json);
+
+            jmsTemplate.convertAndSend(queueName, json, message -> {
+                if (typeId != null && !typeId.isBlank()) {
+                    message.setStringProperty("_type", typeId);
+                }
+
+                return message;
+            });
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to serialize payload", e);
         }
