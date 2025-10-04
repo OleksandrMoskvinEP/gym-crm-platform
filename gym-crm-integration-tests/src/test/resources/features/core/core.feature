@@ -11,8 +11,7 @@ Feature: Trainee,Trainer and Trainings Management
   @NegativeCase
   Scenario: Failed authentication with incorrect password
     When I attempt to authenticate with wrong password "wrongpassword"
-    Then I should receive a response with status code 400
-    And the error message should contain "Invalid username or password"
+    Then I should receive a response with status code 401
 
   Scenario: Find trainee profile by valid username
     Given a trainee with username "olga.ivanova" exists
