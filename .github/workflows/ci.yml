@@ -28,6 +28,9 @@ jobs:
       - name: Build workload image
         run: docker build -t gym-crm/workload:latest -f gym-crm-workload/Dockerfile .
 
+      - name: Build core image
+        run: docker build -t gym-crm/core:latest -f gym-crm-core/Dockerfile .
+
       - name: Run integration tests
         run: mvn verify -pl gym-crm-integration-tests
 
