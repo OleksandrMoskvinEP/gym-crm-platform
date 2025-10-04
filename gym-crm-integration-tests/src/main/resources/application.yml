@@ -1,0 +1,8 @@
+spring:
+  activemq:
+    brokerUrl: tcp://localhost:61616
+    user: test
+    password: test
+jms:
+  queue:
+    trainer-workload: core.to.workload.queue

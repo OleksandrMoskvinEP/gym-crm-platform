@@ -25,6 +25,12 @@ jobs:
           java-version: 17
           cache: maven
 
+      - name: Build workload image
+        run: docker build -t gym-crm/workload:latest -f gym-crm-workload/Dockerfile .
+
+      - name: Run integration tests
+        run: mvn verify -pl gym-crm-integration-tests
+
       - name: Build & test (with coverage)
         run: mvn -B -U verify
 
