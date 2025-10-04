@@ -1,4 +1,4 @@
-@workload
+@gca-workload
 Feature: Trainer Workload Management
 
   @PositiveCase

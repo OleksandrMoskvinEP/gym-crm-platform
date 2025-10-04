@@ -1,4 +1,4 @@
-@core
+@gca-core
 
 Feature: Trainee,Trainer and Trainings Management
 
