@@ -43,7 +43,7 @@ public class CucumberSpringConfiguration {
     @DynamicPropertySource
     static void setProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.data.mongodb.uri", () ->
-                format("mongodb://admin:admin@%s:%d/gymcrm?authSource=admin",
+                format("mongodb://test:test@%s:%d/gymcrm?authSource=admin",
                         MONGO_DB_CONTAINER.getHost(),
                         MONGO_DB_CONTAINER.getMappedPort(27017)));
 
@@ -51,8 +51,8 @@ public class CucumberSpringConfiguration {
                 format("tcp://%s:%d",
                         ACTIVEMQ_CONTAINER.getHost(),
                         ACTIVEMQ_CONTAINER.getMappedPort(61616)));
-        registry.add("spring.activemq.user", () -> "admin");
-        registry.add("spring.activemq.password", () -> "admin");
+        registry.add("spring.activemq.user", () -> "test");
+        registry.add("spring.activemq.password", () -> "test");
         registry.add("jms.queue.trainer-workload", () -> "core.to.workload.queue");
     }
 
@@ -61,8 +61,8 @@ public class CucumberSpringConfiguration {
                 .withExposedPorts(27017)
                 .withNetwork(NETWORK)
                 .withNetworkAliases("mongo")
-                .withEnv("MONGO_INITDB_ROOT_USERNAME", "admin")
-                .withEnv("MONGO_INITDB_ROOT_PASSWORD", "admin")
+                .withEnv("MONGO_INITDB_ROOT_USERNAME", "test")
+                .withEnv("MONGO_INITDB_ROOT_PASSWORD", "test")
                 .waitingFor(Wait.forListeningPort());
     }
 
@@ -79,10 +79,10 @@ public class CucumberSpringConfiguration {
                 .withExposedPorts(8082)
                 .withNetwork(NETWORK)
                 .dependsOn(MONGO_DB_CONTAINER, ACTIVEMQ_CONTAINER)
-                .withEnv("SPRING_DATA_MONGODB_URI", "mongodb://admin:admin@mongo:27017/gymcrm?authSource=admin")
+                .withEnv("SPRING_DATA_MONGODB_URI", "mongodb://test:test@mongo:27017/gymcrm?authSource=admin")
                 .withEnv("SPRING_ACTIVEMQ_BROKER_URL", "tcp://activemq:61616")
-                .withEnv("SPRING_ACTIVEMQ_USER", "admin")
-                .withEnv("SPRING_ACTIVEMQ_PASSWORD", "admin")
+                .withEnv("SPRING_ACTIVEMQ_USER", "test")
+                .withEnv("SPRING_ACTIVEMQ_PASSWORD", "test")
                 .waitingFor(Wait.forHttp("/actuator/health").forStatusCode(200)
                         .withStartupTimeout(Duration.ofMinutes(2)));
     }
