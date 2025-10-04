@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   mongo:
-    image: mongo:6     # твой локальный образ
+    image: mongo:6
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
@@ -9,14 +9,14 @@ services:
       - "27017:27017"
 
   activemq:
-    image: rmohr/activemq:latest   # твой локальный образ
+    image: rmohr/activemq:latest
 
     ports:
       - "61616:61616"
       - "8161:8161"   # web-консоль ActiveMQ
 
   workload:
-    image: gym-crm/workload:latest  # твой локальный образ
+    image: gym-crm/workload:latest
     depends_on:
       - mongo
       - activemq
