@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 
 @SpringBootTest
@@ -26,8 +27,9 @@ public class CoreSteps {
 
     @Given("a user {string} with password {string} exists")
     public void a_user_with_password_exists(String username, String password) {
-        Assertions.assertNotNull(username);
-        Assertions.assertNotNull(password);
+        ensureAuthenticated(username, password);
+
+        Assertions.assertNotNull(jwtToken, "Failed to authenticate as admin user");
     }
 
     @When("I authenticate with username {string} and password {string}")
@@ -74,28 +76,78 @@ public class CoreSteps {
     }
 
     @Given("a trainee with username {string} exists")
-    public void a_trainee_with_username_exists(String string) {
+    public void a_trainee_with_username_exists(String username) {
+        ensureAuthenticated("arnold.schwarzenegger", "qwerty1234");
+
+        lastResponse = RestAssured.given()
+                .basePath(TRAINEES_ENDPOINT + "/" + username)
+                .header("Authorization", "Bearer " + jwtToken)
+                .when()
+                .get()
+                .then()
+                .extract()
+                .response();
+
+        lastResponse.then().statusCode(200);
     }
 
     @When("I request the trainee profile by username {string}")
     public void i_request_the_trainee_profile_by_username(String string) {
-        //отправить get запрос на localhost:8081/api/core/v1/trainees/{username}
-        //в заголовке Authorization должен быть токен полученный при аутентификации
+        lastResponse = RestAssured.given()
+                .basePath(TRAINEES_ENDPOINT + "/" + string)
+                .header("Authorization", "Bearer " + jwtToken)
+                .when()
+                .get()
+                .then()
+                .extract()
+                .response();
     }
 
     @Then("I should retrieve a trainee profile with first name {string} and last name {string}")
-    public void i_should_retrieve_a_trainee_profile_with_first_name_and_last_name(String string, String string2) {
-        //проверить что в ответе есть поля firstName и lastName и они равны ожидаемым значениям
+    public void i_should_retrieve_a_trainee_profile_with_first_name_and_last_name(String firstName, String lastName) {
+        lastResponse.then()
+                .statusCode(200)
+                .body("firstName", equalTo(firstName))
+                .body("lastName", equalTo(lastName));
     }
 
     @When("I request the list of training types")
     public void i_request_the_list_of_training_types() {
-        //отправить get запрос на localhost:8081/api/core/v1/training-types
-        //в заголовке Authorization должен быть токен полученный при аутентификации
+        ensureAuthenticated("arnold.schwarzenegger", "qwerty1234");
+
+        lastResponse = RestAssured.given()
+                .basePath(TRAINING_TYPES_ENDPOINT)
+                .header("Authorization", "Bearer " + jwtToken)
+                .when()
+                .get()
+                .then()
+                .extract()
+                .response();
+
+        lastResponse.then().statusCode(200);
     }
 
     @Then("I should receive {int} training types")
-    public void i_should_receive_training_types(Integer int1) {
-        //проверить что в ответе массив с типами тренировок и его размер равен int1
+    public void i_should_receive_training_types(Integer typesCount) {
+        lastResponse.then().body("trainingTypes.size()", equalTo(typesCount));
+    }
+
+    private void ensureAuthenticated(String username, String password) {
+        if (jwtToken != null) {
+            return;
+        }
+
+        Response response = RestAssured.given()
+                .basePath(LOGIN_ENDPOINT)
+                .contentType(ContentType.JSON)
+                .body(Map.of("username", username, "password", password))
+                .when()
+                .post()
+                .then()
+                .statusCode(200)
+                .extract()
+                .response();
+
+        jwtToken = response.path("accessToken");
     }
 }
