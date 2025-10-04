@@ -13,7 +13,7 @@ services:
 
     ports:
       - "61616:61616"
-      - "8161:8161"   # web-консоль ActiveMQ
+      - "8161:8161"
 
   workload:
     image: gym-crm/workload:latest

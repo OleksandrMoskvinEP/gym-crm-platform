@@ -32,8 +32,6 @@ public class CoreTestConfiguration {
     public static final String POSTGRESQL_IMAGE_NAME = "postgres:latest";
     public static final String CORE_IMAGE_NAME = "gym-crm/core:latest";
 
-
-
     static {
         POSTGRES_CONTAINER.start();
         ACTIVEMQ_CONTAINER.start();
