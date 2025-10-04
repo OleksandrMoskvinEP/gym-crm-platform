@@ -41,7 +41,6 @@ public class WorkloadSteps {
     @When("I request the workload for trainer {string} year {int} month {int}")
     public void i_request_the_workload_for_trainer_year_month(String username, Integer year, Integer month) {
         lastResponse = requestWorkload(username, year, month);
-
     }
 
     @Then("the workload returned should be {int}")
