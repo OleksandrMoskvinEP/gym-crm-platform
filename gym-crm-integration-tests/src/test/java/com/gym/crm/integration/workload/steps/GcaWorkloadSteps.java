@@ -25,7 +25,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest
-public class WorkloadSteps {
+public class GcaWorkloadSteps {
     private static final String WORKLOAD_SECRET = "AnotherSecuredSecretKeyForWorkloadService123456";
     private static final String TYPE_ID = "com.gym.crm.core.integration.workload.dto.WorkloadEventRequest";
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;

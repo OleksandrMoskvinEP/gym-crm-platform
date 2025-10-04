@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 
 @SpringBootTest
-public class CoreSteps {
+public class GcaCoreSteps {
     private static final String LOGIN_ENDPOINT = "/api/core/v1/login";
     private static final String TRAINEES_ENDPOINT = "/api/core/v1/trainees";
     private static final String TRAINING_TYPES_ENDPOINT = "/api/core/v1/training-types";

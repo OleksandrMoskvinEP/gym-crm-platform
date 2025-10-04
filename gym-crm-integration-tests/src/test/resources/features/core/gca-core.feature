@@ -22,7 +22,3 @@ Feature: Trainee,Trainer and Trainings Management
     When I request the list of training types
     Then I should receive 6 training types
 
-
-
-
-
