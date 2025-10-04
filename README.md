@@ -206,16 +206,16 @@ This project separates unit, component, and integration tests. Component and int
   mvn test
 ```
 
-- Component tests for core module (Failsafe + Cucumber, tag `@core`):
+- Component tests for core module (Failsafe + Cucumber, tag `@gca-core`):
 
 ```bash
-   mvn verify -Dcucumber.filter.tags="@core"
+   mvn verify -Dcucumber.filter.tags="@gca-core"
 ```
 
-- Component tests for workload module (Failsafe + Cucumber, tag `@workload`):
+- Component tests for workload module (Failsafe + Cucumber, tag `@gca-workload`):
 
 ```bash
-  mvn verify -Dcucumber.filter.tags="@workload"
+  mvn verify -Dcucumber.filter.tags="@gca-workload"
 ```
 
 - Cross-module integration tests in `gym-crm-integration-tests` (Failsafe + Cucumber, tag `@integration`):

@@ -7,7 +7,7 @@ import org.junit.platform.suite.api.Suite;
 
 @Suite
 @IncludeEngines("cucumber")
-@SelectClasspathResource("features/workload")
-@ConfigurationParameter(key = "cucumber.glue", value = "com.gym.crm.integration.workload")
-public class WorkloadRunnerIT {
+@SelectClasspathResource("features/core")
+@ConfigurationParameter(key = "cucumber.glue", value = "com.gym.crm.integration.core")
+public class CoreRunnerIT {
 }

@@ -5,13 +5,13 @@ WORKDIR /app
 
 COPY . .
 
-RUN mvn clean package -pl gym-crm-workload -am -DskipTests=true
+RUN mvn clean package -pl gym-crm-core -am -DskipTests=true
 
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
-COPY --from=build /app/gym-crm-workload/target/*.jar app.jar
+COPY --from=build /app/gym-crm-core/target/*.jar app.jar
 
-EXPOSE 8082
+EXPOSE 8081
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
