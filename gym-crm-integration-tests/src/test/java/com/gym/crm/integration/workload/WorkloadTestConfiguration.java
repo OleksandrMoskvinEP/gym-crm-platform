@@ -1,5 +1,6 @@
-package com.gym.crm.integration.config;
+package com.gym.crm.integration.workload;
 
+import com.gym.crm.integration.IntegrationTestApplication;
 import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.RestAssured;
 import org.slf4j.LoggerFactory;
@@ -10,7 +11,6 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 import java.time.Duration;
@@ -18,9 +18,9 @@ import java.time.Duration;
 import static java.lang.String.format;
 
 @CucumberContextConfiguration
-@SpringBootTest
-@Testcontainers
-public class CucumberSpringConfiguration {
+@SpringBootTest(classes =  IntegrationTestApplication.class,
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class WorkloadTestConfiguration {
     private static final String ACTIVEMQ_IMAGE_NAME = "apache/activemq-classic:latest";
     private static final String MONGODB_IMAGE_NAME = "mongo:6.0";
     private static final String WORKLOAD_IMAGE_NAME = "gym-crm/workload:latest";

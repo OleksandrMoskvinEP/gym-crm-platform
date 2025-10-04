@@ -1,4 +1,4 @@
-package com.gym.crm.integration.steps;
+package com.gym.crm.integration.workload.steps;
 
 import com.gym.crm.integration.utills.WorkloadSender;
 import io.cucumber.java.en.Given;
@@ -10,6 +10,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -23,6 +24,7 @@ import java.util.Map;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 
+@SpringBootTest
 public class WorkloadSteps {
     private static final String WORKLOAD_SECRET = "AnotherSecuredSecretKeyForWorkloadService123456";
     private static final String TYPE_ID = "com.gym.crm.core.integration.workload.dto.WorkloadEventRequest";
