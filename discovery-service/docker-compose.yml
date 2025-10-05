@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  discovery:
+    image: gym-crm/discovery:latest
+    container_name: gymcrm-discovery
+    ports:
+      - "8761:8761"
+    networks:
+      - gymcrm-net
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  gymcrm-net:
+    driver: bridge
