@@ -25,6 +25,9 @@ jobs:
           java-version: 17
           cache: maven
 
+      - name: Build gateway image
+        run: docker build -t gym-crm/gateway:latest -f gateway-service/Dockerfile .
+
       - name: Build discovery image
         run: docker build -t gym-crm/discovery:latest -f discovery-service/Dockerfile .
 

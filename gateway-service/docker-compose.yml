@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  discovery:
+    image: gym-crm/discovery:latest
+    container_name: gymcrm-discovery
+    ports:
+      - "8761:8761"
+    networks:
+      - gymcrm-net
+
+  gateway:
+    image: gym-crm/gateway:latest
+    container_name: gymcrm-gateway
+    depends_on:
+      - discovery
+    ports:
+      - "8080:8080"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka
+      - SERVER_PORT=8080
+    networks:
+      - gymcrm-net
+
+networks:
+  gymcrm-net:
+    driver: bridge
