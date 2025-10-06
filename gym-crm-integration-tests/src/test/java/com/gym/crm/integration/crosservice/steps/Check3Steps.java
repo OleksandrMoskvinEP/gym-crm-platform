@@ -23,7 +23,7 @@ public class Check3Steps {
     }
 
     @Then("the result should be grater than {int}")
-    public void the_result_should_be_grater_than(Integer int1) {
+    public void the_result_should_be_grater_than(Integer int1) throws InterruptedException {
         if (result <= int1) {
             throw new AssertionError("The result should be grater than " + int1);
         }
