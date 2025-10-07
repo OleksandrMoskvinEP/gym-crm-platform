@@ -36,7 +36,7 @@ public class CrosserviceTestConfiguration {
     private static final GenericContainer<?> ACTIVEMQ_CONTAINER = getActivemqContainer();
     private static final GenericContainer<?> DISCOVERY_CONTAINER = getDiscoveryContainer();
     private static final GenericContainer<?> GATEWAY_CONTAINER = getGatewayContainer();
-    public static final GenericContainer<?> CORE_CONTAINER = getCoreContainer();
+    private static final GenericContainer<?> CORE_CONTAINER = getCoreContainer();
     private static final GenericContainer<?> WORKLOAD_CONTAINER = getWorkloadContainer();
 
     static {
