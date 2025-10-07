@@ -36,7 +36,7 @@ public class CrosserviceTestConfiguration {
     private static final GenericContainer<?> ACTIVEMQ_CONTAINER = getActivemqContainer();
     private static final GenericContainer<?> DISCOVERY_CONTAINER = getDiscoveryContainer();
     private static final GenericContainer<?> GATEWAY_CONTAINER = getGatewayContainer();
-    private static final GenericContainer<?> CORE_CONTAINER = getCoreContainer();
+    public static final GenericContainer<?> CORE_CONTAINER = getCoreContainer();
     private static final GenericContainer<?> WORKLOAD_CONTAINER = getWorkloadContainer();
 
     static {
@@ -50,6 +50,7 @@ public class CrosserviceTestConfiguration {
 
         WORKLOAD_CONTAINER.followOutput(new Slf4jLogConsumer(LoggerFactory.getLogger("WORKLOAD")));
         CORE_CONTAINER.followOutput(new Slf4jLogConsumer(LoggerFactory.getLogger("CORE")));
+        GATEWAY_CONTAINER.followOutput(new Slf4jLogConsumer(LoggerFactory.getLogger("GATEWAY")));
     }
 
     @DynamicPropertySource
@@ -96,6 +97,7 @@ public class CrosserviceTestConfiguration {
         return new GenericContainer<>(DockerImageName.parse(WORKLOAD_IMAGE_NAME))
                 .withExposedPorts(8082)
                 .withNetwork(NETWORK)
+                .withNetworkAliases("gym-crm-core")
                 .dependsOn(MONGO_DB_CONTAINER, ACTIVEMQ_CONTAINER)
                 .withEnv("SPRING_DATA_MONGODB_URI", "mongodb://test:test@mongo:27017/gymcrm?authSource=admin")
                 .withEnv("SPRING_ACTIVEMQ_BROKER_URL", "tcp://activemq:61616")
@@ -115,6 +117,7 @@ public class CrosserviceTestConfiguration {
         return new GenericContainer<>(DockerImageName.parse(CORE_IMAGE_NAME))
                 .withExposedPorts(8081)
                 .withNetwork(NETWORK)
+                .withNetworkAliases("gym-crm-core")
                 .dependsOn(POSTGRES_CONTAINER, ACTIVEMQ_CONTAINER)
                 .withEnv("SPRING_PROFILES_ACTIVE", "integration-tests")
                 .withEnv("JMS_QUEUE_TRAINER_WORKLOAD", "core.to.workload.queue")
@@ -138,8 +141,7 @@ public class CrosserviceTestConfiguration {
                 .withExposedPorts(8761)
                 .withNetwork(NETWORK)
                 .withNetworkAliases("discovery")
-                .withEnv("EUREKA_CLIENT_REGISTER-WITH-EUREKA", "false")
-                .withEnv("EUREKA_CLIENT_FETCH-REGISTRY", "false")
+                .withEnv("SPRING_PROFILES_ACTIVE", "test")
                 .waitingFor(Wait.forListeningPort().withStartupTimeout(Duration.ofMinutes(2)));
     }
 
@@ -148,11 +150,15 @@ public class CrosserviceTestConfiguration {
                 .withExposedPorts(8080)
                 .withNetwork(NETWORK)
                 .withNetworkAliases("gateway")
-                .withEnv("EUREKA_CLIENT_SERVICEURL_DEFAULTZONE", "http://discovery:8761/eureka")
-                .withEnv("EUREKA_CLIENT_FETCH_REGISTRY", "true")
-                .withEnv("EUREKA_CLIENT_REGISTER_WITH_EUREKA", "false")
-                .withEnv("SPRING_CLOUD_DISCOVERY_ENABLED", "true")
-                .withEnv("EUREKA_INSTANCE_PREFER_IP_ADDRESS", "true")
+                .withEnv("SPRING_PROFILES_ACTIVE", "integration-test")
                 .waitingFor(Wait.forListeningPort().withStartupTimeout(Duration.ofMinutes(2)));
+    }
+
+    public static String getGATEWAY_URL() {
+        return "http://" + GATEWAY_CONTAINER.getHost() + ":" + GATEWAY_CONTAINER.getMappedPort(8080);
+    }
+
+    public static String getWORKLOAD_URL() {
+        return "http://" + WORKLOAD_CONTAINER.getHost() + ":" + WORKLOAD_CONTAINER.getMappedPort(8082);
     }
 }

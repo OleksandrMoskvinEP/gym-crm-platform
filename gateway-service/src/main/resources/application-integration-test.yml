@@ -24,17 +24,35 @@ spring:
             allowCredentials: true
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+      routes:
+        - id: core-service
+          uri: lb://gym-crm-core
+          predicates:
+            - Path=/api/core/v1/**
+          filters:
+            - StripPrefix=2
+        - id: workload-service
+          uri: lb://trainers-workload-service
+          predicates:
+            - Path=/api/v1/trainers-workload/**
+          filters:
+            - StripPrefix=2
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://discovery:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
   instance:
-    hostname: localhost
+    prefer-ip-address: true
+    hostname: gateway
     instance-id: ${spring.application.name}:${server.port}
 
 logging:
   level:
     root: INFO
     org.springframework.cloud.gateway: DEBUG
-    org.springframework.web: DEBUG
+    org.springframework.web.reactive: DEBUG
+    org.springframework.cloud.netflix.eureka: INFO
+    org.springframework.web: INFO
