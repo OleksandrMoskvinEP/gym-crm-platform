@@ -24,8 +24,8 @@ public class CrosserviceTestConfiguration {
     private static final String BROKER_IMAGE_NAME = "apache/activemq-classic:latest";
     private static final String MONGODB_IMAGE_NAME = "mongo:6.0";
     private static final String WORKLOAD_IMAGE_NAME = "gym-crm/workload:latest";
-    public static final String POSTGRESQL_IMAGE_NAME = "postgres:latest";
-    public static final String CORE_IMAGE_NAME = "gym-crm/core:latest";
+    private static final String POSTGRESQL_IMAGE_NAME = "postgres:latest";
+    private static final String CORE_IMAGE_NAME = "gym-crm/core:latest";
     private static final String DISCOVERY_IMAGE_NAME = "gym-crm/discovery:latest";
     private static final String GATEWAY_IMAGE_NAME = "gym-crm/gateway:latest";
 
