@@ -13,9 +13,6 @@ import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.utility.DockerImageName;
 
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.time.Duration;
 
 import static java.lang.String.format;
@@ -51,7 +48,7 @@ public class CrosserviceTestConfiguration {
         CORE_CONTAINER.start();
         WORKLOAD_CONTAINER.start();
 
-        awaitServicesSynchronisation();
+        waitForEurekaRegistry();
 
         WORKLOAD_CONTAINER.followOutput(new Slf4jLogConsumer(LoggerFactory.getLogger("WORKLOAD")));
         CORE_CONTAINER.followOutput(new Slf4jLogConsumer(LoggerFactory.getLogger("CORE")));
@@ -161,70 +158,12 @@ public class CrosserviceTestConfiguration {
                 .waitingFor(Wait.forListeningPort().withStartupTimeout(Duration.ofMinutes(2)));
     }
 
-    private static void awaitServicesSynchronisation() {
+    private static void waitForEurekaRegistry() {
         try {
-            Thread.sleep(15000);
-
-            try {
-                waitForEurekaRegistry(120);
-            } catch (Exception e) {
-                Thread.sleep(30000);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Services synchronization failed: " + e.getMessage(), e);
+            Thread.sleep(50 * 1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Some services don`t register in Eureka! Restart tests!");
         }
-    }
-
-    private static void waitForEurekaRegistry(int timeoutSeconds) {
-        String eurekaUrl = "http://" + DISCOVERY_CONTAINER.getHost() +
-                ":" + DISCOVERY_CONTAINER.getMappedPort(8761) + "/eureka/apps";
-
-        long startTime = System.currentTimeMillis();
-        long timeout = timeoutSeconds * 1000L;
-        int attemptCount = 0;
-
-        while (System.currentTimeMillis() - startTime < timeout) {
-            attemptCount++;
-            try {
-                HttpClient client = HttpClient.newBuilder()
-                        .connectTimeout(java.time.Duration.ofSeconds(5))
-                        .build();
-
-                HttpRequest request = HttpRequest.newBuilder()
-                        .uri(java.net.URI.create(eurekaUrl))
-                        .timeout(java.time.Duration.ofSeconds(10))
-                        .GET()
-                        .build();
-
-                HttpResponse<String> response = client.send(request,
-                        java.net.http.HttpResponse.BodyHandlers.ofString());
-
-                String responseBody = response.body();
-
-                boolean hasCore = responseBody.contains("gym-crm-core");
-                boolean hasWorkload = responseBody.contains("trainers-workload-service");
-                boolean hasGateway = responseBody.contains("gateway-service");
-
-
-                if (hasCore && hasWorkload && hasGateway) {
-                    return;
-                }
-
-            } catch (Exception e) {
-                System.out.println("Eureka registry check failed (attempt " + attemptCount + "): " + e.getMessage());
-            }
-
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw new RuntimeException("Interrupted while waiting for Eureka registry");
-            }
-        }
-
-        throw new RuntimeException("Services did not register in Eureka within "
-                + timeoutSeconds + " seconds after " + attemptCount + " attempts");
     }
 
     public static String getGATEWAY_URL() {
