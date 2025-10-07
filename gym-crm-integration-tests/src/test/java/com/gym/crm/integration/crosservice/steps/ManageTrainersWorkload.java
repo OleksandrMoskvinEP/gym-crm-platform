@@ -27,7 +27,7 @@ public class ManageTrainersWorkload {
     private Map<String, String> credentials;
 
     @Given("I have correct user credentials")
-    public void i_have_correct_user_credentials(DataTable dataTable) throws InterruptedException {
+    public void i_have_correct_user_credentials(DataTable dataTable) {
         credentials = dataTable.asMap(String.class, String.class);
 
         ensureAuthenticated(credentials.get("username"), credentials.get("password"));
@@ -75,13 +75,11 @@ public class ManageTrainersWorkload {
 
     }
 
-    private void ensureAuthenticated(String username, String password) throws InterruptedException {
+    private void ensureAuthenticated(String username, String password) {
         if (jwtToken != null) {
             return;
         }
-        System.out.println(GATEWAY_URI +LOGIN_ENDPOINT+"================================================");
-         Thread.sleep(10*5000);
-
+        
         Response response = RestAssured.given()
                 .baseUri(GATEWAY_URI)
                 .basePath(LOGIN_ENDPOINT)

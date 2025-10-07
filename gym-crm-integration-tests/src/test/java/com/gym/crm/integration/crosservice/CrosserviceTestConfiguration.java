@@ -48,6 +48,8 @@ public class CrosserviceTestConfiguration {
         CORE_CONTAINER.start();
         WORKLOAD_CONTAINER.start();
 
+        awaitServicesSynchronisation();
+
         WORKLOAD_CONTAINER.followOutput(new Slf4jLogConsumer(LoggerFactory.getLogger("WORKLOAD")));
         CORE_CONTAINER.followOutput(new Slf4jLogConsumer(LoggerFactory.getLogger("CORE")));
         GATEWAY_CONTAINER.followOutput(new Slf4jLogConsumer(LoggerFactory.getLogger("GATEWAY")));
@@ -141,7 +143,7 @@ public class CrosserviceTestConfiguration {
                 .withExposedPorts(8761)
                 .withNetwork(NETWORK)
                 .withNetworkAliases("discovery")
-                .withEnv("SPRING_PROFILES_ACTIVE", "test")
+                .withEnv("SPRING_PROFILES_ACTIVE", "integration-test")
                 .waitingFor(Wait.forListeningPort().withStartupTimeout(Duration.ofMinutes(2)));
     }
 
@@ -152,6 +154,14 @@ public class CrosserviceTestConfiguration {
                 .withNetworkAliases("gateway")
                 .withEnv("SPRING_PROFILES_ACTIVE", "integration-test")
                 .waitingFor(Wait.forListeningPort().withStartupTimeout(Duration.ofMinutes(2)));
+    }
+
+    private static void awaitServicesSynchronisation() {
+        try {
+            Thread.sleep(50 * 1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Some services unavailable!");
+        }
     }
 
     public static String getGATEWAY_URL() {
