@@ -13,6 +13,9 @@ import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.utility.DockerImageName;
 
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.Duration;
 
 import static java.lang.String.format;
@@ -160,138 +163,68 @@ public class CrosserviceTestConfiguration {
 
     private static void awaitServicesSynchronisation() {
         try {
-            System.out.println("Starting services synchronization...");
-            
-            // Проверяем статус контейнеров
-            System.out.println("Container status:");
-            System.out.println("- Discovery: " + (DISCOVERY_CONTAINER.isRunning() ? "RUNNING" : "NOT RUNNING"));
-            System.out.println("- Gateway: " + (GATEWAY_CONTAINER.isRunning() ? "RUNNING" : "NOT RUNNING"));
-            System.out.println("- Core: " + (CORE_CONTAINER.isRunning() ? "RUNNING" : "NOT RUNNING"));
-            System.out.println("- Workload: " + (WORKLOAD_CONTAINER.isRunning() ? "RUNNING" : "NOT RUNNING"));
-            
-            // Даем контейнерам время на полный запуск
-            System.out.println("Waiting for containers to fully start up...");
-            Thread.sleep(15000); // 15 секунд базовой задержки
-            
-            // Проверяем только Eureka registry - это главный индикатор готовности
+            Thread.sleep(15000);
+
             try {
-                waitForEurekaRegistry(120); // Увеличиваем timeout до 2 минут
+                waitForEurekaRegistry(120);
             } catch (Exception e) {
-                System.err.println("Eureka registry check failed, but continuing with tests...");
-                System.err.println("Error: " + e.getMessage());
-                // Дополнительная задержка если Eureka не работает
-                Thread.sleep(30000); // 30 секунд дополнительной задержки
+                Thread.sleep(30000);
             }
-            
-            System.out.println("Services synchronization completed successfully!");
-            
         } catch (Exception e) {
-            System.err.println("Services synchronization failed: " + e.getMessage());
             e.printStackTrace();
             throw new RuntimeException("Services synchronization failed: " + e.getMessage(), e);
         }
     }
-    
-    private static void waitForServiceHealth(String serviceName, String healthUrl, int timeoutSeconds) {
-        System.out.println("Waiting for " + serviceName + " service health at " + healthUrl + "...");
-        
-        long startTime = System.currentTimeMillis();
-        long timeout = timeoutSeconds * 1000L;
-        int attemptCount = 0;
-        
-        while (System.currentTimeMillis() - startTime < timeout) {
-            attemptCount++;
-            try {
-                java.net.http.HttpClient client = java.net.http.HttpClient.newBuilder()
-                    .connectTimeout(java.time.Duration.ofSeconds(5))
-                    .build();
-                
-                java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
-                    .uri(java.net.URI.create(healthUrl))
-                    .timeout(java.time.Duration.ofSeconds(10))
-                    .GET()
-                    .build();
-                
-                java.net.http.HttpResponse<String> response = client.send(request, 
-                    java.net.http.HttpResponse.BodyHandlers.ofString());
-                
-                if (response.statusCode() == 200) {
-                    System.out.println(serviceName + " service is healthy! (attempt " + attemptCount + ")");
-                    return;
-                } else {
-                    System.out.println(serviceName + " health check returned status: " + response.statusCode() + " (attempt " + attemptCount + ")");
-                }
-            } catch (Exception e) {
-                System.out.println(serviceName + " health check failed (attempt " + attemptCount + "): " + e.getMessage());
-            }
-            
-            try {
-                Thread.sleep(3000); // Ждем 3 секунды перед следующей попыткой
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw new RuntimeException("Interrupted while waiting for " + serviceName);
-            }
-        }
-        
-        throw new RuntimeException(serviceName + " service did not become healthy within " + timeoutSeconds + " seconds after " + attemptCount + " attempts");
-    }
-    
+
     private static void waitForEurekaRegistry(int timeoutSeconds) {
-        String eurekaUrl = "http://" + DISCOVERY_CONTAINER.getHost() + ":" + DISCOVERY_CONTAINER.getMappedPort(8761) + "/eureka/apps";
-        System.out.println("Waiting for services registration in Eureka at " + eurekaUrl + "...");
-        
+        String eurekaUrl = "http://" + DISCOVERY_CONTAINER.getHost() +
+                ":" + DISCOVERY_CONTAINER.getMappedPort(8761) + "/eureka/apps";
+
         long startTime = System.currentTimeMillis();
         long timeout = timeoutSeconds * 1000L;
         int attemptCount = 0;
-        
+
         while (System.currentTimeMillis() - startTime < timeout) {
             attemptCount++;
             try {
-                // Проверяем Eureka registry на наличие зарегистрированных сервисов
-                java.net.http.HttpClient client = java.net.http.HttpClient.newBuilder()
-                    .connectTimeout(java.time.Duration.ofSeconds(5))
-                    .build();
-                
-                java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
-                    .uri(java.net.URI.create(eurekaUrl))
-                    .timeout(java.time.Duration.ofSeconds(10))
-                    .GET()
-                    .build();
-                
-                java.net.http.HttpResponse<String> response = client.send(request, 
-                    java.net.http.HttpResponse.BodyHandlers.ofString());
-                
-                if (response.statusCode() == 200) {
-                    String responseBody = response.body();
-                    System.out.println("Eureka registry response received (attempt " + attemptCount + ")");
-                    
-                    // Проверяем наличие ключевых сервисов в registry
-                    boolean hasCore = responseBody.contains("gym-crm-core");
-                    boolean hasWorkload = responseBody.contains("trainers-workload-service");
-                    boolean hasGateway = responseBody.contains("gateway-service");
-                    
-                    System.out.println("Services found - Core: " + hasCore + ", Workload: " + hasWorkload + ", Gateway: " + hasGateway);
-                    
-                    if (hasCore && hasWorkload && hasGateway) {
-                        System.out.println("All services registered in Eureka!");
-                        return;
-                    }
-                } else {
-                    System.out.println("Eureka registry returned status: " + response.statusCode() + " (attempt " + attemptCount + ")");
+                HttpClient client = HttpClient.newBuilder()
+                        .connectTimeout(java.time.Duration.ofSeconds(5))
+                        .build();
+
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(java.net.URI.create(eurekaUrl))
+                        .timeout(java.time.Duration.ofSeconds(10))
+                        .GET()
+                        .build();
+
+                HttpResponse<String> response = client.send(request,
+                        java.net.http.HttpResponse.BodyHandlers.ofString());
+
+                String responseBody = response.body();
+
+                boolean hasCore = responseBody.contains("gym-crm-core");
+                boolean hasWorkload = responseBody.contains("trainers-workload-service");
+                boolean hasGateway = responseBody.contains("gateway-service");
+
+
+                if (hasCore && hasWorkload && hasGateway) {
+                    return;
                 }
+
             } catch (Exception e) {
                 System.out.println("Eureka registry check failed (attempt " + attemptCount + "): " + e.getMessage());
             }
-            
+
             try {
-                Thread.sleep(5000); // Ждем 5 секунд перед следующей попыткой
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 throw new RuntimeException("Interrupted while waiting for Eureka registry");
             }
         }
-        
-        throw new RuntimeException("Services did not register in Eureka within " + timeoutSeconds + " seconds after " + attemptCount + " attempts");
+
+        throw new RuntimeException("Services did not register in Eureka within "
+                + timeoutSeconds + " seconds after " + attemptCount + " attempts");
     }
 
     public static String getGATEWAY_URL() {
