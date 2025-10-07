@@ -11,3 +11,8 @@ eureka:
     fetch-registry: false
   instance:
     hostname: discovery
+  server:
+    enable-self-preservation: false
+    eviction-interval-timer-in-ms: 5000
+    response-cache-update-interval-ms: 5000
+    response-cache-auto-expiration-in-seconds: 60
