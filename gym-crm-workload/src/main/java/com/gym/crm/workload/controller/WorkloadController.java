@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 import static com.gym.crm.workload.controller.ApiConstants.ROOT_PATH;
 
 @Slf4j
@@ -47,13 +49,9 @@ public class WorkloadController {
         MonthlyWorkloadRequest request = new MonthlyWorkloadRequest(username, year, month);
         MonthlyWorkloadResponse response = workloadService.getMonthlyWorkload(request);
 
-        if (response != null) {
-
-            return ResponseEntity.ok(response);
-        } else {
-            MonthlyWorkloadResponse emptyResponse = new MonthlyWorkloadResponse(username, year, month, 0L, 0L);
-
-            return ResponseEntity.ok(emptyResponse);
-        }
+        return Optional.ofNullable(response)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.ok().body(
+                        new MonthlyWorkloadResponse(username, year, month, 0L, 0L)));
     }
 }
