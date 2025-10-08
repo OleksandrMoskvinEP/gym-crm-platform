@@ -9,6 +9,7 @@ import io.jsonwebtoken.security.Keys;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.awaitility.Awaitility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -20,6 +21,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -42,7 +44,7 @@ public class GcaWorkloadSteps {
 
     @When("I request the workload for trainer {string} year {int} month {int}")
     public void i_request_the_workload_for_trainer_year_month(String username, Integer year, Integer month) {
-        lastResponse = requestWorkload(username, year, month);
+        lastResponse = requestWorkloadWithRetry(username, year, month);
     }
 
     @Then("the workload returned should be {int}")
@@ -111,5 +113,22 @@ public class GcaWorkloadSteps {
                 .expiration(new Date(System.currentTimeMillis() + Duration.ofMinutes(5).toMillis()))
                 .signWith(secretKey)
                 .compact();
+    }
+
+    private Response requestWorkloadWithRetry(String username, Integer year, Integer month) {
+        AtomicReference<Response> responseReference = new AtomicReference<>();
+
+        Awaitility.await()
+                .atMost(Duration.ofSeconds(10))
+                .pollInterval(Duration.ofMillis(200))
+                .until(() -> {
+                    Response response = requestWorkload(username, year, month);
+
+                    responseReference.set(response);
+
+                    return response.statusCode() == 200;
+                });
+
+        return responseReference.get();
     }
 }

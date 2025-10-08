@@ -7,51 +7,6 @@ on:
     branches: [ develop ]
 
 jobs:
-  build-images:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - service: gateway
-            path: gateway-service
-          - service: discovery
-            path: discovery-service
-          - service: workload
-            path: gym-crm-workload
-          - service: core
-            path: gym-crm-core
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build and cache ${{ matrix.service }} image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ${{ matrix.path }}/Dockerfile
-          tags: gym-crm/${{ matrix.service }}:latest
-          push: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          provenance: false
-
-  run-tests:
-    needs: build-images
-    runs-on: ubuntu-latest
-
-    steps:name: CI
-
-on:
-  push:
-    branches: [ develop ]
-  pull_request:
-    branches: [ develop ]
-
-jobs:
   build-and-analyze:
     runs-on: ubuntu-latest
     permissions:
@@ -90,23 +45,3 @@ jobs:
 
       - name: SonarCloud (Maven)
         run: mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -D"sonar.login=${{ secrets.SONAR_TOKEN }}"
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 17
-
-      - name: Cache Maven dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-m2-
-
-      - name: Run Maven tests
-        run: mvn -B clean verify -DskipDocs=true -DskipSwaggerGeneration=true
