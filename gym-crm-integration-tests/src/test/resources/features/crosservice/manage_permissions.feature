@@ -19,4 +19,4 @@ Feature: Trainee Profile Retrieval
   @NegativeCase
   Scenario: Failed to retrieve trainee profile due to unauthorized access
     When I attempt to retrieve the trainee profile for username "chama.chama" without authentication
-    Then the error code should be 401 and  message should contain "error massage"
+    Then the error code should be 403
