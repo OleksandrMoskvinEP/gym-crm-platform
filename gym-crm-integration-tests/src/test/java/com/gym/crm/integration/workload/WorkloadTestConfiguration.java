@@ -14,17 +14,19 @@ import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.utility.DockerImageName;
 
 import java.time.Duration;
+import java.util.UUID;
 
 import static java.lang.String.format;
 
 @CucumberContextConfiguration
-@SpringBootTest(classes =  IntegrationTestApplication.class,
+@SpringBootTest(classes = IntegrationTestApplication.class,
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class WorkloadTestConfiguration {
     private static final String ACTIVEMQ_IMAGE_NAME = "apache/activemq-classic:latest";
     private static final String MONGODB_IMAGE_NAME = "mongo:6.0";
     private static final String WORKLOAD_IMAGE_NAME = "gym-crm/workload:latest";
 
+    private static final String SUFFIX = UUID.randomUUID().toString().substring(0, 6);
     private static final Network NETWORK = Network.newNetwork();
 
     private static final GenericContainer<?> MONGO_DB_CONTAINER = getMongodbContainer();
@@ -70,8 +72,9 @@ public class WorkloadTestConfiguration {
         return new GenericContainer<>(DockerImageName.parse(ACTIVEMQ_IMAGE_NAME))
                 .withExposedPorts(61616, 8161)
                 .withNetwork(NETWORK)
-                .withNetworkAliases("activemq")
-                .waitingFor(Wait.forListeningPort());
+                .withNetworkAliases("activemq" + SUFFIX)
+                .waitingFor(Wait.forListeningPort())
+                .withReuse(false);
     }
 
     private static GenericContainer<?> getWorkloadContainer() {
@@ -80,7 +83,7 @@ public class WorkloadTestConfiguration {
                 .withNetwork(NETWORK)
                 .dependsOn(MONGO_DB_CONTAINER, ACTIVEMQ_CONTAINER)
                 .withEnv("SPRING_DATA_MONGODB_URI", "mongodb://test:test@mongo:27017/gymcrm?authSource=admin")
-                .withEnv("SPRING_ACTIVEMQ_BROKER_URL", "tcp://activemq:61616")
+                .withEnv("SPRING_ACTIVEMQ_BROKER_URL", String.format("tcp://activemq%s:61616", SUFFIX))
                 .withEnv("SPRING_ACTIVEMQ_USER", "test")
                 .withEnv("SPRING_ACTIVEMQ_PASSWORD", "test")
                 .waitingFor(Wait.forHttp("/actuator/health").forStatusCode(200)
