@@ -11,7 +11,15 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: [gateway, discovery, workload, core]
+        include:
+          - service: gateway
+            path: gateway-service
+          - service: discovery
+            path: discovery-service
+          - service: workload
+            path: gym-crm-workload
+          - service: core
+            path: gym-crm-core
 
     steps:
       - name: Checkout repository
@@ -24,7 +32,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: gym-crm-${{ matrix.service }}/Dockerfile
+          file: ${{ matrix.path }}/Dockerfile
           tags: gym-crm/${{ matrix.service }}:latest
           push: false
           cache-from: type=gha
