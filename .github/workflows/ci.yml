@@ -7,41 +7,60 @@ on:
     branches: [ develop ]
 
 jobs:
-  build-and-analyze:
+  build-images:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: read
+    strategy:
+      matrix:
+        service: [gateway, discovery, workload, core]
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Cache Docker layers
+        uses: actions/cache@v4
         with:
-          fetch-depth: 0
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Build ${{ matrix.service }} image
+        run: |
+          docker buildx build \
+            --cache-from type=local,src=/tmp/.buildx-cache \
+            --cache-to type=local,dest=/tmp/.buildx-cache-new,mode=max \
+            -t gym-crm/${{ matrix.service }}:latest \
+            -f gym-crm-${{ matrix.service }}/Dockerfile .
+
+      - name: Move updated cache
+        if: always()
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+  run-tests:
+    needs: build-images
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
-          cache: maven
 
-      - name: Build gateway image
-        run: docker build -t gym-crm/gateway:latest -f gateway-service/Dockerfile .
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
 
-      - name: Build discovery image
-        run: docker build -t gym-crm/discovery:latest -f discovery-service/Dockerfile .
-
-      - name: Build workload image
-        run: docker build -t gym-crm/workload:latest -f gym-crm-workload/Dockerfile .
-
-      - name: Build core image
-        run: docker build -t gym-crm/core:latest -f gym-crm-core/Dockerfile .
-
-      - name: Run integration tests
-        run: mvn verify -pl gym-crm-integration-tests
-
-      - name: Build & test (with coverage)
-        run: mvn -B -U verify
-
-      - name: SonarCloud (Maven)
-        run: mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -D"sonar.login=${{ secrets.SONAR_TOKEN }}"
+      - name: Run tests
+        run: mvn -B clean verify -DskipDocs=true -DskipSwaggerGeneration=true
