@@ -44,6 +44,16 @@ public class WorkloadController {
                                                                        @PathVariable("month") Integer month) {
         log.info("getTrainersWorkload for username={}, year={}, month={}", username, year, month);
 
-        return ResponseEntity.ok(workloadService.getMonthlyWorkload(new MonthlyWorkloadRequest(username, year, month)));
+        MonthlyWorkloadRequest request = new MonthlyWorkloadRequest(username, year, month);
+        MonthlyWorkloadResponse response = workloadService.getMonthlyWorkload(request);
+
+        if (response != null) {
+
+            return ResponseEntity.ok(response);
+        } else {
+            MonthlyWorkloadResponse emptyResponse = new MonthlyWorkloadResponse(username, year, month, 0L, 0L);
+
+            return ResponseEntity.ok(emptyResponse);
+        }
     }
 }
