@@ -48,8 +48,11 @@ public class CrosserviceTestConfiguration {
         CORE_CONTAINER.start();
         WORKLOAD_CONTAINER.start();
 
+        waitForEurekaRegistry();
+
         WORKLOAD_CONTAINER.followOutput(new Slf4jLogConsumer(LoggerFactory.getLogger("WORKLOAD")));
         CORE_CONTAINER.followOutput(new Slf4jLogConsumer(LoggerFactory.getLogger("CORE")));
+        GATEWAY_CONTAINER.followOutput(new Slf4jLogConsumer(LoggerFactory.getLogger("GATEWAY")));
     }
 
     @DynamicPropertySource
@@ -96,6 +99,7 @@ public class CrosserviceTestConfiguration {
         return new GenericContainer<>(DockerImageName.parse(WORKLOAD_IMAGE_NAME))
                 .withExposedPorts(8082)
                 .withNetwork(NETWORK)
+                .withNetworkAliases("gym-crm-core")
                 .dependsOn(MONGO_DB_CONTAINER, ACTIVEMQ_CONTAINER)
                 .withEnv("SPRING_DATA_MONGODB_URI", "mongodb://test:test@mongo:27017/gymcrm?authSource=admin")
                 .withEnv("SPRING_ACTIVEMQ_BROKER_URL", "tcp://activemq:61616")
@@ -115,12 +119,14 @@ public class CrosserviceTestConfiguration {
         return new GenericContainer<>(DockerImageName.parse(CORE_IMAGE_NAME))
                 .withExposedPorts(8081)
                 .withNetwork(NETWORK)
-                .dependsOn(POSTGRES_CONTAINER, ACTIVEMQ_CONTAINER)
+                .withNetworkAliases("gym-crm-core")
+                .dependsOn(POSTGRES_CONTAINER, ACTIVEMQ_CONTAINER, DISCOVERY_CONTAINER)
                 .withEnv("SPRING_PROFILES_ACTIVE", "integration-tests")
                 .withEnv("JMS_QUEUE_TRAINER_WORKLOAD", "core.to.workload.queue")
+                .withEnv("EUREKA_CLIENT_SERVICEURL_DEFAULTZONE", "http://discovery:8761/eureka")
                 .waitingFor(Wait.forHttp("/actuator/health")
                         .forStatusCode(200)
-                        .withStartupTimeout(Duration.ofSeconds(30)));
+                        .withStartupTimeout(Duration.ofMinutes(2)));
     }
 
     private static PostgreSQLContainer<?> getPostgresContainer() {
@@ -138,8 +144,7 @@ public class CrosserviceTestConfiguration {
                 .withExposedPorts(8761)
                 .withNetwork(NETWORK)
                 .withNetworkAliases("discovery")
-                .withEnv("EUREKA_CLIENT_REGISTER-WITH-EUREKA", "false")
-                .withEnv("EUREKA_CLIENT_FETCH-REGISTRY", "false")
+                .withEnv("SPRING_PROFILES_ACTIVE", "integration-test")
                 .waitingFor(Wait.forListeningPort().withStartupTimeout(Duration.ofMinutes(2)));
     }
 
@@ -148,11 +153,24 @@ public class CrosserviceTestConfiguration {
                 .withExposedPorts(8080)
                 .withNetwork(NETWORK)
                 .withNetworkAliases("gateway")
-                .withEnv("EUREKA_CLIENT_SERVICEURL_DEFAULTZONE", "http://discovery:8761/eureka")
-                .withEnv("EUREKA_CLIENT_FETCH_REGISTRY", "true")
-                .withEnv("EUREKA_CLIENT_REGISTER_WITH_EUREKA", "false")
-                .withEnv("SPRING_CLOUD_DISCOVERY_ENABLED", "true")
-                .withEnv("EUREKA_INSTANCE_PREFER_IP_ADDRESS", "true")
+                .withEnv("SPRING_PROFILES_ACTIVE", "integration-test")
+                .dependsOn(DISCOVERY_CONTAINER)
                 .waitingFor(Wait.forListeningPort().withStartupTimeout(Duration.ofMinutes(2)));
+    }
+
+    private static void waitForEurekaRegistry() {
+        try {
+            Thread.sleep(50 * 1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Some services don`t register in Eureka! Restart tests!");
+        }
+    }
+
+    public static String getGATEWAY_URL() {
+        return "http://" + GATEWAY_CONTAINER.getHost() + ":" + GATEWAY_CONTAINER.getMappedPort(8080);
+    }
+
+    public static String getWORKLOAD_URL() {
+        return "http://" + WORKLOAD_CONTAINER.getHost() + ":" + WORKLOAD_CONTAINER.getMappedPort(8082);
     }
 }

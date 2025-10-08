@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN mvn clean package -pl gateway-service -am -DskipTests=true
+RUN mvn clean package -pl gateway-service -am -DskipTests=true spring-boot:repackage
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app
