@@ -3,7 +3,8 @@ version: "3.9"
 services:
   discovery:
     build:
-      context: ./discovery-service
+      context: .
+      dockerfile: ./discovery-service/Dockerfile
     container_name: gymcrm-discovery
     ports:
       - "8761:8761"
@@ -17,7 +18,8 @@ services:
 
   gateway:
     build:
-      context: ./gateway-service
+      context: .
+      dockerfile: ./gateway-service/Dockerfile
     container_name: gymcrm-gateway
     depends_on:
       - discovery
@@ -72,7 +74,8 @@ services:
 
   core:
     build:
-      context: ./gym-crm-core
+      context: .
+      dockerfile: ./gym-crm-core/Dockerfile
     depends_on:
       postgres:
         condition: service_healthy
@@ -99,7 +102,8 @@ services:
 
   workload:
     build:
-      context: ./gym-crm-workload
+      context: .
+      dockerfile: ./gym-crm-workload/Dockerfile
     depends_on:
       mongo:
         condition: service_started
