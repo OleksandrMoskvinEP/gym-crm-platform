@@ -37,9 +37,6 @@ jobs:
       - name: Build core image
         run: docker build -t gym-crm/core:latest -f gym-crm-core/Dockerfile .
 
-      - name: Run integration tests
-        run: mvn verify -pl gym-crm-integration-tests
-
       - name: Build & test (with coverage)
         run: mvn -B -U verify
 
