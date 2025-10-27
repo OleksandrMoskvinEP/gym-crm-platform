@@ -1,0 +1,161 @@
+version: "3.9"
+
+services:
+  discovery:
+    build:
+      context: .
+      dockerfile: ./discovery-service/Dockerfile
+    container_name: gymcrm-discovery
+    ports:
+      - "8761:8761"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - gymcrm-net
+
+  gateway:
+    build:
+      context: .
+      dockerfile: ./gateway-service/Dockerfile
+    container_name: gymcrm-gateway
+    depends_on:
+      - discovery
+    ports:
+      - "8080:8080"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery:8761/eureka
+      SERVER_PORT: 8080
+    restart: unless-stopped
+    networks:
+      - gymcrm-net
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: gymcrm
+      POSTGRES_USER: gym
+      POSTGRES_PASSWORD: gym
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d gymcrm"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - gymcrm-net
+
+  mongo:
+    image: mongo:6
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: gym
+      MONGO_INITDB_ROOT_PASSWORD: gym
+    ports:
+      - "27017:27017"
+    restart: unless-stopped
+    networks:
+      - gymcrm-net
+
+  activemq:
+    image: rmohr/activemq:latest
+    environment:
+      ACTIVEMQ_USER: gym
+      ACTIVEMQ_PASSWORD: gym
+      ACTIVEMQ_MIN_MEMORY: 512
+      ACTIVEMQ_MAX_MEMORY: 2048
+    ports:
+      - "61616:61616"
+      - "8161:8161"
+    restart: unless-stopped
+    networks:
+      - gymcrm-net
+
+  core:
+    build:
+      context: .
+      dockerfile: ./gym-crm-core/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+      activemq:
+        condition: service_started
+      discovery:
+        condition: service_started
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/gymcrm
+      SPRING_DATASOURCE_USERNAME: gym
+      SPRING_DATASOURCE_PASSWORD: gym
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_ACTIVEMQ_BROKER_URL: tcp://activemq:61616
+      SPRING_ACTIVEMQ_USER: gym
+      SPRING_ACTIVEMQ_PASSWORD: gym
+      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: prometheus
+      MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED: "true"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery:8761/eureka
+    restart: unless-stopped
+    networks:
+      - gymcrm-net
+
+  workload:
+    build:
+      context: .
+      dockerfile: ./gym-crm-workload/Dockerfile
+    depends_on:
+      mongo:
+        condition: service_started
+      activemq:
+        condition: service_started
+      discovery:
+        condition: service_started
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://gym:gym@mongo:27017/gymcrm?authSource=admin
+      SPRING_ACTIVEMQ_BROKER_URL: tcp://activemq:61616
+      SPRING_ACTIVEMQ_USER: gym
+      SPRING_ACTIVEMQ_PASSWORD: gym
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery:8761/eureka
+    restart: unless-stopped
+    networks:
+      - gymcrm-net
+
+  prometheus:
+    image: prom/prometheus:latest
+    depends_on:
+      core:
+        condition: service_started
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./gym-crm-core/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    restart: unless-stopped
+    networks:
+      - gymcrm-net
+
+  grafana:
+    image: grafana/grafana:latest
+    depends_on:
+      - prometheus
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    networks:
+      - gymcrm-net
+
+volumes:
+  pgdata:
+  grafana-data:
+
+networks:
+  gymcrm-net:
+    driver: bridge

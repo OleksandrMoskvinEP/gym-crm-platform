@@ -11,6 +11,9 @@ import org.springframework.jms.support.converter.MappingJackson2MessageConverter
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Configuration
 @EnableJms
 public class JmsConfig {
@@ -29,6 +32,13 @@ public class JmsConfig {
         converter.setTargetType(MessageType.TEXT);
         converter.setTypeIdPropertyName("_type");
         converter.setObjectMapper(objectMapper);
+
+        Map<String, Class<?>> typeIdMappings = new HashMap<>();
+        typeIdMappings.put(
+                "com.gym.crm.workload.model.dto.WorkloadEventResponse",
+                com.gym.crm.core.integration.workload.dto.WorkloadEventResponse.class
+        );
+        converter.setTypeIdMappings(typeIdMappings);
 
         return converter;
     }

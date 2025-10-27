@@ -56,6 +56,10 @@ public class TrainingServiceImpl implements TrainingService {
     public TrainingDto addTraining(TrainingSaveRequest training) {
         TrainingType trainingType = trainingTypeRepository.findByTrainingTypeName(training.getTrainingTypeName())
                 .orElseThrow(() -> new DataBaseErrorException(format("Training type: %s not found", training.getTrainingTypeName())));
+
+        logger.debug("Adding training {} for trainer {} and trainee {} on {}",
+                trainingType.getTrainingTypeName(), training.getTrainerId(), training.getTraineeId(), training.getTrainingDate());
+
         Trainer trainer = trainerRepository.findById(Math.toIntExact(training.getTrainerId())).get();
         Trainee trainee = traineeRepository.findById(training.getTraineeId()).get();
 
