@@ -30,6 +30,7 @@ public class MessageListener {
         }
 
         Optional<TrainingSaveRequest> requestOpt = pendingTrainingStore.remove(response.correlationId());
+
         if (requestOpt.isEmpty()) {
             log.warn("No pending training found for correlationId - {}", response.correlationId());
 

@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.support.JmsHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
@@ -20,7 +21,7 @@ public class MessageHandler {
 
     @JmsListener(destination = "core.to.workload.queue", containerFactory = "jmsListenerContainerFactory")
     public void receiveWorkloadEvent(@Payload WorkloadEventRequest request,
-                                     @Header(name = "JMSMessageID", required = false) String correlationId) {
+                                     @Header(name = JmsHeaders.CORRELATION_ID, required = false) String correlationId) {
         try {
             log.info("Received Workload Event with correlationId={}: {}", correlationId, request);
 

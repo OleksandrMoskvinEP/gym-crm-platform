@@ -172,8 +172,8 @@ public class GymFacade {
         saveRequest.setTrainingDate(request.getTrainingDate());
         saveRequest.setTrainingDuration(BigDecimal.valueOf(request.getTrainingDuration()));
         saveRequest.setTrainingTypeName(trainer.getSpecialization().getTrainingTypeName());
-        saveRequest.setTraineeId(trainee.getUserId());
-        saveRequest.setTrainerId(trainer.getUserId());
+        saveRequest.setTraineeId(trainee.getTraineeId());
+        saveRequest.setTrainerId(trainer.getTrainerId());
 
         pendingTrainingStore.put(correlationId, saveRequest);
 
