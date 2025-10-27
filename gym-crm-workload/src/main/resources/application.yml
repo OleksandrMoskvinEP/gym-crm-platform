@@ -12,7 +12,7 @@ spring:
       database: gymcrm
       username: gym
       password: gym
-      authentication-database: gym
+      authentication-database: admin
 
 
   activemq:
