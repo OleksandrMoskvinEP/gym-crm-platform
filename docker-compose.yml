@@ -37,8 +37,8 @@ services:
     image: alexmos220/postgres:stable
     environment:
       POSTGRES_DB: gymcrm
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: gym
+      POSTGRES_PASSWORD: gym
     ports:
       - "5432:5432"
     volumes:
@@ -55,8 +55,8 @@ services:
   mongo:
     image: mongo:6
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_INITDB_ROOT_USERNAME: gym
+      MONGO_INITDB_ROOT_PASSWORD: gym
     ports:
       - "27017:27017"
     restart: unless-stopped
@@ -66,8 +66,8 @@ services:
   activemq:
     image: rmohr/activemq:latest
     environment:
-      ACTIVEMQ_USER: admin
-      ACTIVEMQ_PASSWORD: admin
+      ACTIVEMQ_USER: gym
+      ACTIVEMQ_PASSWORD: gym
       ACTIVEMQ_MIN_MEMORY: 512
       ACTIVEMQ_MAX_MEMORY: 2048
     ports:
@@ -92,13 +92,13 @@ services:
       - "8081:8081"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/gymcrm
-      SPRING_DATASOURCE_USERNAME: admin
-      SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_DATASOURCE_USERNAME: gym
+      SPRING_DATASOURCE_PASSWORD: gym
       SPRING_JPA_HIBERNATE_DDL_AUTO: validate
       SPRING_JPA_SHOW_SQL: "true"
       SPRING_ACTIVEMQ_BROKER_URL: tcp://activemq:61616
-      SPRING_ACTIVEMQ_USER: admin
-      SPRING_ACTIVEMQ_PASSWORD: admin
+      SPRING_ACTIVEMQ_USER: gym
+      SPRING_ACTIVEMQ_PASSWORD: gym
       MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: prometheus
       MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED: "true"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery:8761/eureka
@@ -120,10 +120,10 @@ services:
     ports:
       - "8082:8082"
     environment:
-      SPRING_DATA_MONGODB_URI: mongodb://admin:admin@mongo:27017/gymcrm?authSource=admin
+      SPRING_DATA_MONGODB_URI: mongodb://gym:gym@mongo:27017/gymcrm?authSource=gym
       SPRING_ACTIVEMQ_BROKER_URL: tcp://activemq:61616
-      SPRING_ACTIVEMQ_USER: admin
-      SPRING_ACTIVEMQ_PASSWORD: admin
+      SPRING_ACTIVEMQ_USER: gym
+      SPRING_ACTIVEMQ_PASSWORD: gym
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery:8761/eureka
     restart: unless-stopped
     networks:
