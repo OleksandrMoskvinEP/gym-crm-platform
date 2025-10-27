@@ -13,6 +13,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
     networks:
       - gymcrm-net
 
@@ -28,11 +29,12 @@ services:
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery:8761/eureka
       SERVER_PORT: 8080
+    restart: unless-stopped
     networks:
       - gymcrm-net
 
   postgres:
-    image: postgres:latest
+    image: alexmos220/postgres:stable
     environment:
       POSTGRES_DB: gymcrm
       POSTGRES_USER: admin
@@ -40,12 +42,13 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql
+      - pgdata:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U admin -d gymcrm"]
       interval: 10s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
     networks:
       - gymcrm-net
 
@@ -56,6 +59,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: admin
     ports:
       - "27017:27017"
+    restart: unless-stopped
     networks:
       - gymcrm-net
 
@@ -69,6 +73,7 @@ services:
     ports:
       - "61616:61616"
       - "8161:8161"
+    restart: unless-stopped
     networks:
       - gymcrm-net
 
@@ -96,7 +101,8 @@ services:
       SPRING_ACTIVEMQ_PASSWORD: admin
       MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: prometheus
       MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED: "true"
-      EUREKA_SERVICE_URL: http://discovery:8761/eureka
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery:8761/eureka
+    restart: unless-stopped
     networks:
       - gymcrm-net
 
@@ -119,6 +125,7 @@ services:
       SPRING_ACTIVEMQ_USER: admin
       SPRING_ACTIVEMQ_PASSWORD: admin
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery:8761/eureka
+    restart: unless-stopped
     networks:
       - gymcrm-net
 
@@ -131,6 +138,7 @@ services:
       - "9090:9090"
     volumes:
       - ./gym-crm-core/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    restart: unless-stopped
     networks:
       - gymcrm-net
 
@@ -140,12 +148,14 @@ services:
       - prometheus
     ports:
       - "3000:3000"
+    restart: unless-stopped
     networks:
       - gymcrm-net
+
+volumes:
+  pgdata:
+  grafana-data:
 
 networks:
   gymcrm-net:
     driver: bridge
-
-volumes:
-  pgdata:
