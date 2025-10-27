@@ -1,8 +1,6 @@
-version: "3.9"
-
 services:
   postgres:
-    image: postgres:latest
+    image: alexmos220/postgres:stable
     environment:
       POSTGRES_DB: gymcrm
       POSTGRES_USER: admin

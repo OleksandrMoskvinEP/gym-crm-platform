@@ -15,6 +15,12 @@ services:
       - "61616:61616"
       - "8161:8161"
 
+    environment:
+      ACTIVEMQ_USER: admin
+      ACTIVEMQ_PASSWORD: admin
+      ACTIVEMQ_MIN_MEMORY: 512
+      ACTIVEMQ_MAX_MEMORY: 2048
+
   workload:
     image: gym-crm/workload:latest
     depends_on:
