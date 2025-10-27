@@ -256,8 +256,8 @@ class GymFacadeTest {
         assertEquals(TRAINING_CREATE_REQUEST.getTrainingName(), actual.getTrainingName());
         assertEquals(TRAINING_CREATE_REQUEST.getTrainingDate(), actual.getTrainingDate());
         assertEquals(BigDecimal.valueOf(TRAINING_CREATE_REQUEST.getTrainingDuration()), actual.getTrainingDuration());
-        assertEquals(trainer.getUserId(), actual.getTrainerId());
-        assertEquals(trainee.getUserId(), actual.getTraineeId());
+        assertEquals(trainer.getTrainerId(), actual.getTrainerId());
+        assertEquals(trainee.getTraineeId(), actual.getTraineeId());
 
         verify(pendingTrainingStore).put(eq("some_id"), any(TrainingSaveRequest.class));
     }
