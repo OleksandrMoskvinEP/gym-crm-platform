@@ -1,0 +1,734 @@
+15:27:35.248 [] INFO  o.h.v.i.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+15:27:35.953 [] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+15:27:36.049 [] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 87 ms. Found 6 JPA repository interfaces.
+15:27:36.235 [] INFO  o.s.c.c.s.GenericScope - BeanFactory id=4d799928-7ea3-3070-aef8-bf58b74846d4
+15:27:36.635 [] INFO  o.s.b.w.e.t.TomcatWebServer - Tomcat initialized with port 8081 (http)
+15:27:36.641 [] INFO  o.a.c.h.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+15:27:36.641 [] INFO  o.a.c.c.StandardService - Starting service [Tomcat]
+15:27:36.642 [] INFO  o.a.c.c.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.40]
+15:27:36.691 [] INFO  o.a.c.c.C.[.[.[/] - Initializing Spring embedded WebApplicationContext
+15:27:36.691 [] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1395 ms
+15:27:37.032 [] INFO  c.z.h.HikariDataSource - HikariPool-1 - Starting...
+15:27:37.119 [] INFO  c.z.h.p.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@6530a1de
+15:27:37.120 [] INFO  c.z.h.HikariDataSource - HikariPool-1 - Start completed.
+15:27:37.208 [] INFO  liquibase.database - Set default schema name to public
+15:27:37.490 [] INFO  liquibase.changelog - Creating database history table with name: public.databasechangelog
+15:27:37.522 [] INFO  liquibase.changelog - Reading from public.databasechangelog
+15:27:37.589 [] INFO  liquibase.snapshot - Creating snapshot
+15:27:37.684 [] INFO  l.lockservice - Successfully acquired change log lock
+15:27:37.685 [] INFO  liquibase.command - Using deploymentId: 1571657020
+15:27:37.687 [] INFO  liquibase.changelog - Reading from public.databasechangelog
+15:27:37.706 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/user-changelog.xml::GCA-59-Add-Table-Users-1751656045355-1::AlexM
+15:27:37.714 [] INFO  liquibase.changelog - Table users created
+15:27:37.716 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/user-changelog.xml::GCA-59-Add-Table-Users-1751656045355-1::AlexM ran successfully in 9ms
+15:27:37.721 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/user-changelog.xml::GCA-59-Add-UC-Username-On-Users-1751656045355-2::AlexM
+15:27:37.724 [] INFO  liquibase.changelog - Unique constraint added to users(username)
+15:27:37.725 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/user-changelog.xml::GCA-59-Add-UC-Username-On-Users-1751656045355-2::AlexM ran successfully in 4ms
+15:27:37.728 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/user-changelog.xml::GCA-59-Modify-Password-Length-On-Users--1751656045355-3::AlexM
+15:27:37.730 [] INFO  liquibase.changelog - users.password datatype was changed to VARCHAR(64)
+15:27:37.731 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/user-changelog.xml::GCA-59-Modify-Password-Length-On-Users--1751656045355-3::AlexM ran successfully in 3ms
+15:27:37.733 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/training-types-changelog.xml::GCA-59-Create-Sequence-TrainingTypes-1751656001894-1::AlexM
+15:27:37.735 [] INFO  liquibase.changelog - Sequence training_types_seq created
+15:27:37.736 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/training-types-changelog.xml::GCA-59-Create-Sequence-TrainingTypes-1751656001894-1::AlexM ran successfully in 3ms
+15:27:37.739 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/training-types-changelog.xml::GCA-59-Add-Table-TrainingTypes-1751656001894-2::AlexM
+15:27:37.742 [] INFO  liquibase.changelog - Table training_types created
+15:27:37.743 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/training-types-changelog.xml::GCA-59-Add-Table-TrainingTypes-1751656001894-2::AlexM ran successfully in 4ms
+15:27:37.745 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/trainer-changelog.xml::GCA-59-Add-Table-Trainers-1751656088490-1::AlexM
+15:27:37.748 [] INFO  liquibase.changelog - Table trainers created
+15:27:37.749 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/trainer-changelog.xml::GCA-59-Add-Table-Trainers-1751656088490-1::AlexM ran successfully in 4ms
+15:27:37.751 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/trainer-changelog.xml::GCA-59-Add-UC-UserId-On-Trainers-1751656088490-2::AlexM
+15:27:37.753 [] INFO  liquibase.changelog - Unique constraint added to trainers(user_id)
+15:27:37.754 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/trainer-changelog.xml::GCA-59-Add-UC-UserId-On-Trainers-1751656088490-2::AlexM ran successfully in 2ms
+15:27:37.757 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/trainer-changelog.xml::GCA-59-Add-FK-SpecializationId-On-Trainers-1751656088490-3::AlexM
+15:27:37.761 [] INFO  liquibase.changelog - Foreign key constraint added to trainers (specialization_id)
+15:27:37.762 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/trainer-changelog.xml::GCA-59-Add-FK-SpecializationId-On-Trainers-1751656088490-3::AlexM ran successfully in 5ms
+15:27:37.764 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/trainer-changelog.xml::-GCA-59-Add-FK-UserId-On-Trainers-1751656088490-4::AlexM
+15:27:37.766 [] INFO  liquibase.changelog - Foreign key constraint added to trainers (user_id)
+15:27:37.767 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/trainer-changelog.xml::-GCA-59-Add-FK-UserId-On-Trainers-1751656088490-4::AlexM ran successfully in 3ms
+15:27:37.770 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/trainee-changelog.xml::GCA-59-Create-Table-trainee-trainer-1751656069738-1::AlexM
+15:27:37.772 [] INFO  liquibase.changelog - Table trainee_trainer created
+15:27:37.773 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/trainee-changelog.xml::GCA-59-Create-Table-trainee-trainer-1751656069738-1::AlexM ran successfully in 3ms
+15:27:37.775 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/trainee-changelog.xml::GCA-59-Create-Trainees-Table-1751656069738-2::AlexM
+15:27:37.778 [] INFO  liquibase.changelog - Table trainees created
+15:27:37.779 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/trainee-changelog.xml::GCA-59-Create-Trainees-Table-1751656069738-2::AlexM ran successfully in 4ms
+15:27:37.782 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/trainee-changelog.xml::GCA-59-Add-UC-UserId-On-Trainees-1751656069738-3::AlexM
+15:27:37.783 [] INFO  liquibase.changelog - Unique constraint added to trainees(user_id)
+15:27:37.784 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/trainee-changelog.xml::GCA-59-Add-UC-UserId-On-Trainees-1751656069738-3::AlexM ran successfully in 2ms
+15:27:37.787 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/trainee-changelog.xml::GCA-59-Add-FK-UserId-On-Trainees-1751656069738-4::AlexM
+15:27:37.789 [] INFO  liquibase.changelog - Foreign key constraint added to trainees (user_id)
+15:27:37.790 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/trainee-changelog.xml::GCA-59-Add-FK-UserId-On-Trainees-1751656069738-4::AlexM ran successfully in 3ms
+15:27:37.792 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/trainee-changelog.xml::GCA-59-Add-FK-TraineeId-On-TraineeTrainer-1751656069738-5::AlexM
+15:27:37.794 [] INFO  liquibase.changelog - Foreign key constraint added to trainee_trainer (trainee_id)
+15:27:37.795 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/trainee-changelog.xml::GCA-59-Add-FK-TraineeId-On-TraineeTrainer-1751656069738-5::AlexM ran successfully in 3ms
+15:27:37.798 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/trainee-changelog.xml::GCA-59-Add-FK-TrainerId-On-TraineeTrainer-1751656069738-6::AlexM
+15:27:37.799 [] INFO  liquibase.changelog - Foreign key constraint added to trainee_trainer (trainer_id)
+15:27:37.800 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/trainee-changelog.xml::GCA-59-Add-FK-TrainerId-On-TraineeTrainer-1751656069738-6::AlexM ran successfully in 2ms
+15:27:37.803 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/training-changelog.xml::GCA-59-Add-Table-Trainings-1751656112313-1::AlexM
+15:27:37.806 [] INFO  liquibase.changelog - Table trainings created
+15:27:37.807 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/training-changelog.xml::GCA-59-Add-Table-Trainings-1751656112313-1::AlexM ran successfully in 4ms
+15:27:37.810 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/training-changelog.xml::GCA-59-Add-FK-traineeId-On-Trainings-1751656112313-2::AlexM
+15:27:37.812 [] INFO  liquibase.changelog - Foreign key constraint added to trainings (trainee_id)
+15:27:37.813 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/training-changelog.xml::GCA-59-Add-FK-traineeId-On-Trainings-1751656112313-2::AlexM ran successfully in 3ms
+15:27:37.816 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/training-changelog.xml::1751656112313-3::AlexM
+15:27:37.817 [] INFO  liquibase.changelog - Foreign key constraint added to trainings (trainer_id)
+15:27:37.819 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/training-changelog.xml::1751656112313-3::AlexM ran successfully in 3ms
+15:27:37.821 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/training-changelog.xml::GCA-59-Add-FK-trainingTypeId-On-Trainings-1751656112313-4::AlexM
+15:27:37.823 [] INFO  liquibase.changelog - Foreign key constraint added to trainings (training_type_id)
+15:27:37.824 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/training-changelog.xml::GCA-59-Add-FK-trainingTypeId-On-Trainings-1751656112313-4::AlexM ran successfully in 3ms
+15:27:37.826 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/init-data-changelog.xml::GCA-59-Insert-TrainingTypes-Init::AlexM
+15:27:37.828 [] INFO  liquibase.changelog - New row inserted into training_types
+15:27:37.830 [] INFO  liquibase.changelog - New row inserted into training_types
+15:27:37.830 [] INFO  liquibase.changelog - New row inserted into training_types
+15:27:37.831 [] INFO  liquibase.changelog - New row inserted into training_types
+15:27:37.832 [] INFO  liquibase.changelog - New row inserted into training_types
+15:27:37.833 [] INFO  liquibase.changelog - New row inserted into training_types
+15:27:37.835 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/init-data-changelog.xml::GCA-59-Insert-TrainingTypes-Init::AlexM ran successfully in 7ms
+15:27:37.838 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/init-data-changelog.xml::GCA-59-Insert-Users-Init::AlexM
+15:27:37.841 [] INFO  liquibase.changelog - New row inserted into users
+15:27:37.842 [] INFO  liquibase.changelog - New row inserted into users
+15:27:37.843 [] INFO  liquibase.changelog - New row inserted into users
+15:27:37.844 [] INFO  liquibase.changelog - New row inserted into users
+15:27:37.845 [] INFO  liquibase.changelog - New row inserted into users
+15:27:37.846 [] INFO  liquibase.changelog - New row inserted into users
+15:27:37.847 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/init-data-changelog.xml::GCA-59-Insert-Users-Init::AlexM ran successfully in 9ms
+15:27:37.851 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/init-data-changelog.xml::GCA-59-Insert-Trainers-Init::AlexM
+15:27:37.852 [] INFO  liquibase.changelog - New row inserted into trainers
+15:27:37.853 [] INFO  liquibase.changelog - New row inserted into trainers
+15:27:37.854 [] INFO  liquibase.changelog - New row inserted into trainers
+15:27:37.855 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/init-data-changelog.xml::GCA-59-Insert-Trainers-Init::AlexM ran successfully in 4ms
+15:27:37.858 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/init-data-changelog.xml::GCA-59-Insert-Trainees-Init::AlexM
+15:27:37.860 [] INFO  liquibase.changelog - New row inserted into trainees
+15:27:37.862 [] INFO  liquibase.changelog - New row inserted into trainees
+15:27:37.863 [] INFO  liquibase.changelog - New row inserted into trainees
+15:27:37.864 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/init-data-changelog.xml::GCA-59-Insert-Trainees-Init::AlexM ran successfully in 6ms
+15:27:37.866 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/init-data-changelog.xml::GCA-59-Insert-TraineeTrainer-Init::AlexM
+15:27:37.868 [] INFO  liquibase.changelog - New row inserted into trainee_trainer
+15:27:37.869 [] INFO  liquibase.changelog - New row inserted into trainee_trainer
+15:27:37.870 [] INFO  liquibase.changelog - New row inserted into trainee_trainer
+15:27:37.871 [] INFO  liquibase.changelog - New row inserted into trainee_trainer
+15:27:37.872 [] INFO  liquibase.changelog - New row inserted into trainee_trainer
+15:27:37.873 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/init-data-changelog.xml::GCA-59-Insert-TraineeTrainer-Init::AlexM ran successfully in 7ms
+15:27:37.876 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/07/init-data-changelog.xml::GCA-59-Insert-Trainings-Init::AlexM
+15:27:37.878 [] INFO  liquibase.changelog - New row inserted into trainings
+15:27:37.879 [] INFO  liquibase.changelog - New row inserted into trainings
+15:27:37.880 [] INFO  liquibase.changelog - New row inserted into trainings
+15:27:37.882 [] INFO  liquibase.changelog - New row inserted into trainings
+15:27:37.882 [] INFO  liquibase.changelog - New row inserted into trainings
+15:27:37.884 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/07/init-data-changelog.xml::GCA-59-Insert-Trainings-Init::AlexM ran successfully in 7ms
+15:27:37.886 [] INFO  liquibase.ui - Running Changeset: db/changelog/2025/08/refresh-token.xml::add-refresh-token::AlexM
+15:27:37.889 [] INFO  liquibase.changelog - Table refresh_token created
+15:27:37.890 [] INFO  liquibase.changelog - Foreign key constraint added to refresh_token (user_id)
+15:27:37.891 [] INFO  liquibase.changelog - ChangeSet db/changelog/2025/08/refresh-token.xml::add-refresh-token::AlexM ran successfully in 5ms
+15:27:37.896 [] INFO  liquibase.util - UPDATE SUMMARY
+15:27:37.897 [] INFO  liquibase.util - Run:                         26
+15:27:37.897 [] INFO  liquibase.util - Previously run:               0
+15:27:37.897 [] INFO  liquibase.util - Filtered out:                 0
+15:27:37.897 [] INFO  liquibase.util - -------------------------------
+15:27:37.897 [] INFO  liquibase.util - Total change sets:           26
+15:27:37.897 [] INFO  liquibase.util - Update summary generated
+15:27:37.898 [] INFO  liquibase.command - Update command completed successfully.
+15:27:37.898 [] INFO  liquibase.ui - Liquibase: Update has been successful. Rows affected: 54
+15:27:37.901 [] INFO  l.lockservice - Successfully released change log lock
+15:27:37.902 [] INFO  liquibase.command - Command execution complete
+15:27:38.408 [] INFO  o.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.13.Final
+15:27:38.427 [] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+15:27:38.593 [] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+15:27:38.620 [] WARN  o.h.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+15:27:38.630 [] INFO  o.h.o.c.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+15:27:39.204 [] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+15:27:39.206 [] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+15:27:39.427 [] INFO  o.s.d.j.r.q.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+15:27:40.277 [] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: abdc8cad-524d-4343-b69e-49fc78846194
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+15:27:40.282 [] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+15:27:40.914 [] INFO  o.s.b.a.e.w.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+15:27:40.943 [] WARN  o.s.s.c.a.w.c.AuthorizeHttpRequestsConfigurer$AuthorizationManagerRequestMatcherRegistry - One of the patterns in [api/core/v1/login, /api/core/v1/trainees/register, /api/core/v1/trainers/register] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+15:27:41.712 [] INFO  o.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration - Eureka HTTP Client uses RestTemplate.
+15:27:41.852 [] INFO  o.s.c.n.e.InstanceInfoFactory - Setting initial instance status as: STARTING
+15:27:41.866 [] INFO  c.n.d.DiscoveryClient - Initializing Eureka in region us-east-1
+15:27:41.868 [] INFO  c.n.d.s.r.a.ConfigClusterResolver - Resolving eureka endpoints via configuration
+15:27:41.873 [] INFO  c.n.d.DiscoveryClient - Disable delta property : false
+15:27:41.873 [] INFO  c.n.d.DiscoveryClient - Single vip registry refresh property : null
+15:27:41.873 [] INFO  c.n.d.DiscoveryClient - Force full registry fetch : false
+15:27:41.873 [] INFO  c.n.d.DiscoveryClient - Application is null : false
+15:27:41.873 [] INFO  c.n.d.DiscoveryClient - Registered Applications size is zero : true
+15:27:41.873 [] INFO  c.n.d.DiscoveryClient - Application version is -1: true
+15:27:41.873 [] INFO  c.n.d.DiscoveryClient - Getting all instance registry info from the eureka server
+15:27:42.013 [] INFO  c.n.d.DiscoveryClient - The response status is 200
+15:27:42.015 [] INFO  c.n.d.DiscoveryClient - Starting heartbeat executor: renew interval is: 30
+15:27:42.016 [] INFO  c.n.d.InstanceInfoReplicator - InstanceInfoReplicator onDemand update allowed rate per min is 4
+15:27:42.017 [] INFO  c.n.d.DiscoveryClient - Discovery Client initialized at timestamp 1761571662016 with initial instances count: 1
+15:27:42.024 [] INFO  o.s.c.n.e.s.EurekaServiceRegistry - Registering application GYM-CRM-CORE with eureka with status UP
+15:27:42.024 [] INFO  c.n.d.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1761571662024, current=UP, previous=STARTING]
+15:27:42.025 [] INFO  o.a.c.h.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+15:27:42.025 [] INFO  c.n.d.DiscoveryClient - DiscoveryClient_GYM-CRM-CORE/gym-crm-core:8081: registering service...
+15:27:42.037 [] INFO  o.s.b.w.e.t.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/'
+15:27:42.038 [] INFO  o.s.c.n.e.s.EurekaAutoServiceRegistration - Updating port to 8081
+15:27:42.048 [] INFO  c.n.d.DiscoveryClient - DiscoveryClient_GYM-CRM-CORE/gym-crm-core:8081 - registration status: 204
+15:27:42.362 [] INFO  c.g.c.c.l.ProfileLogger - ACTIVE PROFILE: [dev]
+15:27:42.745 [] INFO  o.a.c.c.C.[.[.[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+15:27:42.745 [] INFO  o.s.w.s.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+15:27:42.749 [] INFO  o.s.w.s.DispatcherServlet - Completed initialization in 4 ms
+15:32:41.878 [] INFO  c.n.d.s.r.a.ConfigClusterResolver - Resolving eureka endpoints via configuration
+15:37:41.890 [] INFO  c.n.d.s.r.a.ConfigClusterResolver - Resolving eureka endpoints via configuration
+15:38:08.780 [7278605b-334c-4010-a006-862d7a6b9abc] INFO  c.g.c.c.c.TrainingController - Add training attempt: traineeUsername=john.smith, trainerUsername=arnold.schwarzenegger
+15:38:08.825 [7278605b-334c-4010-a006-862d7a6b9abc] INFO  c.g.c.c.c.TrainingController - Training successfully added for traineeUsername=john.smith, trainerUsername=arnold.schwarzenegger
+15:38:08.830 [7278605b-334c-4010-a006-862d7a6b9abc] INFO  c.g.c.c.l.TransactionLoggingFilter - Endpoint: POST /api/core/v1/trainings, Request body: {
+  "trainingName": "Cycling",
+  "trainingDate": "2025-07-27",
+  "trainingDuration": 120,
+  "traineeUsername": "john.smith",
+  "trainerUsername": "arnold.schwarzenegger"
+}
+15:38:08.830 [7278605b-334c-4010-a006-862d7a6b9abc] INFO  c.g.c.c.l.TransactionLoggingFilter - Response status: 200
+15:38:08.966 [] INFO  c.g.c.c.s.i.TrainingServiceImpl - Adding training for trainer 3 and trainee 1 on 2025-07-27
+15:38:08.988 [] INFO  c.g.c.c.s.i.TrainingServiceImpl - Training successfully added for trainer 3 and trainee 1 on 2025-07-27
+15:38:18.140 [2e1afd66-e642-4aca-bf25-0eea4a767e69] INFO  c.g.c.c.c.TrainerController - Get trainer trainings request: username=arnold.schwarzenegger, fromDate=null, toDate=null, traineeName=null
+15:38:18.159 [2e1afd66-e642-4aca-bf25-0eea4a767e69] INFO  c.g.c.c.c.TrainerController - Trainer trainings retrieved: username=arnold.schwarzenegger
+15:38:18.163 [2e1afd66-e642-4aca-bf25-0eea4a767e69] INFO  c.g.c.c.l.TransactionLoggingFilter - Endpoint: GET /api/core/v1/trainers/arnold.schwarzenegger/trainings, Request body: 
+15:38:18.163 [2e1afd66-e642-4aca-bf25-0eea4a767e69] INFO  c.g.c.c.l.TransactionLoggingFilter - Response status: 200
+15:38:18.163 [2e1afd66-e642-4aca-bf25-0eea4a767e69] INFO  c.g.c.c.l.TransactionLoggingFilter - Response body: {"trainings":[{"trainingName":"Stretch Focus","trainingDate":"2025-06-07","trainingDuration":0,"trainingType":"Stretching","traineeName":"Irina Petrova"},{"trainingName":"Arnold's Power","trainingDate":"2025-06-10","trainingDuration":2,"trainingType":"Bodybuilding","traineeName":"Irina Petrova"},{"trainingName":"Cycling","trainingDate":"2025-07-27","trainingDuration":120,"trainingType":"Bodybuilding","traineeName":"Irina Petrova"}]}
+15:38:23.107 [3d2ad8ab-beef-45ad-be5e-2c4c118ee34a] INFO  c.g.c.c.c.TrainingController - Add training attempt: traineeUsername=john.smith, trainerUsername=arnold.schwarzenegger
+15:38:23.117 [3d2ad8ab-beef-45ad-be5e-2c4c118ee34a] INFO  c.g.c.c.c.TrainingController - Training successfully added for traineeUsername=john.smith, trainerUsername=arnold.schwarzenegger
+15:38:23.118 [3d2ad8ab-beef-45ad-be5e-2c4c118ee34a] INFO  c.g.c.c.l.TransactionLoggingFilter - Endpoint: POST /api/core/v1/trainings, Request body: {
+  "trainingName": "Cycling",
+  "trainingDate": "2025-07-27",
+  "trainingDuration": 120,
+  "traineeUsername": "john.smith",
+  "trainerUsername": "arnold.schwarzenegger"
+}
+15:38:23.118 [3d2ad8ab-beef-45ad-be5e-2c4c118ee34a] INFO  c.g.c.c.l.TransactionLoggingFilter - Response status: 200
+15:38:23.141 [] INFO  c.g.c.c.s.i.TrainingServiceImpl - Adding training for trainer 3 and trainee 1 on 2025-07-27
+15:38:23.144 [] INFO  c.g.c.c.s.i.TrainingServiceImpl - Training successfully added for trainer 3 and trainee 1 on 2025-07-27
+15:38:24.336 [83a967d9-a559-4b4e-a267-888a8b16c0aa] INFO  c.g.c.c.c.TrainingController - Add training attempt: traineeUsername=john.smith, trainerUsername=arnold.schwarzenegger
+15:38:24.348 [83a967d9-a559-4b4e-a267-888a8b16c0aa] INFO  c.g.c.c.c.TrainingController - Training successfully added for traineeUsername=john.smith, trainerUsername=arnold.schwarzenegger
+15:38:24.349 [83a967d9-a559-4b4e-a267-888a8b16c0aa] INFO  c.g.c.c.l.TransactionLoggingFilter - Endpoint: POST /api/core/v1/trainings, Request body: {
+  "trainingName": "Cycling",
+  "trainingDate": "2025-07-27",
+  "trainingDuration": 120,
+  "traineeUsername": "john.smith",
+  "trainerUsername": "arnold.schwarzenegger"
+}
+15:38:24.349 [83a967d9-a559-4b4e-a267-888a8b16c0aa] INFO  c.g.c.c.l.TransactionLoggingFilter - Response status: 200
+15:38:24.363 [] INFO  c.g.c.c.s.i.TrainingServiceImpl - Adding training for trainer 3 and trainee 1 on 2025-07-27
+15:38:24.366 [] INFO  c.g.c.c.s.i.TrainingServiceImpl - Training successfully added for trainer 3 and trainee 1 on 2025-07-27
+15:38:31.013 [057be238-0f21-44e9-b91c-2befd6ad9a61] INFO  c.g.c.c.c.TrainerController - Get trainer trainings request: username=arnold.schwarzenegger, fromDate=null, toDate=null, traineeName=null
+15:38:31.029 [057be238-0f21-44e9-b91c-2befd6ad9a61] INFO  c.g.c.c.c.TrainerController - Trainer trainings retrieved: username=arnold.schwarzenegger
+15:38:31.030 [057be238-0f21-44e9-b91c-2befd6ad9a61] INFO  c.g.c.c.l.TransactionLoggingFilter - Endpoint: GET /api/core/v1/trainers/arnold.schwarzenegger/trainings, Request body: 
+15:38:31.030 [057be238-0f21-44e9-b91c-2befd6ad9a61] INFO  c.g.c.c.l.TransactionLoggingFilter - Response status: 200
+15:38:31.030 [057be238-0f21-44e9-b91c-2befd6ad9a61] INFO  c.g.c.c.l.TransactionLoggingFilter - Response body: {"trainings":[{"trainingName":"Stretch Focus","trainingDate":"2025-06-07","trainingDuration":0,"trainingType":"Stretching","traineeName":"Irina Petrova"},{"trainingName":"Arnold's Power","trainingDate":"2025-06-10","trainingDuration":2,"trainingType":"Bodybuilding","traineeName":"Irina Petrova"},{"trainingName":"Cycling","trainingDate":"2025-07-27","trainingDuration":120,"trainingType":"Bodybuilding","traineeName":"Irina Petrova"},{"trainingName":"Cycling","trainingDate":"2025-07-27","trainingDuration":120,"trainingType":"Bodybuilding","traineeName":"Irina Petrova"},{"trainingName":"Cycling","trainingDate":"2025-07-27","trainingDuration":120,"trainingType":"Bodybuilding","traineeName":"Irina Petrova"}]}
+15:38:41.467 [] INFO  o.s.c.n.e.s.EurekaServiceRegistry - Unregistering application GYM-CRM-CORE with eureka with status DOWN
+15:38:41.467 [] INFO  c.n.d.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1761572321467, current=DOWN, previous=UP]
+15:38:41.468 [] INFO  c.n.d.DiscoveryClient - DiscoveryClient_GYM-CRM-CORE/gym-crm-core:8081: registering service...
+15:38:41.480 [] INFO  c.n.d.s.t.d.RedirectingEurekaHttpClient - Request execution error. endpoint=DefaultEndpoint{ serviceUrl='http://localhost:8761/eureka/} exception=I/O error on POST request for "http://localhost:8761/eureka/apps/GYM-CRM-CORE": localhost:8761 failed to respond stacktrace=org.springframework.web.client.ResourceAccessException: I/O error on POST request for "http://localhost:8761/eureka/apps/GYM-CRM-CORE": localhost:8761 failed to respond
+	at org.springframework.web.client.RestTemplate.createResourceAccessException(RestTemplate.java:926)
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:906)
+	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:841)
+	at org.springframework.web.client.RestTemplate.exchange(RestTemplate.java:702)
+	at org.springframework.cloud.netflix.eureka.http.RestTemplateEurekaHttpClient.register(RestTemplateEurekaHttpClient.java:87)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59)
+	at com.netflix.discovery.shared.transport.decorator.RedirectingEurekaHttpClient.execute(RedirectingEurekaHttpClient.java:91)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59)
+	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:120)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59)
+	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:76)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
+	at com.netflix.discovery.DiscoveryClient.register(DiscoveryClient.java:828)
+	at com.netflix.discovery.InstanceInfoReplicator.run(InstanceInfoReplicator.java:125)
+	at com.netflix.discovery.InstanceInfoReplicator$2.run(InstanceInfoReplicator.java:105)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: org.apache.hc.core5.http.NoHttpResponseException: localhost:8761 failed to respond
+	at org.apache.hc.core5.http.impl.io.DefaultBHttpClientConnection.receiveResponseHeader(DefaultBHttpClientConnection.java:333)
+	at org.apache.hc.core5.http.impl.io.HttpRequestExecutor.execute(HttpRequestExecutor.java:196)
+	at org.apache.hc.client5.http.impl.classic.InternalExecRuntime.lambda$execute$0(InternalExecRuntime.java:236)
+	at org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager$InternalConnectionEndpoint.execute(PoolingHttpClientConnectionManager.java:791)
+	at org.apache.hc.client5.http.impl.classic.InternalExecRuntime.execute(InternalExecRuntime.java:233)
+	at org.apache.hc.client5.http.impl.classic.MainClientExec.execute(MainClientExec.java:120)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.ConnectExec.execute(ConnectExec.java:198)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.ProtocolExec.execute(ProtocolExec.java:192)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.ContentCompressionExec.execute(ContentCompressionExec.java:150)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.HttpRequestRetryExec.execute(HttpRequestRetryExec.java:113)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.RedirectExec.execute(RedirectExec.java:110)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.InternalHttpClient.doExecute(InternalHttpClient.java:183)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:87)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:55)
+	at org.apache.hc.client5.http.classic.HttpClient.executeOpen(HttpClient.java:183)
+	at org.springframework.http.client.HttpComponentsClientHttpRequest.executeInternal(HttpComponentsClientHttpRequest.java:99)
+	at org.springframework.http.client.AbstractStreamingClientHttpRequest.executeInternal(AbstractStreamingClientHttpRequest.java:71)
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:81)
+	at org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:117)
+	at org.springframework.cloud.netflix.eureka.http.RestTemplateTransportClientFactory.lambda$restTemplate$2(RestTemplateTransportClientFactory.java:145)
+	at org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:88)
+	at org.springframework.http.client.InterceptingClientHttpRequest.executeInternal(InterceptingClientHttpRequest.java:72)
+	at org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal(AbstractBufferingClientHttpRequest.java:48)
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:81)
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:900)
+	... 21 more
+
+15:38:41.480 [] WARN  c.n.d.s.t.d.RetryableEurekaHttpClient - Request execution failed with message: I/O error on POST request for "http://localhost:8761/eureka/apps/GYM-CRM-CORE": localhost:8761 failed to respond
+15:38:41.488 [] INFO  c.n.d.s.t.d.RedirectingEurekaHttpClient - Request execution error. endpoint=DefaultEndpoint{ serviceUrl='http://localhost:8761/eureka/}, exception=I/O error on POST request for "http://localhost:8761/eureka/apps/GYM-CRM-CORE": An established connection was aborted by the software in your host machine stacktrace=org.springframework.web.client.ResourceAccessException: I/O error on POST request for "http://localhost:8761/eureka/apps/GYM-CRM-CORE": An established connection was aborted by the software in your host machine
+	at org.springframework.web.client.RestTemplate.createResourceAccessException(RestTemplate.java:926)
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:906)
+	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:841)
+	at org.springframework.web.client.RestTemplate.exchange(RestTemplate.java:702)
+	at org.springframework.cloud.netflix.eureka.http.RestTemplateEurekaHttpClient.register(RestTemplateEurekaHttpClient.java:87)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59)
+	at com.netflix.discovery.shared.transport.decorator.RedirectingEurekaHttpClient.executeOnNewServer(RedirectingEurekaHttpClient.java:121)
+	at com.netflix.discovery.shared.transport.decorator.RedirectingEurekaHttpClient.execute(RedirectingEurekaHttpClient.java:80)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59)
+	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:120)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59)
+	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:76)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
+	at com.netflix.discovery.DiscoveryClient.register(DiscoveryClient.java:828)
+	at com.netflix.discovery.InstanceInfoReplicator.run(InstanceInfoReplicator.java:125)
+	at com.netflix.discovery.InstanceInfoReplicator$2.run(InstanceInfoReplicator.java:105)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.net.SocketException: An established connection was aborted by the software in your host machine
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:330)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:355)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:808)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:966)
+	at org.apache.hc.client5.http.impl.io.LoggingInputStream.read(LoggingInputStream.java:83)
+	at org.apache.hc.core5.http.impl.io.SessionInputBufferImpl.fillBuffer(SessionInputBufferImpl.java:149)
+	at org.apache.hc.core5.http.impl.io.SessionInputBufferImpl.readLine(SessionInputBufferImpl.java:280)
+	at org.apache.hc.core5.http.impl.io.AbstractMessageParser.parse(AbstractMessageParser.java:250)
+	at org.apache.hc.core5.http.impl.io.AbstractMessageParser.parse(AbstractMessageParser.java:56)
+	at org.apache.hc.core5.http.impl.io.DefaultBHttpClientConnection.receiveResponseHeader(DefaultBHttpClientConnection.java:331)
+	at org.apache.hc.core5.http.impl.io.HttpRequestExecutor.execute(HttpRequestExecutor.java:196)
+	at org.apache.hc.client5.http.impl.classic.InternalExecRuntime.lambda$execute$0(InternalExecRuntime.java:236)
+	at org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager$InternalConnectionEndpoint.execute(PoolingHttpClientConnectionManager.java:791)
+	at org.apache.hc.client5.http.impl.classic.InternalExecRuntime.execute(InternalExecRuntime.java:233)
+	at org.apache.hc.client5.http.impl.classic.MainClientExec.execute(MainClientExec.java:120)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.ConnectExec.execute(ConnectExec.java:198)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.ProtocolExec.execute(ProtocolExec.java:192)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.ContentCompressionExec.execute(ContentCompressionExec.java:150)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.HttpRequestRetryExec.execute(HttpRequestRetryExec.java:113)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.RedirectExec.execute(RedirectExec.java:110)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.InternalHttpClient.doExecute(InternalHttpClient.java:183)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:87)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:55)
+	at org.apache.hc.client5.http.classic.HttpClient.executeOpen(HttpClient.java:183)
+	at org.springframework.http.client.HttpComponentsClientHttpRequest.executeInternal(HttpComponentsClientHttpRequest.java:99)
+	at org.springframework.http.client.AbstractStreamingClientHttpRequest.executeInternal(AbstractStreamingClientHttpRequest.java:71)
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:81)
+	at org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:117)
+	at org.springframework.cloud.netflix.eureka.http.RestTemplateTransportClientFactory.lambda$restTemplate$2(RestTemplateTransportClientFactory.java:145)
+	at org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:88)
+	at org.springframework.http.client.InterceptingClientHttpRequest.executeInternal(InterceptingClientHttpRequest.java:72)
+	at org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal(AbstractBufferingClientHttpRequest.java:48)
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:81)
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:900)
+	... 22 more
+
+15:38:41.488 [] WARN  c.n.d.s.t.d.RetryableEurekaHttpClient - Request execution failed with message: I/O error on POST request for "http://localhost:8761/eureka/apps/GYM-CRM-CORE": An established connection was aborted by the software in your host machine
+15:38:41.488 [] WARN  c.n.d.DiscoveryClient - DiscoveryClient_GYM-CRM-CORE/gym-crm-core:8081 - registration failed Cannot execute request on any known server
+com.netflix.discovery.shared.transport.TransportException: Cannot execute request on any known server
+	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:112)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59)
+	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:76)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
+	at com.netflix.discovery.DiscoveryClient.register(DiscoveryClient.java:828)
+	at com.netflix.discovery.InstanceInfoReplicator.run(InstanceInfoReplicator.java:125)
+	at com.netflix.discovery.InstanceInfoReplicator$2.run(InstanceInfoReplicator.java:105)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+15:38:41.488 [] WARN  c.n.d.InstanceInfoReplicator - There was a problem with the instance info replicator
+com.netflix.discovery.shared.transport.TransportException: Cannot execute request on any known server
+	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:112)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59)
+	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:76)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
+	at com.netflix.discovery.DiscoveryClient.register(DiscoveryClient.java:828)
+	at com.netflix.discovery.InstanceInfoReplicator.run(InstanceInfoReplicator.java:125)
+	at com.netflix.discovery.InstanceInfoReplicator$2.run(InstanceInfoReplicator.java:105)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+15:38:41.508 [] INFO  o.s.b.w.e.t.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+15:38:41.734 [] INFO  o.s.b.w.e.t.GracefulShutdown - Graceful shutdown complete
+15:38:41.748 [] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+15:38:41.750 [] INFO  c.z.h.HikariDataSource - HikariPool-1 - Shutdown initiated...
+15:38:41.754 [] INFO  c.z.h.HikariDataSource - HikariPool-1 - Shutdown completed.
+15:38:41.755 [] INFO  c.n.d.DiscoveryClient - Shutting down DiscoveryClient ...
+15:38:42.610 [] INFO  c.n.d.s.t.d.RedirectingEurekaHttpClient - Request execution error. endpoint=DefaultEndpoint{ serviceUrl='http://localhost:8761/eureka/} exception=I/O error on GET request for "http://localhost:8761/eureka/apps/delta": Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: no further information stacktrace=org.springframework.web.client.ResourceAccessException: I/O error on GET request for "http://localhost:8761/eureka/apps/delta": Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: no further information
+	at org.springframework.web.client.RestTemplate.createResourceAccessException(RestTemplate.java:926)
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:906)
+	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:841)
+	at org.springframework.web.client.RestTemplate.exchange(RestTemplate.java:702)
+	at org.springframework.cloud.netflix.eureka.http.RestTemplateEurekaHttpClient.getApplicationsInternal(RestTemplateEurekaHttpClient.java:174)
+	at org.springframework.cloud.netflix.eureka.http.RestTemplateEurekaHttpClient.getDelta(RestTemplateEurekaHttpClient.java:186)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$7.execute(EurekaHttpClientDecorator.java:152)
+	at com.netflix.discovery.shared.transport.decorator.RedirectingEurekaHttpClient.execute(RedirectingEurekaHttpClient.java:91)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.getDelta(EurekaHttpClientDecorator.java:149)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$7.execute(EurekaHttpClientDecorator.java:152)
+	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:120)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.getDelta(EurekaHttpClientDecorator.java:149)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$7.execute(EurekaHttpClientDecorator.java:152)
+	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:76)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.getDelta(EurekaHttpClientDecorator.java:149)
+	at com.netflix.discovery.DiscoveryClient.getAndUpdateDelta(DiscoveryClient.java:1080)
+	at com.netflix.discovery.DiscoveryClient.fetchRegistry(DiscoveryClient.java:963)
+	at com.netflix.discovery.DiscoveryClient.refreshRegistry(DiscoveryClient.java:1474)
+	at com.netflix.discovery.DiscoveryClient$CacheRefreshThread.run(DiscoveryClient.java:1442)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: org.apache.hc.client5.http.HttpHostConnectException: Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: no further information
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:684)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:547)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:602)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.hc.client5.http.impl.io.DefaultHttpClientConnectionOperator.connect(DefaultHttpClientConnectionOperator.java:216)
+	at org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager.connect(PoolingHttpClientConnectionManager.java:490)
+	at org.apache.hc.client5.http.impl.classic.InternalExecRuntime.connectEndpoint(InternalExecRuntime.java:164)
+	at org.apache.hc.client5.http.impl.classic.InternalExecRuntime.connectEndpoint(InternalExecRuntime.java:174)
+	at org.apache.hc.client5.http.impl.classic.ConnectExec.execute(ConnectExec.java:144)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.ProtocolExec.execute(ProtocolExec.java:192)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.ContentCompressionExec.execute(ContentCompressionExec.java:150)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.HttpRequestRetryExec.execute(HttpRequestRetryExec.java:113)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.RedirectExec.execute(RedirectExec.java:110)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.InternalHttpClient.doExecute(InternalHttpClient.java:183)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:87)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:55)
+	at org.apache.hc.client5.http.classic.HttpClient.executeOpen(HttpClient.java:183)
+	at org.springframework.http.client.HttpComponentsClientHttpRequest.executeInternal(HttpComponentsClientHttpRequest.java:99)
+	at org.springframework.http.client.AbstractStreamingClientHttpRequest.executeInternal(AbstractStreamingClientHttpRequest.java:71)
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:81)
+	at org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:117)
+	at org.springframework.cloud.netflix.eureka.http.RestTemplateTransportClientFactory.lambda$restTemplate$2(RestTemplateTransportClientFactory.java:145)
+	at org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:88)
+	at org.springframework.http.client.InterceptingClientHttpRequest.executeInternal(InterceptingClientHttpRequest.java:72)
+	at org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal(AbstractBufferingClientHttpRequest.java:48)
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:81)
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:900)
+	... 22 more
+
+15:38:42.610 [] WARN  c.n.d.s.t.d.RetryableEurekaHttpClient - Request execution failed with message: I/O error on GET request for "http://localhost:8761/eureka/apps/delta": Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: no further information
+15:38:42.613 [] INFO  c.n.d.s.t.d.RedirectingEurekaHttpClient - Request execution error. endpoint=DefaultEndpoint{ serviceUrl='http://localhost:8761/eureka/}, exception=I/O error on PUT request for "http://localhost:8761/eureka/apps/GYM-CRM-CORE/gym-crm-core:8081": Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: no further information stacktrace=org.springframework.web.client.ResourceAccessException: I/O error on PUT request for "http://localhost:8761/eureka/apps/GYM-CRM-CORE/gym-crm-core:8081": Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: no further information
+	at org.springframework.web.client.RestTemplate.createResourceAccessException(RestTemplate.java:926)
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:906)
+	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:841)
+	at org.springframework.web.client.RestTemplate.exchange(RestTemplate.java:702)
+	at org.springframework.cloud.netflix.eureka.http.RestTemplateEurekaHttpClient.sendHeartBeat(RestTemplateEurekaHttpClient.java:119)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$3.execute(EurekaHttpClientDecorator.java:92)
+	at com.netflix.discovery.shared.transport.decorator.RedirectingEurekaHttpClient.executeOnNewServer(RedirectingEurekaHttpClient.java:121)
+	at com.netflix.discovery.shared.transport.decorator.RedirectingEurekaHttpClient.execute(RedirectingEurekaHttpClient.java:80)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.sendHeartBeat(EurekaHttpClientDecorator.java:89)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$3.execute(EurekaHttpClientDecorator.java:92)
+	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:120)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.sendHeartBeat(EurekaHttpClientDecorator.java:89)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$3.execute(EurekaHttpClientDecorator.java:92)
+	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:76)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.sendHeartBeat(EurekaHttpClientDecorator.java:89)
+	at com.netflix.discovery.DiscoveryClient.renew(DiscoveryClient.java:845)
+	at com.netflix.discovery.DiscoveryClient$HeartbeatThread.run(DiscoveryClient.java:1403)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: org.apache.hc.client5.http.HttpHostConnectException: Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: no further information
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:684)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:547)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:602)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.hc.client5.http.impl.io.DefaultHttpClientConnectionOperator.connect(DefaultHttpClientConnectionOperator.java:216)
+	at org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager.connect(PoolingHttpClientConnectionManager.java:490)
+	at org.apache.hc.client5.http.impl.classic.InternalExecRuntime.connectEndpoint(InternalExecRuntime.java:164)
+	at org.apache.hc.client5.http.impl.classic.InternalExecRuntime.connectEndpoint(InternalExecRuntime.java:174)
+	at org.apache.hc.client5.http.impl.classic.ConnectExec.execute(ConnectExec.java:144)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.ProtocolExec.execute(ProtocolExec.java:192)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.ContentCompressionExec.execute(ContentCompressionExec.java:150)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.HttpRequestRetryExec.execute(HttpRequestRetryExec.java:113)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.RedirectExec.execute(RedirectExec.java:110)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.InternalHttpClient.doExecute(InternalHttpClient.java:183)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:87)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:55)
+	at org.apache.hc.client5.http.classic.HttpClient.executeOpen(HttpClient.java:183)
+	at org.springframework.http.client.HttpComponentsClientHttpRequest.executeInternal(HttpComponentsClientHttpRequest.java:99)
+	at org.springframework.http.client.AbstractStreamingClientHttpRequest.executeInternal(AbstractStreamingClientHttpRequest.java:71)
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:81)
+	at org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:117)
+	at org.springframework.cloud.netflix.eureka.http.RestTemplateTransportClientFactory.lambda$restTemplate$2(RestTemplateTransportClientFactory.java:145)
+	at org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:88)
+	at org.springframework.http.client.InterceptingClientHttpRequest.executeInternal(InterceptingClientHttpRequest.java:72)
+	at org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal(AbstractBufferingClientHttpRequest.java:48)
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:81)
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:900)
+	... 20 more
+
+15:38:42.613 [] WARN  c.n.d.s.t.d.RetryableEurekaHttpClient - Request execution failed with message: I/O error on PUT request for "http://localhost:8761/eureka/apps/GYM-CRM-CORE/gym-crm-core:8081": Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: no further information
+15:38:42.614 [] ERROR c.n.d.DiscoveryClient - DiscoveryClient_GYM-CRM-CORE/gym-crm-core:8081 - was unable to send heartbeat!
+com.netflix.discovery.shared.transport.TransportException: Cannot execute request on any known server
+	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:112)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.sendHeartBeat(EurekaHttpClientDecorator.java:89)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$3.execute(EurekaHttpClientDecorator.java:92)
+	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:76)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.sendHeartBeat(EurekaHttpClientDecorator.java:89)
+	at com.netflix.discovery.DiscoveryClient.renew(DiscoveryClient.java:845)
+	at com.netflix.discovery.DiscoveryClient$HeartbeatThread.run(DiscoveryClient.java:1403)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+15:38:42.638 [] INFO  c.n.d.s.t.d.RedirectingEurekaHttpClient - Request execution error. endpoint=DefaultEndpoint{ serviceUrl='http://localhost:8761/eureka/}, exception=I/O error on GET request for "http://localhost:8761/eureka/apps/delta": Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: no further information stacktrace=org.springframework.web.client.ResourceAccessException: I/O error on GET request for "http://localhost:8761/eureka/apps/delta": Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: no further information
+	at org.springframework.web.client.RestTemplate.createResourceAccessException(RestTemplate.java:926)
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:906)
+	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:841)
+	at org.springframework.web.client.RestTemplate.exchange(RestTemplate.java:702)
+	at org.springframework.cloud.netflix.eureka.http.RestTemplateEurekaHttpClient.getApplicationsInternal(RestTemplateEurekaHttpClient.java:174)
+	at org.springframework.cloud.netflix.eureka.http.RestTemplateEurekaHttpClient.getDelta(RestTemplateEurekaHttpClient.java:186)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$7.execute(EurekaHttpClientDecorator.java:152)
+	at com.netflix.discovery.shared.transport.decorator.RedirectingEurekaHttpClient.executeOnNewServer(RedirectingEurekaHttpClient.java:121)
+	at com.netflix.discovery.shared.transport.decorator.RedirectingEurekaHttpClient.execute(RedirectingEurekaHttpClient.java:80)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.getDelta(EurekaHttpClientDecorator.java:149)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$7.execute(EurekaHttpClientDecorator.java:152)
+	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:120)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.getDelta(EurekaHttpClientDecorator.java:149)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$7.execute(EurekaHttpClientDecorator.java:152)
+	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:76)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.getDelta(EurekaHttpClientDecorator.java:149)
+	at com.netflix.discovery.DiscoveryClient.getAndUpdateDelta(DiscoveryClient.java:1080)
+	at com.netflix.discovery.DiscoveryClient.fetchRegistry(DiscoveryClient.java:963)
+	at com.netflix.discovery.DiscoveryClient.refreshRegistry(DiscoveryClient.java:1474)
+	at com.netflix.discovery.DiscoveryClient$CacheRefreshThread.run(DiscoveryClient.java:1442)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: org.apache.hc.client5.http.HttpHostConnectException: Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: no further information
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:684)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:547)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:602)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.hc.client5.http.impl.io.DefaultHttpClientConnectionOperator.connect(DefaultHttpClientConnectionOperator.java:216)
+	at org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager.connect(PoolingHttpClientConnectionManager.java:490)
+	at org.apache.hc.client5.http.impl.classic.InternalExecRuntime.connectEndpoint(InternalExecRuntime.java:164)
+	at org.apache.hc.client5.http.impl.classic.InternalExecRuntime.connectEndpoint(InternalExecRuntime.java:174)
+	at org.apache.hc.client5.http.impl.classic.ConnectExec.execute(ConnectExec.java:144)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.ProtocolExec.execute(ProtocolExec.java:192)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.ContentCompressionExec.execute(ContentCompressionExec.java:150)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.HttpRequestRetryExec.execute(HttpRequestRetryExec.java:113)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.RedirectExec.execute(RedirectExec.java:110)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.InternalHttpClient.doExecute(InternalHttpClient.java:183)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:87)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:55)
+	at org.apache.hc.client5.http.classic.HttpClient.executeOpen(HttpClient.java:183)
+	at org.springframework.http.client.HttpComponentsClientHttpRequest.executeInternal(HttpComponentsClientHttpRequest.java:99)
+	at org.springframework.http.client.AbstractStreamingClientHttpRequest.executeInternal(AbstractStreamingClientHttpRequest.java:71)
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:81)
+	at org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:117)
+	at org.springframework.cloud.netflix.eureka.http.RestTemplateTransportClientFactory.lambda$restTemplate$2(RestTemplateTransportClientFactory.java:145)
+	at org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:88)
+	at org.springframework.http.client.InterceptingClientHttpRequest.executeInternal(InterceptingClientHttpRequest.java:72)
+	at org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal(AbstractBufferingClientHttpRequest.java:48)
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:81)
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:900)
+	... 23 more
+
+15:38:42.639 [] WARN  c.n.d.s.t.d.RetryableEurekaHttpClient - Request execution failed with message: I/O error on GET request for "http://localhost:8761/eureka/apps/delta": Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: no further information
+15:38:42.639 [] INFO  c.n.d.DiscoveryClient - DiscoveryClient_GYM-CRM-CORE/gym-crm-core:8081 - was unable to refresh its cache! This periodic background refresh will be retried in 30 seconds. status = Cannot execute request on any known server stacktrace = com.netflix.discovery.shared.transport.TransportException: Cannot execute request on any known server
+	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:112)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.getDelta(EurekaHttpClientDecorator.java:149)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$7.execute(EurekaHttpClientDecorator.java:152)
+	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:76)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.getDelta(EurekaHttpClientDecorator.java:149)
+	at com.netflix.discovery.DiscoveryClient.getAndUpdateDelta(DiscoveryClient.java:1080)
+	at com.netflix.discovery.DiscoveryClient.fetchRegistry(DiscoveryClient.java:963)
+	at com.netflix.discovery.DiscoveryClient.refreshRegistry(DiscoveryClient.java:1474)
+	at com.netflix.discovery.DiscoveryClient$CacheRefreshThread.run(DiscoveryClient.java:1442)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+
+15:38:44.769 [] INFO  c.n.d.DiscoveryClient - Unregistering ...
+15:38:44.785 [] INFO  c.n.d.s.t.d.RedirectingEurekaHttpClient - Request execution error. endpoint=DefaultEndpoint{ serviceUrl='http://localhost:8761/eureka/}, exception=I/O error on DELETE request for "http://localhost:8761/eureka/apps/GYM-CRM-CORE/gym-crm-core:8081": Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: no further information stacktrace=org.springframework.web.client.ResourceAccessException: I/O error on DELETE request for "http://localhost:8761/eureka/apps/GYM-CRM-CORE/gym-crm-core:8081": Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: no further information
+	at org.springframework.web.client.RestTemplate.createResourceAccessException(RestTemplate.java:926)
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:906)
+	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:841)
+	at org.springframework.web.client.RestTemplate.exchange(RestTemplate.java:702)
+	at org.springframework.cloud.netflix.eureka.http.RestTemplateEurekaHttpClient.cancel(RestTemplateEurekaHttpClient.java:100)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$2.execute(EurekaHttpClientDecorator.java:74)
+	at com.netflix.discovery.shared.transport.decorator.RedirectingEurekaHttpClient.executeOnNewServer(RedirectingEurekaHttpClient.java:121)
+	at com.netflix.discovery.shared.transport.decorator.RedirectingEurekaHttpClient.execute(RedirectingEurekaHttpClient.java:80)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.cancel(EurekaHttpClientDecorator.java:71)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$2.execute(EurekaHttpClientDecorator.java:74)
+	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:120)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.cancel(EurekaHttpClientDecorator.java:71)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$2.execute(EurekaHttpClientDecorator.java:74)
+	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:76)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.cancel(EurekaHttpClientDecorator.java:71)
+	at com.netflix.discovery.DiscoveryClient.unregister(DiscoveryClient.java:919)
+	at com.netflix.discovery.DiscoveryClient.shutdown(DiscoveryClient.java:900)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMethod.invoke(InitDestroyAnnotationBeanPostProcessor.java:457)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeDestroyMethods(InitDestroyAnnotationBeanPostProcessor.java:415)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeDestruction(InitDestroyAnnotationBeanPostProcessor.java:239)
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.destroy(DisposableBeanAdapter.java:202)
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.run(DisposableBeanAdapter.java:195)
+	at org.springframework.cloud.context.scope.GenericScope$BeanLifecycleWrapper.destroy(GenericScope.java:387)
+	at org.springframework.cloud.context.scope.GenericScope.destroy(GenericScope.java:134)
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.destroy(DisposableBeanAdapter.java:211)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroyBean(DefaultSingletonBeanRegistry.java:796)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingleton(DefaultSingletonBeanRegistry.java:746)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingleton(DefaultListableBeanFactory.java:1473)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingletons(DefaultSingletonBeanRegistry.java:705)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingletons(DefaultListableBeanFactory.java:1466)
+	at org.springframework.context.support.AbstractApplicationContext.destroyBeans(AbstractApplicationContext.java:1219)
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1180)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.doClose(ServletWebServerApplicationContext.java:179)
+	at org.springframework.context.support.AbstractApplicationContext.close(AbstractApplicationContext.java:1126)
+	at org.springframework.boot.SpringApplicationShutdownHook.closeAndWait(SpringApplicationShutdownHook.java:147)
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+	at org.springframework.boot.SpringApplicationShutdownHook.run(SpringApplicationShutdownHook.java:116)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: org.apache.hc.client5.http.HttpHostConnectException: Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: no further information
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:684)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:547)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:602)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.hc.client5.http.impl.io.DefaultHttpClientConnectionOperator.connect(DefaultHttpClientConnectionOperator.java:216)
+	at org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager.connect(PoolingHttpClientConnectionManager.java:490)
+	at org.apache.hc.client5.http.impl.classic.InternalExecRuntime.connectEndpoint(InternalExecRuntime.java:164)
+	at org.apache.hc.client5.http.impl.classic.InternalExecRuntime.connectEndpoint(InternalExecRuntime.java:174)
+	at org.apache.hc.client5.http.impl.classic.ConnectExec.execute(ConnectExec.java:144)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.ProtocolExec.execute(ProtocolExec.java:192)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.ContentCompressionExec.execute(ContentCompressionExec.java:150)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.HttpRequestRetryExec.execute(HttpRequestRetryExec.java:113)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.RedirectExec.execute(RedirectExec.java:110)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.InternalHttpClient.doExecute(InternalHttpClient.java:183)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:87)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:55)
+	at org.apache.hc.client5.http.classic.HttpClient.executeOpen(HttpClient.java:183)
+	at org.springframework.http.client.HttpComponentsClientHttpRequest.executeInternal(HttpComponentsClientHttpRequest.java:99)
+	at org.springframework.http.client.AbstractStreamingClientHttpRequest.executeInternal(AbstractStreamingClientHttpRequest.java:71)
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:81)
+	at org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:117)
+	at org.springframework.cloud.netflix.eureka.http.RestTemplateTransportClientFactory.lambda$restTemplate$2(RestTemplateTransportClientFactory.java:145)
+	at org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:88)
+	at org.springframework.http.client.InterceptingClientHttpRequest.executeInternal(InterceptingClientHttpRequest.java:72)
+	at org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal(AbstractBufferingClientHttpRequest.java:48)
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:81)
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:900)
+	... 40 more
+
+15:38:44.785 [] WARN  c.n.d.s.t.d.RetryableEurekaHttpClient - Request execution failed with message: I/O error on DELETE request for "http://localhost:8761/eureka/apps/GYM-CRM-CORE/gym-crm-core:8081": Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: no further information
+15:38:44.785 [] ERROR c.n.d.DiscoveryClient - DiscoveryClient_GYM-CRM-CORE/gym-crm-core:8081 - de-registration failedCannot execute request on any known server
+com.netflix.discovery.shared.transport.TransportException: Cannot execute request on any known server
+	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:112)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.cancel(EurekaHttpClientDecorator.java:71)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$2.execute(EurekaHttpClientDecorator.java:74)
+	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:76)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.cancel(EurekaHttpClientDecorator.java:71)
+	at com.netflix.discovery.DiscoveryClient.unregister(DiscoveryClient.java:919)
+	at com.netflix.discovery.DiscoveryClient.shutdown(DiscoveryClient.java:900)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMethod.invoke(InitDestroyAnnotationBeanPostProcessor.java:457)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeDestroyMethods(InitDestroyAnnotationBeanPostProcessor.java:415)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeDestruction(InitDestroyAnnotationBeanPostProcessor.java:239)
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.destroy(DisposableBeanAdapter.java:202)
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.run(DisposableBeanAdapter.java:195)
+	at org.springframework.cloud.context.scope.GenericScope$BeanLifecycleWrapper.destroy(GenericScope.java:387)
+	at org.springframework.cloud.context.scope.GenericScope.destroy(GenericScope.java:134)
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.destroy(DisposableBeanAdapter.java:211)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroyBean(DefaultSingletonBeanRegistry.java:796)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingleton(DefaultSingletonBeanRegistry.java:746)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingleton(DefaultListableBeanFactory.java:1473)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingletons(DefaultSingletonBeanRegistry.java:705)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingletons(DefaultListableBeanFactory.java:1466)
+	at org.springframework.context.support.AbstractApplicationContext.destroyBeans(AbstractApplicationContext.java:1219)
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1180)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.doClose(ServletWebServerApplicationContext.java:179)
+	at org.springframework.context.support.AbstractApplicationContext.close(AbstractApplicationContext.java:1126)
+	at org.springframework.boot.SpringApplicationShutdownHook.closeAndWait(SpringApplicationShutdownHook.java:147)
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+	at org.springframework.boot.SpringApplicationShutdownHook.run(SpringApplicationShutdownHook.java:116)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+15:38:44.785 [] INFO  c.n.d.DiscoveryClient - Completed shut down of DiscoveryClient

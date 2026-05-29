@@ -1,4 +1,51 @@
-Gym CRM Platform
+### Gym CRM Platform
+
+Gym CRM Platform is a training Java-based CRM application designed for managing gym clients, training processes, and internal club operations.
+The project was created as a hands-on learning platform to practice backend development, REST API design, database integration, software testing, and teamwork workflows.
+
+## Features
+
+* Client management
+* Trainer and training session management
+* Authentication and authorization basics
+* REST API endpoints
+* CRUD operations
+* Database interaction
+* Validation and error handling
+* Logging and debugging
+* Basic testing and QA activities
+
+## Technologies Used
+
+* Java
+* Spring Framework / Spring Boot
+* REST API
+* SQL
+* Hibernate / JPA
+* Maven
+* Git & GitHub
+* JUnit
+* Selenium
+* Postman
+* IntelliJ IDEA
+
+## Development Focus
+
+This project helped improve practical skills in:
+
+* Object-Oriented Programming (OOP)
+* SOLID principles
+* Layered architecture
+* Backend application development
+* API testing
+* Debugging and issue analysis
+* Version control with Git
+* Software development and testing workflows
+
+## Purpose
+
+The main goal of the project was to gain practical experience with enterprise-style application development in CRM and insurance-related domains while improving both Java development and QA automation skills.
+
 
 ## Prerequisites
 
